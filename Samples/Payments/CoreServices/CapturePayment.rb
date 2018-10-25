@@ -11,9 +11,10 @@ class CapturePayment
     request = CyberSource::CapturePaymentRequest.new
     apiClient = CyberSource::ApiClient.new
     apiInstance = CyberSource::CaptureApi.new(apiClient)
-
+    
     # Calling ProcessPayment Sample code 
-    paymentResponse = CreatePayment.new.main
+    capture_flag = false
+    response = CreatePayment.new.main(capture_flag)
     
 
     clientReferenceInformation = CyberSource::V2paymentsClientReferenceInformation.new
@@ -27,7 +28,7 @@ class CapturePayment
     orderInformation.amount_details = amountDetails
     request.order_information = orderInformation
 
-    data, status_code, headers = apiInstance.capture_payment(request,paymentResponse.id)
+    data, status_code, headers = apiInstance.capture_payment(request, response.id)
     puts data, status_code, headers
     data
   rescue StandardError => err

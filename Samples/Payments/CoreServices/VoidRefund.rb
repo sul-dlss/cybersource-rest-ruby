@@ -13,7 +13,8 @@ class VoidRefund
     apiInstance = CyberSource::VoidApi.new(apiClient)
 
     # Calling CreatePayment Sample code 
-    response = CreatePayment.new.main
+    capture_flag = true
+    response = CreatePayment.new.main(capture_flag)
 
     clientReferenceInformation = CyberSource::V2paymentsClientReferenceInformation.new
     clientReferenceInformation.code = "test_refund_void"

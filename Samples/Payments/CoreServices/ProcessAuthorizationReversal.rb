@@ -1,4 +1,5 @@
 require 'cyberSource_client'
+require_relative './ProcessPayment.rb'
 
 # * This is a sample code to call ReversalApi,
 # * Process an Authorization Reversal
@@ -7,18 +8,20 @@ require 'cyberSource_client'
 public
 class AuthReversal
   def main
-    id = '5337069774856224603522'
     request = CyberSource::AuthReversalRequest.new
     apiClient = CyberSource::ApiClient.new
     apiInstance = CyberSource::ReversalApi.new(apiClient)
+
+    # Calling ProcessPayment Sample code 
+    capture_flag = false
+    response = CreatePayment.new.main(capture_flag)
 
     clientReferenceInformation = CyberSource::V2paymentsClientReferenceInformation.new
     clientReferenceInformation.code = "test_reversal"
     request.client_reference_information = clientReferenceInformation
 
     reversalInformation = CyberSource::V2paymentsidreversalsReversalInformation.new
-    # model file validation - reason field length as 3
-    reversalInformation.reason = "tes" #ting"
+    reversalInformation.reason = "testing"
 
     amountDetails = CyberSource::V2paymentsidreversalsReversalInformationAmountDetails.new
     amountDetails.total_amount = "102.21"
@@ -26,7 +29,7 @@ class AuthReversal
     reversalInformation.amount_details = amountDetails
     request.reversal_information = reversalInformation
     
-    data, status_code, headers = apiInstance.auth_reversal(id, request)
+    data, status_code, headers = apiInstance.auth_reversal(response.id, request)
     puts data, status_code, headers
   rescue StandardError => err
     puts err.message

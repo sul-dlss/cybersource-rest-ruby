@@ -6,7 +6,7 @@ require 'cyberSource_client'
 
 public
 class CreatePayment
-  def main
+  def main(capture_flag)
     request = CyberSource::CreatePaymentRequest.new
     apiClient = CyberSource::ApiClient.new
     apiInstance = CyberSource::PaymentApi.new(apiClient)
@@ -17,9 +17,11 @@ class CreatePayment
     
     processingInformation = CyberSource::V2paymentsProcessingInformation.new
     processingInformation.commerce_indicator = "internet"
-    processingInformation.capture = true
+    if capture_flag
+      processingInformation.capture = true
+    end
     request.processing_information = processingInformation
-
+   
     aggregatorInformation = CyberSource::V2paymentsAggregatorInformation.new
     submerchantinformation = CyberSource::V2paymentsAggregatorInformationSubMerchant.new
     submerchantinformation.card_acceptor_id = "1234567890"
@@ -76,5 +78,5 @@ class CreatePayment
   rescue StandardError => err
     puts err.message
   end
-  CreatePayment.new.main
+  CreatePayment.new.main(false)
 end
