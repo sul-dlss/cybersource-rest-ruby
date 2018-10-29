@@ -5,8 +5,8 @@ class MerchantConfiguration
     runEnvironment='cybersource.environment.sandbox'
     timeout=1000 #In Milliseconds
     authenticationType='http_signature'   
-    logDirectory='C:\Users\ansuguma\RubySwagger\RubySwaggerFinal\cybersource-rest-samples-ruby\log'
-    jsonFilePath='./resource/request.json'
+    logDirectory='../log'
+    jsonFilePath='resource/request.json'
     logSize=10485760
     enableLog=false
     proxyAddress='userproxy.visa.com'
