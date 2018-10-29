@@ -5,8 +5,8 @@ class MerchantConfiguration
     runEnvironment='cybersource.environment.sandbox'
     timeout=1000 #In Milliseconds
     authenticationType='http_signature'   
-    logDirectory='C:\Users\ansuguma\RubySwagger\RubySwaggerFinal\cybersource-rest-samples-ruby\log'
-    jsonFilePath='./resource/request.json'
+    logDirectory='../log'
+    jsonFilePath='resource/request.json'
     logSize=10485760
     enableLog=false
     proxyAddress='userproxy.visa.com'
@@ -15,7 +15,7 @@ class MerchantConfiguration
     merchantSecretKey='yBJxy6LjM2TmcPGu+GaJrHtkke25fPpUX+UY6/L/1tE='
     merchantKeyId='08c94330-f618-42a3-b09d-e1e43be5efda'
     # JWT Parameters
-    keysDirectory='../../resource'
+    keysDirectory='resource'
     keyAlias='testrest'
     keyPass='testrest'
     keyFilename='testrest'
