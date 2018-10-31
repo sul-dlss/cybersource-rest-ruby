@@ -1,4 +1,4 @@
-# Ruby Sample Code for the Cybersource Rest client API
+# Ruby Sample Code for the CyberSource SDK
 
 This repository contains working code samples which demonstrate Ruby integration with the cybersource-rest-client-ruby and cybersource-rest-auth-ruby
 
