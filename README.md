@@ -24,7 +24,7 @@ You can also run each sample directly from the command line.
 ```
 * Install the cybersource-rest-client-ruby
 ```
-    $ gem install cyberSource_client
+    $ gem install cybersource_rest_client
 ```
 * Run the individual samples by name. For example: 
 ```
@@ -32,10 +32,10 @@ You can also run each sample directly from the command line.
 ```
 e.g.
 ```
-    $ Ruby Samples\Payments\CoreServices\proce.rb
+    $ ruby Samples/Payments/CoreServices/ProcessPayment.rb
 ```
 
-#### To set your API credentials for an API request,Configure the following information in cybs.yml file:
+#### To set your own API credentials for an API request, configure the following information in resource/cybs.yml file:
   
   * Http
 
@@ -68,7 +68,7 @@ e.g.
 
 ### Switching between the sandbox environment and the production environment
 CyberSource maintains a complete sandbox environment for testing and development purposes. This sandbox environment is an exact 
-duplicate of our production environment with the transaction authorization and settlement process simulated. By default, this SDK is 
+duplicate of our production environment with the transaction authorization and settlement process simulated. By default, this sample code is 
 configured to communicate with the sandbox environment. To switch to the production environment, set the appropriate environment 
 constant in cybs.yml file.  For example:
 
