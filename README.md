@@ -1,28 +1,39 @@
-# cybersource-rest-auth-ruby
-This project provides multiple sample codes for REST APIs supported by CyberSource.
+# Ruby Sample Code for the CyberSource SDK
+This repository contains working code samples which demonstrate Ruby integration with the CyberSource REST APIs through the CyberSource Ruby SDK.
+
+**__NOTE: THIS REPO OF CODE SAMPLES HAS BEEN MADE PUBLIC FOR SDK TESTING AND SHOULD NOT BE USED FOR PRODUCTION - YET.  PLEASE RAISE AN ISSUE ON THIS REPO IF YOU HAVE FURTHER QUESTIONS AND CHECK BACK SOON FOR GENERAL AVAILABILITY__**
+
+The samples are organized into categories and common usage examples.
+
+
+## Using the Sample Code
+
+The samples are all completely independent and self-contained. You can analyze them to get an understanding of how a particular method works, or you can use the snippets as a starting point for your own project.
+
+You can also run each sample directly from the command line.
 
 ## Requirements
 * Ruby 2.2.2 or higher
-* RubyGem 1.3.7 or higher (to build the gem)
 * [CyberSource Account](https://developer.cybersource.com/api/developer-guides/dita-gettingstarted/registration.html)
 * [CyberSource API Keys](https://prod.developer.cybersource.com/api/developer-guides/dita-gettingstarted/registration/createCertSharedKey.html)
 
-_Note: Support for building the SDK with gem has been made.
- All initial libraries were installed with gem, however._
- 
- ## Dependencies
-* json-2.1.0, 1.8.1             : simple implementation of json
-* interface-1.0.4	            : simple implementation of interface
-* Jwt-2.1.0                     : Generating Json Web Token
-* rubocop-0.57.2				: Automatic Ruby code style checking tool
-* activesupport-5.2.0           : A toolkit of support libraries
-* rspec-3.7.0               	: Unit testing
-* simplecov-0.16.1  			: Code coverage and to generate coverage report
-
-## To run rest client SDK
-
-The rest client SDK works for POST, GET, PUT and DELETE requests.
-It works with any one of the two authentication mechanisms, which are HTTP signature and JWT token.
+## Running the Samples From the Command Line
+* Clone this repository:
+```
+    $ git clone https://github.com/CyberSource/cybersource-rest-samples-ruby
+```
+* Install the cybersource-rest-client-ruby
+```
+    $ gem install cyberSource_client
+```
+* Run the individual samples by name. For example: 
+```
+    $ Ruby [DirectoryPath]\[CodeSampleName]
+```
+e.g.
+```
+    $ Ruby Samples\Payments\CoreServices\proce.rb
+```
 
 #### To set your API credentials for an API request,Configure the following information in cybs.yml file:
   
@@ -76,39 +87,7 @@ constant in cybs.yml file.  For example:
 *	Enable Log: To start the log entry provide true else enter false.
 *	LogDirectory: If log is enabled and valid log directory is provided, log files will get created here. Otherwise log files will be created in default location inside project base directory.
 
-## SDK Usage Examples and Sample Code
- * To get started using this SDK, it's highly recommended to download our sample code repository.
- * In that respository, we have comprehensive sample code for all common uses of our API.
- * Additionally, you can find details and examples of how our API is structured in our API Reference Guide.
+## API Reference
 
 The [API Reference Guide](http://developer.cybersource.com/api/reference) provides examples of what information is needed for a particular request and how that information would be formatted. Using those examples, you can easily determine what methods would be necessary to include that information in a request using this SDK.
 
-# Ruby Sample Code for the CyberSource SDK
-
-This repository contains working code samples which demonstrate Ruby integration with the cybersource-rest-client-ruby and cybersource-rest-auth-ruby
-
-The samples are organized into categories and common usage examples.
-
-## Using the Sample Code
-
-The samples are all completely independent and self-contained. You can analyze them to get an understanding of how a particular method works, or you can use the snippets as a starting point for your own project.
-
-You can also run each sample directly from the command line.
-
-## Running the Samples From the Command Line
-* Clone this repository:
-```
-    $ git clone https://github.com/CyberSource/cybersource-rest-samples-ruby
-```
-* Install the cybersource-rest-client-ruby
-```
-    $ gem install cyberSource_client
-```
-* Run the individual samples by name. For example: 
-```
-    $ Ruby [DirectoryPath]\[CodeSampleName]
-```
-e.g.
-```
-    $ Ruby Samples\Payments\CoreServices\proce.rb
-```
