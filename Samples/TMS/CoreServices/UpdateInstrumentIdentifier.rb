@@ -15,7 +15,7 @@ class UpdateInstrumentIdentifier
     api_client = CyberSource::ApiClient.new
     api_instance = CyberSource::InstrumentIdentifierApi.new(api_client)
 
-    merchant_initiated_transaction = CyberSource::InstrumentidentifiersAuthorizationOptionsMerchantInitiatedTransaction-.new
+    merchant_initiated_transaction = CyberSource::InstrumentidentifiersAuthorizationOptionsMerchantInitiatedTransaction.new
     previous_transaction_id = "123456789012345"
     merchant_initiated_transaction.previous_transaction_id = previous_transaction_id
 
