@@ -20,7 +20,7 @@ class CreateInstrumentIdentifier
     instrument_processing_information = CyberSource::InstrumentidentifiersProcessingInformation.new
     instrument_processing_information_auth = CyberSource::InstrumentidentifiersProcessingInformationAuthorizationOptions.new
     instrument_processing_information_initiator = CyberSource::InstrumentidentifiersProcessingInformationAuthorizationOptionsInitiator.new
-    instrument_processing_information_merchant_initiator = CyberSource::InstrumentidentifiersAuthorizationOptionsMerchantInitiatedTransaction-.new
+    instrument_processing_information_merchant_initiator = CyberSource::InstrumentidentifiersAuthorizationOptionsMerchantInitiatedTransaction.new
     instrument_processing_information_merchant_initiator.previous_transaction_id = "123456789012345"
     instrument_processing_information_initiator.merchant_initiated_transaction = instrument_processing_information_merchant_initiator
     instrument_processing_information_auth.initiator = instrument_processing_information_initiator
