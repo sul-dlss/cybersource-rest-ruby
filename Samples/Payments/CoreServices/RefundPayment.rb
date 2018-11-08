@@ -1,5 +1,6 @@
-require 'cyberSource_client'
+require 'cybersource_rest_client'
 require_relative 'ProcessPayment.rb'
+require_relative '../../../Data/Configuration.rb'
 
 # * This is a sample code to call RefundApi,
 # * Refund a Payment
@@ -8,26 +9,29 @@ require_relative 'ProcessPayment.rb'
 public
 class RefundPayment
   def main
+    config = MerchantConfiguration.new.merchantConfigProp()
     request = CyberSource::RefundPaymentRequest.new
-    apiClient = CyberSource::ApiClient.new
-    apiInstance = CyberSource::RefundApi.new(apiClient)
+    api_client = CyberSource::ApiClient.new
+    api_instance = CyberSource::RefundApi.new(api_client, config)
 
     # Calling CreatePayment Sample code 
     capture_flag = true
     response = CreatePayment.new.main(capture_flag)
+    resp = JSON.parse(response)
+    id = resp['id']
 
-    clientReferenceInformation = CyberSource::V2paymentsClientReferenceInformation.new
-    clientReferenceInformation.code = "test_refund_payment"
-    request.client_reference_information = clientReferenceInformation
+    client_reference_information = CyberSource::Ptsv2paymentsClientReferenceInformation.new
+    client_reference_information.code = "test_refund_payment"
+    request.client_reference_information = client_reference_information
 
-    orderInformation = CyberSource::V2paymentsOrderInformation.new
-    amountDetails = CyberSource::V2paymentsOrderInformationAmountDetails.new
-    amountDetails.total_amount = "102.21"
-    amountDetails.currency ="USD"
-    orderInformation.amount_details = amountDetails
-    request.order_information = orderInformation
+    order_information = CyberSource::Ptsv2paymentsOrderInformation.new
+    amount_details = CyberSource::Ptsv2paymentsOrderInformationAmountDetails.new
+    amount_details.total_amount = "102.21"
+    amount_details.currency ="USD"
+    order_information.amount_details = amount_details
+    request.order_information = order_information
 
-    data, status_code, headers = apiInstance.refund_payment(request, response.id)
+    data, status_code, headers = api_instance.refund_payment(request, id)
     puts data, status_code, headers
   rescue StandardError => err
     puts err.message

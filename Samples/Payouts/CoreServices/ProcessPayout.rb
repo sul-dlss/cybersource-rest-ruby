@@ -1,4 +1,5 @@
-require 'cyberSource_client'
+require 'cybersource_rest_client'
+require_relative '../../../Data/Configuration.rb'
 
 # * This is a sample code to call Payout - DefaultApi,
 # * Process a Payout
@@ -7,81 +8,82 @@ require 'cyberSource_client'
 public
 class ProcessAPayout
   def main
-    request = CyberSource::OctCreatePaymentRequest.new
-    apiClient = CyberSource::ApiClient.new
-    apiInstance = CyberSource::DefaultApi.new(apiClient)
+    config = MerchantConfiguration.new.merchantConfigProp()
+    request = CyberSource::PtsV2PayoutsPostResponse.new
+    api_client = CyberSource::ApiClient.new
+    api_instance = CyberSource::ProcessAPayoutApi.new(api_client, config)
 
-    clientReferenceInformation = CyberSource::InlineResponse201ClientReferenceInformation.new
-    clientReferenceInformation.code = "33557799"
-    request.client_reference_information = clientReferenceInformation
+    client_reference_information = CyberSource::Ptsv2paymentsClientReferenceInformation.new
+    client_reference_information.code = "33557799"
+    request.client_reference_information = client_reference_information
 
-    senderInformation = CyberSource::V2payoutsSenderInformation.new
-    senderInformation.reference_number = "1234567890"
-    senderInformation.address1 = "900 Metro Center Blvd.900"
-    senderInformation.country_code = "US"
-    senderInformation.locality = "Foster City"
-    senderInformation.name = "Thomas Jefferson"
-    senderInformation.administrative_area = "CA"
-    account = CyberSource::V2payoutsSenderInformationAccount.new
+    sender_information = CyberSource::Ptsv2payoutsSenderInformation.new
+    sender_information.reference_number = "1234567890"
+    sender_information.address1 = "900 Metro Center Blvd.900"
+    sender_information.country_code = "US"
+    sender_information.locality = "Foster City"
+    sender_information.name = "Thomas Jefferson"
+    sender_information.administrative_area = "CA"
+    account = CyberSource::Ptsv2payoutsSenderInformationAccount.new
     account.number = "1234567890123456789012345678901234"
     account.funds_source = "01"
-    senderInformation.account = account
-    request.sender_information = senderInformation
+    sender_information.account = account
+    request.sender_information = sender_information
 
-    processingInformation = CyberSource::V2payoutsProcessingInformation.new
-    processingInformation.commerce_indicator = "internet"
-    processingInformation.business_application_id = "FD"
-    processingInformation.network_routing_order = "ECG"
-    request.processing_information = processingInformation
+    processing_information = CyberSource::Ptsv2payoutsProcessingInformation.new
+    processing_information.commerce_indicator = "internet"
+    processing_information.business_application_id = "FD"
+    processing_information.network_routing_order = "ECG"
+    request.processing_information = processing_information
 
-    payoutOptions = CyberSource::V2payoutsProcessingInformationPayoutsOptions.new
-    payoutOptions.retrieval_reference_number = "123456789012"
-    payoutOptions.acquirer_bin = "567890124"
+    payout_options = CyberSource::Ptsv2payoutsProcessingInformationPayoutsOptions.new
+    payout_options.retrieval_reference_number = "123456789012"
+    payout_options.acquirer_bin = "567890124"
 
     # missing
-    # processingInformation.reconciliation_id = "1087488702VIAQNSPQ"
+    # processing_information.reconciliation_id = "1087488702VIAQNSPQ"
 
-    orderInformation = CyberSource::V2payoutsOrderInformation.new
-    amountDetails = CyberSource::V2payoutsOrderInformationAmountDetails.new
-    amountDetails.total_amount = "100.00"
-    amountDetails.currency = "USD"
-    orderInformation.amount_details = amountDetails
-    request.order_information = orderInformation
+    order_information = CyberSource::Ptsv2payoutsOrderInformation.new
+    amount_details = CyberSource::Ptsv2payoutsOrderInformationAmountDetails.new
+    amount_details.total_amount = "100.00"
+    amount_details.currency = "USD"
+    order_information.amount_details = amount_details
+    request.order_information = order_information
 
-    merchantInformation = CyberSource::V2payoutsMerchantInformation.new
-    merchantInformation.category_code = 123
-    merchantDescriptor = CyberSource::V2payoutsMerchantInformationMerchantDescriptor.new
-    merchantDescriptor.country = "US"
-    merchantDescriptor.postal_code = "94440"
-    merchantDescriptor.locality = "FC"
-    merchantDescriptor.name = "Thomas"
-    merchantDescriptor.administrative_area = "CA"
-    merchantInformation.merchant_descriptor = merchantDescriptor
-    request.merchant_information = merchantInformation
+    merchant_information = CyberSource::Ptsv2payoutsMerchantInformation.new
+    merchant_information.category_code = 123
+    merchant_descriptor = CyberSource::Ptsv2payoutsMerchantInformationMerchantDescriptor.new
+    merchant_descriptor.country = "US"
+    merchant_descriptor.postal_code = "94440"
+    merchant_descriptor.locality = "FC"
+    merchant_descriptor.name = "Thomas"
+    merchant_descriptor.administrative_area = "CA"
+    merchant_information.merchant_descriptor = merchant_descriptor
+    request.merchant_information = merchant_information
 
-    paymentInformation = CyberSource::V2payoutsPaymentInformation.new
-    paymentInformationCard = CyberSource::V2payoutsPaymentInformationCard.new
-    paymentInformationCard.expiration_year = "2025"
-    paymentInformationCard.number = "4111111111111111"
-    paymentInformationCard.expiration_month = "12"
-    paymentInformationCard.type = "001"
-    paymentInformationCard.source_account_type = "CH"
-    paymentInformation.card = paymentInformationCard
-    request.payment_information = paymentInformation
+    payment_information = CyberSource::Ptsv2payoutsPaymentInformation.new
+    payment_information_card = CyberSource::Ptsv2payoutsPaymentInformationCard.new
+    payment_information_card.expiration_year = "2025"
+    payment_information_card.number = "4111111111111111"
+    payment_information_card.expiration_month = "12"
+    payment_information_card.type = "001"
+    payment_information_card.source_account_type = "CH"
+    payment_information.card = payment_information_card
+    request.payment_information = payment_information
 
-    recipientInformation = CyberSource::V2payoutsRecipientInformation.new
-    recipientInformation.first_name = "John"
-    recipientInformation.last_name = "Doe"
-    recipientInformation.address1 = "Paseo Padre Boulevard"
-    recipientInformation.locality = "Foster City"
-    recipientInformation.administrative_area = "CA"
-    recipientInformation.postal_code = "94400"
-    recipientInformation.phone_number = "6504320556"
-    recipientInformation.date_of_birth = "19801009"
-    recipientInformation.country = "US"
-    request.recipient_information = recipientInformation
+    recipient_information = CyberSource::Ptsv2payoutsRecipientInformation.new
+    recipient_information.first_name = "John"
+    recipient_information.last_name = "Doe"
+    recipient_information.address1 = "Paseo Padre Boulevard"
+    recipient_information.locality = "Foster City"
+    recipient_information.administrative_area = "CA"
+    recipient_information.postal_code = "94400"
+    recipient_information.phone_number = "6504320556"
+    recipient_information.date_of_birth = "19801009"
+    recipient_information.country = "US"
+    request.recipient_information = recipient_information
 
-    data, status_code, headers = apiInstance.oct_create_payment(request)
+    data, status_code, headers = api_instance.oct_create_payment(request)
     puts data, status_code, headers
   rescue StandardError => err
     puts err.message

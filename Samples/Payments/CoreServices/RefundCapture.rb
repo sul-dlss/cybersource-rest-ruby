@@ -1,5 +1,6 @@
-require 'cyberSource_client'
+require 'cybersource_rest_client'
 require_relative 'CapturePayment.rb'
+require_relative '../../../Data/Configuration.rb'
 
 # * This is a sample code to call RefundApi,
 # * Refund a capture
@@ -8,23 +9,26 @@ require_relative 'CapturePayment.rb'
 public
 class RefundCapture
   def main
+    config = MerchantConfiguration.new.merchantConfigProp()
     request = CyberSource::RefundCaptureRequest.new
-    apiClient = CyberSource::ApiClient.new
-    apiInstance = CyberSource::RefundApi.new(apiClient)
+    api_client = CyberSource::ApiClient.new
+    api_instance = CyberSource::RefundApi.new(api_client, config)
 
     # Calling Capturepayment Sample code 
     response = CapturePayment.new.main
+    resp = JSON.parse(response)
+    id = resp['id']
     
-    clientReferenceInformation = CyberSource::V2paymentsClientReferenceInformation.new
-    clientReferenceInformation.code = "test_refund_capture"
-    request.client_reference_information = clientReferenceInformation
-    orderInformation = CyberSource::V2paymentsOrderInformation.new
-    amountDetails = CyberSource::V2paymentsOrderInformationAmountDetails.new
-    amountDetails.total_amount = "102.21"
-    amountDetails.currency ="USD"
-    orderInformation.amount_details = amountDetails
-    request.order_information = orderInformation
-    data, status_code, headers = apiInstance.refund_capture(request, response.id)
+    client_reference_information = CyberSource::Ptsv2paymentsClientReferenceInformation.new
+    client_reference_information.code = "test_refund_capture"
+    request.client_reference_information = client_reference_information
+    order_information = CyberSource::Ptsv2paymentsOrderInformation.new
+    amount_details = CyberSource::Ptsv2paymentsOrderInformationAmountDetails.new
+    amount_details.total_amount = "102.21"
+    amount_details.currency ="USD"
+    order_information.amount_details = amount_details
+    request.order_information = order_information
+    data, status_code, headers = api_instance.refund_capture(request, id)
     puts data, status_code, headers
   rescue StandardError => err
     puts err.message

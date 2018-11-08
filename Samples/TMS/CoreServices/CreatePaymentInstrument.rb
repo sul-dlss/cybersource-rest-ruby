@@ -1,4 +1,5 @@
-require 'cyberSource_client'
+require 'cybersource_rest_client'
+require_relative '../../../Data/Configuration.rb'
 
 # * This is a sample code to call PaymentInstrumentApi,
 # * Process an Payment Instrument
@@ -7,19 +8,20 @@ require 'cyberSource_client'
 public
 class CreatePaymentIdentifier
   def main
+      config = MerchantConfiguration.new.merchantConfigProp()
         profile_id = '93B32398-AD51-4CC2-A682-EA3E93614EB1'
 
         body = CyberSource::Body2.new
         api_client = CyberSource::ApiClient.new
-        api_instance = CyberSource::PaymentInstrumentApi.new(api_client)
+        api_instance = CyberSource::PaymentInstrumentsApi.new(api_client, config)
 
-        card = CyberSource::PaymentinstrumentsCard.new
+        card = CyberSource::Tmsv1paymentinstrumentsCard.new
         card.expiration_month = "09"
         card.expiration_year = "2022"
         card.type = "visa"
         body.card = card
 
-        bill_to = CyberSource::PaymentinstrumentsBillTo.new
+        bill_to = CyberSource::Tmsv1paymentinstrumentsBillTo.new
         bill_to.first_name = "John"
         bill_to.last_name = "Deo"
         bill_to.company = "CyberSource"
@@ -33,14 +35,14 @@ class CreatePaymentIdentifier
         bill_to.phone_number = "555123456"
         body.bill_to = bill_to
         
-        instrument_identifier_card = CyberSource::InstrumentidentifiersCard.new
+        instrument_identifier_card = CyberSource::Tmsv1instrumentidentifiersCard.new
         instrument_identifier_card.number = "4111111111111111"
 
-        instrument_identifier = CyberSource::PaymentinstrumentsInstrumentIdentifier.new
+        instrument_identifier = CyberSource::Tmsv1paymentinstrumentsInstrumentIdentifier.new
         instrument_identifier.card = instrument_identifier_card
         body.instrument_identifier = instrument_identifier
 
-        data, status_code, headers = api_instance.paymentinstruments_post(profile_id, body)
+        data, status_code, headers = api_instance.tms_v1_paymentinstruments_post(profile_id, body)
         puts data, status_code, headers
         data
     rescue StandardError => err

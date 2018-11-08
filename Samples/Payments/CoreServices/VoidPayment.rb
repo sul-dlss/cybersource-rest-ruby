@@ -1,5 +1,6 @@
-require 'cyberSource_client'
+require 'cybersource_rest_client'
 require_relative 'ProcessPayment.rb'
+require_relative '../../../Data/Configuration.rb'
 
 # * This is a sample code to call VoidApi,
 # * Void a Payment
@@ -8,19 +9,22 @@ require_relative 'ProcessPayment.rb'
 public
 class VoidPayment
   def main
+    config = MerchantConfiguration.new.merchantConfigProp()
     request = CyberSource::VoidPaymentRequest.new
-    apiClient = CyberSource::ApiClient.new
-    apiInstance = CyberSource::VoidApi.new(apiClient)
+    api_client = CyberSource::ApiClient.new
+    api_instance = CyberSource::VoidApi.new(api_client, config)
 
     # Calling CreatePayment Sample code 
     capture_flag = true
     response = CreatePayment.new.main(capture_flag)
+    resp = JSON.parse(response)
+    id = resp['id']
 
-    clientReferenceInformation = CyberSource::V2paymentsClientReferenceInformation.new
-    clientReferenceInformation.code = "test_payment_void"
-    request.client_reference_information = clientReferenceInformation
+    client_reference_information = CyberSource::Ptsv2paymentsClientReferenceInformation.new
+    client_reference_information.code = "test_payment_void"
+    request.client_reference_information = client_reference_information
 
-    data, status_code, headers = apiInstance.void_payment(request, response.id)
+    data, status_code, headers = api_instance.void_payment(request, id)
     puts data, status_code, headers
   rescue StandardError => err
     puts err.message
