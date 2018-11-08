@@ -1,5 +1,6 @@
-require 'cyberSource_client'
+require 'cybersource_rest_client'
 require_relative './ProcessPayment.rb'
+require_relative '../../../Data/Configuration.rb'
 
 # * This is a sample code to call ReversalApi,
 # * Process an Authorization Reversal
@@ -8,28 +9,31 @@ require_relative './ProcessPayment.rb'
 public
 class AuthReversal
   def main
+    config = MerchantConfiguration.new.merchantConfigProp()
     request = CyberSource::AuthReversalRequest.new
-    apiClient = CyberSource::ApiClient.new
-    apiInstance = CyberSource::ReversalApi.new(apiClient)
+    api_client = CyberSource::ApiClient.new
+    api_instance = CyberSource::ReversalApi.new(api_client, config)
 
     # Calling ProcessPayment Sample code 
     capture_flag = false
     response = CreatePayment.new.main(capture_flag)
+    resp = JSON.parse(response)
+    id = resp['id']
 
-    clientReferenceInformation = CyberSource::V2paymentsClientReferenceInformation.new
-    clientReferenceInformation.code = "test_reversal"
-    request.client_reference_information = clientReferenceInformation
+    client_reference_information = CyberSource::Ptsv2paymentsClientReferenceInformation.new
+    client_reference_information.code = "test_reversal"
+    request.client_reference_information = client_reference_information
 
-    reversalInformation = CyberSource::V2paymentsidreversalsReversalInformation.new
-    reversalInformation.reason = "testing"
+    reversal_information = CyberSource::Ptsv2paymentsidreversalsReversalInformation.new
+    reversal_information.reason = "testing"
 
-    amountDetails = CyberSource::V2paymentsidreversalsReversalInformationAmountDetails.new
-    amountDetails.total_amount = "102.21"
+    amount_details = CyberSource::Ptsv2paymentsidreversalsReversalInformationAmountDetails.new
+    amount_details.total_amount = "102.21"
 
-    reversalInformation.amount_details = amountDetails
-    request.reversal_information = reversalInformation
+    reversal_information.amount_details = amount_details
+    request.reversal_information = reversal_information
     
-    data, status_code, headers = apiInstance.auth_reversal(response.id, request)
+    data, status_code, headers = api_instance.auth_reversal(id, request)
     puts data, status_code, headers
   rescue StandardError => err
     puts err.message

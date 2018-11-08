@@ -8,7 +8,7 @@ class MerchantConfiguration
     logDirectory='../log'
     jsonFilePath='resource/request.json'
     logSize=10485760
-    enableLog=false
+    enableLog=true
     proxyAddress='userproxy.visa.com'
     proxyPort=443
     # HTTP Parameters

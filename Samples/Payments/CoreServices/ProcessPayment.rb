@@ -1,4 +1,5 @@
-require 'cyberSource_client'
+require 'cybersource_rest_client'
+require_relative '../../../Data/Configuration.rb'
 
 # * This is a sample code to call PaymentApi,
 # * for Core Services - Process Payment
@@ -7,72 +8,70 @@ require 'cyberSource_client'
 public
 class CreatePayment
   def main(capture_flag)
+    config = MerchantConfiguration.new.merchantConfigProp()
     request = CyberSource::CreatePaymentRequest.new
-    apiClient = CyberSource::ApiClient.new
-    apiInstance = CyberSource::PaymentApi.new(apiClient)
-
-    clientReferenceInformation = CyberSource::V2paymentsClientReferenceInformation.new
-    clientReferenceInformation.code = "test_payment"
-    request.client_reference_information = clientReferenceInformation
-    
-    processingInformation = CyberSource::V2paymentsProcessingInformation.new
-    processingInformation.commerce_indicator = "internet"
+    api_client = CyberSource::ApiClient.new
+    api_instance = CyberSource::PaymentsApi.new(api_client, config)
+    client_reference_information = CyberSource::Ptsv2paymentsClientReferenceInformation.new
+    client_reference_information.code = "test_payment"
+    request.client_reference_information = client_reference_information
+    processing_information = CyberSource::Ptsv2paymentsProcessingInformation.new
+    processing_information.commerce_indicator = "internet"
     if capture_flag
-      processingInformation.capture = true
+      processing_information.capture = true
     end
-    request.processing_information = processingInformation
-   
-    aggregatorInformation = CyberSource::V2paymentsAggregatorInformation.new
-    submerchantinformation = CyberSource::V2paymentsAggregatorInformationSubMerchant.new
-    submerchantinformation.card_acceptor_id = "1234567890"
-    submerchantinformation.country = "US"
-    submerchantinformation.phone_number = "4158880000"
-    submerchantinformation.address1 = "1 Market St"
-    submerchantinformation.postal_code = "94105"
-    submerchantinformation.locality = "san francisco"
-    submerchantinformation.name = "Visa Inc"
-    submerchantinformation.administrative_area = "CA"
-    submerchantinformation.region = "PEN"
-    submerchantinformation.email = "test@cybs.com"
-    aggregatorInformation.sub_merchant = submerchantinformation
-    aggregatorInformation.name = "V-Internatio"
-    aggregatorInformation.aggregator_id = "123456789"
-    request.aggregator_information = aggregatorInformation
+    request.processing_information = processing_information
+    aggregator_information = CyberSource::Ptsv2paymentsAggregatorInformation.new
+    sub_merchant_information = CyberSource::Ptsv2paymentsAggregatorInformationSubMerchant.new
+    sub_merchant_information.card_acceptor_id = "1234567890"
+    sub_merchant_information.country = "US"
+    sub_merchant_information.phone_number = "4158880000"
+    sub_merchant_information.address1 = "1 Market St"
+    sub_merchant_information.postal_code = "94105"
+    sub_merchant_information.locality = "san francisco"
+    sub_merchant_information.name = "Visa Inc"
+    sub_merchant_information.administrative_area = "CA"
+    sub_merchant_information.region = "PEN"
+    sub_merchant_information.email = "test@cybs.com"
+    aggregator_information.sub_merchant = sub_merchant_information
+    aggregator_information.name = "V-Internatio"
+    aggregator_information.aggregator_id = "123456789"
+    request.aggregator_information = aggregator_information
     
-    orderInformation = CyberSource::V2paymentsOrderInformation.new
-    billtoInformation = CyberSource::V2paymentsOrderInformationBillTo.new
-    billtoInformation.country = "US"
-    billtoInformation.last_name = "Deo"
-    billtoInformation.address2 = "Address 2"
-    billtoInformation.address1 = "1 Market St"
-    billtoInformation.postal_code = "94105"
-    billtoInformation.locality = "san francisco"
-    billtoInformation.administrative_area = "CA"
-    billtoInformation.first_name = "John"
-    billtoInformation.phone_number = "4158880000"
-    billtoInformation.district = "MI"
-    billtoInformation.building_number = "123"
-    billtoInformation.company = "Visa"
-    billtoInformation.email = "test@cybs.com"
-    orderInformation.bill_to = billtoInformation
-    request.order_information = orderInformation
+    order_information = CyberSource::Ptsv2paymentsOrderInformation.new
+    bill_to_information = CyberSource::Ptsv2paymentsOrderInformationBillTo.new
+    bill_to_information.country = "US"
+    bill_to_information.last_name = "Deo"
+    bill_to_information.address2 = "Address 2"
+    bill_to_information.address1 = "1 Market St"
+    bill_to_information.postal_code = "94105"
+    bill_to_information.locality = "san francisco"
+    bill_to_information.administrative_area = "CA"
+    bill_to_information.first_name = "John"
+    bill_to_information.phone_number = "4158880000"
+    bill_to_information.district = "MI"
+    bill_to_information.building_number = "123"
+    bill_to_information.company = "Visa"
+    bill_to_information.email = "test@cybs.com"
+    order_information.bill_to = bill_to_information
+    request.order_information = order_information
 
-    amountInformation = CyberSource::V2paymentsOrderInformationAmountDetails.new
-    amountInformation.total_amount = "102.21"
-    amountInformation.currency = "USD"
-    orderInformation.amount_details = amountInformation
-    request.order_information = orderInformation
+    amount_information = CyberSource::Ptsv2paymentsOrderInformationAmountDetails.new
+    amount_information.total_amount = "102.21"
+    amount_information.currency = "USD"
+    order_information.amount_details = amount_information
+    request.order_information = order_information
 
-    paymentInformation = CyberSource::V2paymentsPaymentInformation.new
-    cardInformation =CyberSource::V2paymentsPaymentInformationCard.new
-    cardInformation.expiration_year = "2031"
-    cardInformation.number = "5555555555554444"
-    cardInformation.security_code = "123"
-    cardInformation.expiration_month = "12"
-    cardInformation.type = "002"
-    paymentInformation.card = cardInformation
-    request.payment_information = paymentInformation
-    data, status_code, headers = apiInstance.create_payment(request)
+    payment_information = CyberSource::Ptsv2paymentsPaymentInformation.new
+    card_information =CyberSource::Ptsv2paymentsPaymentInformationCard.new
+    card_information.expiration_year = "2031"
+    card_information.number = "5555555555554444"
+    card_information.security_code = "123"
+    card_information.expiration_month = "12"
+    card_information.type = "002"
+    payment_information.card = card_information
+    request.payment_information = payment_information
+    data, status_code, headers = api_instance.create_payment(request)
     puts data, status_code, headers
     data
   rescue StandardError => err

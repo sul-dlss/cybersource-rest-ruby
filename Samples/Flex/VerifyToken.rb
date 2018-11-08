@@ -1,46 +1,41 @@
-require 'openssl'
 public
 class VerifyToken
-    def verify(publicKey, postParam)
-        signedFields = Array.new
-        getSignedFields =  Array.new
-        signedValues = ""
-        signature = ""
-        if postParam.signed_fields.to_s.empty?
-            raise StandardError.new ("Missing required field: signedFields")
-        else
-            signedFields = postParam.signed_fields.split(',')
-        end
-        # Calling CamelCasetoUnderscore to convert Camel case to snake_case
-        signedFields.each do |field|
-            getSignedFields << CamelCasetoUnderscore(field)
-        end
-        # Getting signedValues field from postParam
-        getSignedFields.each do |value|
-            signedValues << ','
-            signedValues << (postParam.instance_variable_get(("@"+value).intern)).to_s
-        end
-        if signedValues.length > 0
-            signedValues.slice!(0)
-        end
-        if postParam.signature.to_s.empty?
-            raise StandardError.new ("Missing required field: signature")
-        else
-            signature = postParam.signature
-        end
-        stringToPem = "-----BEGIN PUBLIC KEY-----\n#{publicKey}\n-----END PUBLIC KEY-----\n"
-        public_key = OpenSSL::PKey::RSA.new(stringToPem)
-        verify = public_key.verify(OpenSSL::Digest::SHA512.new, Base64.decode64(signature), signedValues)
-    rescue StandardError => err 
-        puts err.message
-        puts err.backtrace
+  def verify(public_key, post_param)
+    post_param = JSON.parse(post_param)
+    signed_fields = Array.new
+    get_signed_fields =  Array.new
+    signed_values = ""
+    signature = ""
+    if post_param['signedFields'].to_s.empty?
+      raise StandardError.new("Missing required field: signed_fields")
+    else
+      signed_fields = post_param['signedFields'].split(',')
     end
-    # Converting response field from camelCase to Underscore
-    def CamelCasetoUnderscore(str)
-        str.gsub(/::/, '/').
-        gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
-        gsub(/([a-z\d])([A-Z])/,'\1_\2').
-        tr("-", "_").
-        downcase
+    signed_fields.each do |value|
+      signed_values << ','
+      signed_values << post_param[value].to_s
     end
+    if signed_values.length > 0
+      signed_values.slice!(0)
+    end
+    if post_param['signature'].to_s.empty?
+      raise StandardError.new("Missing required field: signature")
+    else
+      signature = post_param['signature']
+    end
+    string_to_pem = "-----BEGIN PUBLIC KEY-----\n#{public_key}\n-----END PUBLIC KEY-----\n"
+    public_key_to_pem = OpenSSL::PKey::RSA.new(string_to_pem)
+    verify = public_key_to_pem.verify(OpenSSL::Digest::SHA512.new, Base64.decode64(signature), signed_values)
+  rescue StandardError => err 
+    puts err.message
+    puts err.backtrace
+  end
+  # Converting response field from camelCase to Underscore
+  def CamelCasetoUnderscore(str)
+    str.gsub(/::/, '/').
+    gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+    gsub(/([a-z\d])([A-Z])/,'\1_\2').
+    tr("-", "_").
+    downcase
+  end
 end

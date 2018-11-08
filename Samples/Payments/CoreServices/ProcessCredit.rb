@@ -1,4 +1,5 @@
-require 'cyberSource_client'
+require 'cybersource_rest_client'
+require_relative '../../../Data/Configuration.rb'
 
 # * This is a sample code to call CreditApi,
 # * Create an Credit
@@ -7,43 +8,44 @@ require 'cyberSource_client'
 public
 class CreateCredit
   def main
+    config = MerchantConfiguration.new.merchantConfigProp()
     request = CyberSource::CreateCreditRequest.new
-    apiClient = CyberSource::ApiClient.new
-    apiInstance = CyberSource::CreditApi.new(apiClient)
+    api_client = CyberSource::ApiClient.new
+    api_instance = CyberSource::CreditApi.new(api_client, config)
 
-    clientReferenceInformation = CyberSource::V2paymentsClientReferenceInformation.new
-    clientReferenceInformation.code = "test_credit"
-    request.client_reference_information = clientReferenceInformation
+    client_reference_information = CyberSource::Ptsv2paymentsClientReferenceInformation.new
+    client_reference_information.code = "test_credit"
+    request.client_reference_information = client_reference_information
     
-    orderInformation = CyberSource::V2paymentsOrderInformation.new
-    billtoInformation = CyberSource::V2paymentsOrderInformationBillTo.new
-    billtoInformation.country = "US"
-    billtoInformation.last_name = "Deo"
-    billtoInformation.address1 = "1 Market St"
-    billtoInformation.postal_code = "94105"
-    billtoInformation.locality = "san francisco"
-    billtoInformation.administrative_area = "CA"
-    billtoInformation.first_name = "John"
-    billtoInformation.phone_number = "4158880000"
-    billtoInformation.email = "test@cybs.com"
-    orderInformation.bill_to = billtoInformation
-    request.order_information = orderInformation
+    order_information = CyberSource::Ptsv2paymentsOrderInformation.new
+    bill_to_information = CyberSource::Ptsv2paymentsOrderInformationBillTo.new
+    bill_to_information.country = "US"
+    bill_to_information.last_name = "Deo"
+    bill_to_information.address1 = "1 Market St"
+    bill_to_information.postal_code = "94105"
+    bill_to_information.locality = "san francisco"
+    bill_to_information.administrative_area = "CA"
+    bill_to_information.first_name = "John"
+    bill_to_information.phone_number = "4158880000"
+    bill_to_information.email = "test@cybs.com"
+    order_information.bill_to = bill_to_information
+    request.order_information = order_information
 
-    amountInformation = CyberSource::V2paymentsOrderInformationAmountDetails.new
-    amountInformation.total_amount = "102.21"
-    amountInformation.currency = "USD"
-    orderInformation.amount_details = amountInformation
-    request.order_information = orderInformation
+    amount_information = CyberSource::Ptsv2paymentsOrderInformationAmountDetails.new
+    amount_information.total_amount = "102.21"
+    amount_information.currency = "USD"
+    order_information.amount_details = amount_information
+    request.order_information = order_information
 
-    paymentInformation = CyberSource::V2paymentsPaymentInformation.new
-    cardInformation =CyberSource::V2paymentsPaymentInformationCard.new
-    cardInformation.expiration_year = "2031"
-    cardInformation.number = "5555555555554444"
-    cardInformation.expiration_month = "12"
-    cardInformation.type = "002"
-    paymentInformation.card = cardInformation
-    request.payment_information = paymentInformation
-    data, status_code, headers = apiInstance.create_credit(request)
+    payment_information = CyberSource::Ptsv2paymentsPaymentInformation.new
+    card_information =CyberSource::Ptsv2paymentsPaymentInformationCard.new
+    card_information.expiration_year = "2031"
+    card_information.number = "5555555555554444"
+    card_information.expiration_month = "12"
+    card_information.type = "002"
+    payment_information.card = card_information
+    request.payment_information = payment_information
+    data, status_code, headers = api_instance.create_credit(request)
     puts data, status_code, headers
     data
   rescue StandardError => err
