@@ -20,9 +20,9 @@ You can run each sample directly from the command line.
 ```
     $ git clone https://github.com/CyberSource/cybersource-rest-samples-ruby
 ```
-* Install the cybersource-rest-client-ruby
+* Install the cybersource-rest-client-ruby (via bundler)
 ```
-    $ gem install cybersource_rest_client
+    $ bundle install
 ```
 * Run the individual samples by name. For example: 
 ```
