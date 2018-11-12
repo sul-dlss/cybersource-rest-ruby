@@ -1,16 +1,14 @@
 # Ruby Sample Code for the CyberSource SDK
 This repository contains working code samples which demonstrate Ruby integration with the CyberSource REST APIs through the CyberSource Ruby SDK.
 
-**__NOTE: THIS REPO OF CODE SAMPLES HAS BEEN MADE PUBLIC FOR SDK TESTING AND SHOULD NOT BE USED FOR PRODUCTION - YET.  PLEASE RAISE AN ISSUE ON THIS REPO IF YOU HAVE FURTHER QUESTIONS AND CHECK BACK SOON FOR GENERAL AVAILABILITY__**
 
-The samples are organized into categories and common usage examples.
 
 
 ## Using the Sample Code
 
-The samples are all completely independent and self-contained. You can analyze them to get an understanding of how a particular method works, or you can use the snippets as a starting point for your own project.
+The samples are all completely independent and self-contained. You can analyze them to get an understanding of how a particular method works, or you can use the snippets as a starting point for your own project.  The samples are organized into categories and common usage examples.
 
-You can also run each sample directly from the command line.
+You can run each sample directly from the command line.
 
 ## Requirements
 * Ruby 2.2.2 or higher
@@ -28,42 +26,34 @@ You can also run each sample directly from the command line.
 ```
 * Run the individual samples by name. For example: 
 ```
-    $ Ruby [DirectoryPath]\[CodeSampleName]
+    $ Ruby [DirectoryPath]/[CodeSampleName]
 ```
 e.g.
 ```
     $ ruby Samples/Payments/CoreServices/ProcessPayment.rb
 ```
 
-#### To set your own API credentials for an API request, configure the following information in resource/cybs.yml file:
+## Setting your own API credentials for an API request
+
+Configure the following information in resource/cybs.yml file:
   
-  * Http
+  * Http Signature 
 
 ```
    authenticationType  = http_Signature
    merchantID 	       = <merchantID>
-   runEnvironment      = "CyberSource.Environment.SANDBOX"
    merchantKeyId       = <merchantKeyId>
    merchantsecretKey   = <merchantsecretKey>
-   enableLog           = true
-   logDirectory        = <logDirectory>
-   logMaximumSize      = <size>
-   logFilename         = <logFilename>
 ```
   * Jwt
 
 ```
    authenticationType  = Jwt
    merchantID 	       = <merchantID>
-   runEnvironment      = CyberSource.Environment.SANDBOX
    keyAlias		       = <keyAlias>
    keyPassword	       = <keyPass>
    keyFileName         = <keyFileName>
    keysDirectory       = <keysDirectory>
-   enableLog           = true
-   logDirectory        = <logDirectory>
-   logMaximumSize      = <size>
-   logFilename         = <logFilename>
 ```
 
 ### Switching between the sandbox environment and the production environment
