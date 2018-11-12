@@ -12,8 +12,8 @@ class MerchantConfiguration
     proxyAddress='userproxy.visa.com'
     proxyPort=443
     # HTTP Parameters
-    merchantSecretKey='yBJxy6LjM2TmcPGu+GaJrHtkke25fPpUX+UY6/L/1tE='
     merchantKeyId='08c94330-f618-42a3-b09d-e1e43be5efda'
+    merchantSecretKey='yBJxy6LjM2TmcPGu+GaJrHtkke25fPpUX+UY6/L/1tE='
     # JWT Parameters
     keysDirectory='resource'
     keyAlias='testrest'

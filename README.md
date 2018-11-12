@@ -1,16 +1,14 @@
 # Ruby Sample Code for the CyberSource SDK
-This repository contains working code samples which demonstrate Ruby integration with the CyberSource REST APIs through the CyberSource Ruby SDK.
+This repository contains working code samples which demonstrate Ruby integration with the CyberSource REST APIs through the [CyberSource Ruby SDK] (https://github.com/CyberSource/cybersource-rest-client-ruby).
 
-**__NOTE: THIS REPO OF CODE SAMPLES HAS BEEN MADE PUBLIC FOR SDK TESTING AND SHOULD NOT BE USED FOR PRODUCTION - YET.  PLEASE RAISE AN ISSUE ON THIS REPO IF YOU HAVE FURTHER QUESTIONS AND CHECK BACK SOON FOR GENERAL AVAILABILITY__**
 
-The samples are organized into categories and common usage examples.
 
 
 ## Using the Sample Code
 
-The samples are all completely independent and self-contained. You can analyze them to get an understanding of how a particular method works, or you can use the snippets as a starting point for your own project.
+The samples are all completely independent and self-contained. You can analyze them to get an understanding of how a particular method works, or you can use the snippets as a starting point for your own project.  The samples are organized into categories and common usage examples, similar to the [CyberSource API Reference](http://developer.cybersource.com/api/reference).
 
-You can also run each sample directly from the command line.
+You can run each sample directly from the command line.
 
 ## Requirements
 * Ruby 2.2.2 or higher
@@ -28,64 +26,49 @@ You can also run each sample directly from the command line.
 ```
 * Run the individual samples by name. For example: 
 ```
-    $ Ruby [DirectoryPath]\[CodeSampleName]
+    $ Ruby [DirectoryPath]/[CodeSampleName]
 ```
 e.g.
 ```
     $ ruby Samples/Payments/CoreServices/ProcessPayment.rb
 ```
 
-#### To set your own API credentials for an API request, configure the following information in resource/cybs.yml file:
-  
-  * Http
+## Setting your own API credentials for an API request
 
-```
-   authenticationType  = http_Signature
-   merchantID 	       = <merchantID>
-   runEnvironment      = "CyberSource.Environment.SANDBOX"
-   merchantKeyId       = <merchantKeyId>
-   merchantsecretKey   = <merchantsecretKey>
-   enableLog           = true
-   logDirectory        = <logDirectory>
-   logMaximumSize      = <size>
-   logFilename         = <logFilename>
+Configure the following information in the data/Configuration.rb file:
+  
+  * Http Signature 
+
+```ruby
+    merchantId='your_merchant_id'
+    authenticationType='http_signature'   
+    # HTTP Parameters
+    merchantKeyId='your_key_serial_number'
+    merchantSecretKey='your_key_shared_secret'
 ```
   * Jwt
 
-```
-   authenticationType  = Jwt
-   merchantID 	       = <merchantID>
-   runEnvironment      = CyberSource.Environment.SANDBOX
-   keyAlias		       = <keyAlias>
-   keyPassword	       = <keyPass>
-   keyFileName         = <keyFileName>
-   keysDirectory       = <keysDirectory>
-   enableLog           = true
-   logDirectory        = <logDirectory>
-   logMaximumSize      = <size>
-   logFilename         = <logFilename>
+```ruby
+    merchantId='your_merchant_id'
+    # JWT Parameters
+    keysDirectory='resource'
+    keyAlias='your_merchant_id'
+    keyPass='your_merchant_id'
+    keyFilename='your_merchant_id'
 ```
 
-### Switching between the sandbox environment and the production environment
+## Switching between the sandbox environment and the production environment
 CyberSource maintains a complete sandbox environment for testing and development purposes. This sandbox environment is an exact 
 duplicate of our production environment with the transaction authorization and settlement process simulated. By default, this sample code is 
 configured to communicate with the sandbox environment. To switch to the production environment, set the appropriate environment 
-constant in cybs.yml file.  For example:
+constant in data/Configuration.rb file.  For example:
 
 ```Ruby
-// For PRODUCTION use
-  runEnvironment      = "CyberSource.Environment.PRODUCTION"
+# For TESTING use
+runEnvironment='cybersource.environment.sandbox'
+# For PRODUCTION use
+# runEnvironment='cybersource.environment.production'
 ```
-### Configure the following information in cybs.yml file
-*	Authentication Type:  Merchant should enter “HTTP_Signature” for HTTP authentication mechanism or “JWT” for JWT authentication mechanism.
-*	Merchant ID: Merchant will provide the merchant ID, which has taken from EBC portal.
-*	MerchantSecretKey: Merchant will provide the secret Key value, which has taken from EBC portal.
-*	MerchantKeyId:  Merchant will provide the Key ID value, which has taken from EBC portal.
-*	keyAlias: Alias of the Merchant ID, to be used while generating the JWT token.
-*	keyPassword: Alias of the Merchant password, to be used while generating the JWT token.
-*	keyfilepath: Path of the folder where the .P12 file is placed. This file has generated from the EBC portal.
-*	Enable Log: To start the log entry provide true else enter false.
-*	LogDirectory: If log is enabled and valid log directory is provided, log files will get created here. Otherwise log files will be created in default location inside project base directory.
 
 ## API Reference
 
