@@ -35,47 +35,40 @@ e.g.
 
 ## Setting your own API credentials for an API request
 
-Configure the following information in resource/cybs.yml file:
+Configure the following information in the data/Configuration.rb file:
   
   * Http Signature 
 
-```
-   authenticationType  = http_Signature
-   merchantID 	       = <merchantID>
-   merchantKeyId       = <merchantKeyId>
-   merchantsecretKey   = <merchantsecretKey>
+```ruby
+    merchantId='your_merchant_id'
+    authenticationType='http_signature'   
+    # HTTP Parameters
+    merchantKeyId='your_key_serial_number'
+    merchantSecretKey='your_key_shared_secret'
 ```
   * Jwt
 
-```
-   authenticationType  = Jwt
-   merchantID 	       = <merchantID>
-   keyAlias		       = <keyAlias>
-   keyPassword	       = <keyPass>
-   keyFileName         = <keyFileName>
-   keysDirectory       = <keysDirectory>
+```ruby
+    merchantId='your_merchant_id'
+    # JWT Parameters
+    keysDirectory='resource'
+    keyAlias='your_merchant_id'
+    keyPass='your_merchant_id'
+    keyFilename='your_merchant_id'
 ```
 
-### Switching between the sandbox environment and the production environment
+## Switching between the sandbox environment and the production environment
 CyberSource maintains a complete sandbox environment for testing and development purposes. This sandbox environment is an exact 
 duplicate of our production environment with the transaction authorization and settlement process simulated. By default, this sample code is 
 configured to communicate with the sandbox environment. To switch to the production environment, set the appropriate environment 
-constant in cybs.yml file.  For example:
+constant in data/Configuration.rb file.  For example:
 
 ```Ruby
-// For PRODUCTION use
-  runEnvironment      = "CyberSource.Environment.PRODUCTION"
+# For TESTING use
+runEnvironment='cybersource.environment.sandbox'
+# For PRODUCTION use
+# runEnvironment='cybersource.environment.production'
 ```
-### Configure the following information in cybs.yml file
-*	Authentication Type:  Merchant should enter “HTTP_Signature” for HTTP authentication mechanism or “JWT” for JWT authentication mechanism.
-*	Merchant ID: Merchant will provide the merchant ID, which has taken from EBC portal.
-*	MerchantSecretKey: Merchant will provide the secret Key value, which has taken from EBC portal.
-*	MerchantKeyId:  Merchant will provide the Key ID value, which has taken from EBC portal.
-*	keyAlias: Alias of the Merchant ID, to be used while generating the JWT token.
-*	keyPassword: Alias of the Merchant password, to be used while generating the JWT token.
-*	keyfilepath: Path of the folder where the .P12 file is placed. This file has generated from the EBC portal.
-*	Enable Log: To start the log entry provide true else enter false.
-*	LogDirectory: If log is enabled and valid log directory is provided, log files will get created here. Otherwise log files will be created in default location inside project base directory.
 
 ## API Reference
 
