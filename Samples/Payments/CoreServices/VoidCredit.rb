@@ -28,5 +28,7 @@ class VoidCredit
   rescue StandardError => err
     puts err.message
   end
-  VoidCredit.new.main
+  if __FILE__ == $0
+    VoidCredit.new.main
+  end
 end

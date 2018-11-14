@@ -48,5 +48,7 @@ class CreatePaymentIdentifier
     rescue StandardError => err
       puts err.message
     end
-    CreatePaymentIdentifier.new.main
+    if __FILE__ == $0
+      CreatePaymentIdentifier.new.main
+    end
 end

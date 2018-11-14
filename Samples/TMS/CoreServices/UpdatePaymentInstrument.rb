@@ -52,5 +52,7 @@ class UpdatePaymentIdentifier
   rescue StandardError => err
     puts err.message
   end
-  UpdatePaymentIdentifier.new.main
+  if __FILE__ == $0
+    UpdatePaymentIdentifier.new.main
+  end
 end

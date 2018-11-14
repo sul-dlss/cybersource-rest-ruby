@@ -27,5 +27,7 @@ class VoidCapture
   rescue StandardError => err
     puts err.message
   end
-  VoidCapture.new.main
+  if __FILE__ == $0
+    VoidCapture.new.main
+  end
 end

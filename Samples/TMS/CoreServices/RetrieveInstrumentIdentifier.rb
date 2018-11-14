@@ -26,5 +26,7 @@ class RetrieveInstrumentIdentifier
     puts err.message
     puts err.backtrace
   end
-  RetrieveInstrumentIdentifier.new.main
+  if __FILE__ == $0
+    RetrieveInstrumentIdentifier.new.main
+  end
 end

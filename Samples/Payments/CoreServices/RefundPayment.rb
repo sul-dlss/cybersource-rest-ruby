@@ -36,5 +36,7 @@ class RefundPayment
   rescue StandardError => err
     puts err.message
   end
-  RefundPayment.new.main
+  if __FILE__ == $0
+    RefundPayment.new.main
+  end
 end

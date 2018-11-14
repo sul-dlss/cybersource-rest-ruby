@@ -26,5 +26,7 @@ class PaymentInstrumentIdentifier
     puts err.message
     puts err.backtrace
   end
-  PaymentInstrumentIdentifier.new.main
+  if __FILE__ == $0
+    PaymentInstrumentIdentifier.new.main
+  end
 end

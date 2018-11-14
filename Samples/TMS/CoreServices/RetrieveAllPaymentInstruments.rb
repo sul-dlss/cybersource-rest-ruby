@@ -25,5 +25,7 @@ class RetrieveAllPaymentIdentifierFromInstrument
     puts err.message
     puts err.backtrace
   end
-  RetrieveAllPaymentIdentifierFromInstrument.new.main
+  if __FILE__ == $0
+    RetrieveAllPaymentIdentifierFromInstrument.new.main
+  end
 end

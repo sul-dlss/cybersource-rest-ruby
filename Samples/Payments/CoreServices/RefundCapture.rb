@@ -33,5 +33,7 @@ class RefundCapture
   rescue StandardError => err
     puts err.message
   end
-  RefundCapture.new.main
+  if __FILE__ == $0
+    RefundCapture.new.main
+  end
 end

@@ -42,5 +42,7 @@ class CreateInstrumentIdentifier
   rescue StandardError => err
     puts err.message
   end
-  CreateInstrumentIdentifier.new.main
+  if __FILE__ == $0
+    CreateInstrumentIdentifier.new.main
+  end
 end
