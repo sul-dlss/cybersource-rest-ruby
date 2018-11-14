@@ -29,5 +29,7 @@ class VoidRefund
   rescue StandardError => err
     puts err.message
   end
-  VoidRefund.new.main
+  if __FILE__ == $0
+    VoidRefund.new.main
+  end
 end

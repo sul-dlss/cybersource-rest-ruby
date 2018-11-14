@@ -51,5 +51,7 @@ class CreateCredit
   rescue StandardError => err
     puts err.message
   end
-  CreateCredit.new.main
+  if __FILE__ == $0
+    CreateCredit.new.main
+  end
 end

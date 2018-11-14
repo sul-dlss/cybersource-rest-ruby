@@ -37,5 +37,7 @@ class CapturePayment
   rescue StandardError => err
     puts err.message
   end
-  CapturePayment.new.main
+  if __FILE__ == $0
+    CapturePayment.new.main
+  end
 end

@@ -38,5 +38,7 @@ class AuthReversal
   rescue StandardError => err
     puts err.message
   end
-  AuthReversal.new.main
+  if __FILE__ == $0
+    AuthReversal.new.main
+  end
 end

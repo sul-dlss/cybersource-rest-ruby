@@ -5,6 +5,7 @@ require 'csv'
 public
 class DownloadReport
   def main()
+    file_path = "..\\cybersource-rest-samples-ruby\\resource\\report_download.csv"
     config = MerchantConfiguration.new.merchantConfigProp()
     reportDate = "2018-09-02"
     reportName = "testrest_v2"
@@ -16,12 +17,12 @@ class DownloadReport
     data, status_code, headers = api_instance.download_report(reportDate, reportName, opts)
     puts data, status_code, headers
     # Writing Response to CSV file
-    CSV.open("..\\cybersource-rest-samples-ruby\\resource\\report_download.csv","a+") do |writeToCSV|
+    CSV.open(file_path,"a+") do |writeToCSV|
       if data != nil
         writeToCSV << [ data.to_s ]
       end
     end
-
+    puts "File downloaded at the below location:\n" + File.expand_path(file_path)
   rescue StandardError => err
     puts err.message
     puts err.backtrace

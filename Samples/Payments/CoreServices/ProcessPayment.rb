@@ -77,5 +77,7 @@ class CreatePayment
   rescue StandardError => err
     puts err.message
   end
-  CreatePayment.new.main(false)
+  if __FILE__ == $0
+    CreatePayment.new.main(false)
+  end
 end

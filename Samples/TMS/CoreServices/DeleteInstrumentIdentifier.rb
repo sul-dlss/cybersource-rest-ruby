@@ -25,5 +25,7 @@ class RemoveInstrumentIdentifier
     puts err.message
     puts err.backtrace
   end
-  RemoveInstrumentIdentifier.new.main
+  if __FILE__ == $0
+    RemoveInstrumentIdentifier.new.main
+  end
 end

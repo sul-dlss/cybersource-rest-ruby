@@ -25,5 +25,7 @@ class RemovePaymentIdentifier
     puts err.message
     puts err.backtrace
   end
-  RemovePaymentIdentifier.new.main
+  if __FILE__ == $0
+    RemovePaymentIdentifier.new.main
+  end
 end
