@@ -16,8 +16,7 @@ class CreateAdhocReport
    ]
    request.report_mime_type="application/xml"
    request.timezone = "GMT"
-   request.report_mime_type = "text/csv"
-   request.report_name = "TRR_345"
+   request.report_name = "test adhoc v2 report"
    request.report_start_time = "2018-09-01T12:00:00+05:00"
    request.report_end_time = "2018-09-02T12:00:00+05:00"
    report_pref = {}

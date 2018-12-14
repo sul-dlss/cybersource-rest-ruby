@@ -20,7 +20,8 @@ class NoEncGeneratekey
     data
   rescue StandardError => err
     puts err.message
-    puts err.backtrace
   end
-  NoEncGeneratekey.new.main
+  if __FILE__ == $0
+    NoEncGeneratekey.new.main
+  end
 end

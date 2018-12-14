@@ -21,7 +21,6 @@ class GetPurchaseAndRefundDetails
     puts data, status_code, headers
   rescue StandardError => err
     puts err.message
-    puts err.backtrace
   end
   GetPurchaseAndRefundDetails.new.main
 end

@@ -1,14 +1,16 @@
 public
 class MerchantConfiguration
   def merchantConfigProp()
+    # Common Paramaters
     merchantId='testrest'
     runEnvironment='cybersource.environment.sandbox'
     timeout=1000 #In Milliseconds
     authenticationType='http_signature'   
-    logDirectory='../log'
     jsonFilePath='resource/request.json'
     logSize=10485760
     enableLog=true
+    logDirectory='../log'
+    logFilename='cybs'
     proxyAddress='userproxy.visa.com'
     proxyPort=443
     # HTTP Parameters
@@ -19,7 +21,7 @@ class MerchantConfiguration
     keyAlias='testrest'
     keyPass='testrest'
     keyFilename='testrest'
-    logFilename='cybs'
+    
     configurationDictionary={}
     configurationDictionary['merchantID']=merchantId
     configurationDictionary['runEnvironment']=runEnvironment

@@ -28,11 +28,13 @@ class TokenizeCard
     options = {}
     options[:'tokenize_request'] = request
     data, status_code, headers = api_instance.tokenize(options)
+    puts data, status_code, headers
     verify = VerifyToken.new.verify(public_key, data)
     puts verify
   rescue StandardError => err
     puts err.message
-    puts err.backtrace
   end
-  TokenizeCard.new.main
+  if __FILE__ == $0
+    TokenizeCard.new.main
+  end
 end

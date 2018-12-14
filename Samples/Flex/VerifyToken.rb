@@ -28,7 +28,6 @@ class VerifyToken
     verify = public_key_to_pem.verify(OpenSSL::Digest::SHA512.new, Base64.decode64(signature), signed_values)
   rescue StandardError => err 
     puts err.message
-    puts err.backtrace
   end
   # Converting response field from camelCase to Underscore
   def CamelCasetoUnderscore(str)

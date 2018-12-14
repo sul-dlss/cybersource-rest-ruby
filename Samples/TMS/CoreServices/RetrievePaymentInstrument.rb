@@ -24,7 +24,6 @@ class PaymentInstrumentIdentifier
     data
   rescue StandardError => err
     puts err.message
-    puts err.backtrace
   end
   if __FILE__ == $0
     PaymentInstrumentIdentifier.new.main
