@@ -10,7 +10,7 @@ class MerchantConfiguration
     logSize=10485760
     enableLog=true
     logDirectory='../log'
-    logFilename=''
+    logFilename='cybs'
     # proxyAddress='userproxy.com'
     # proxyPort=443
     # HTTP Parameters
