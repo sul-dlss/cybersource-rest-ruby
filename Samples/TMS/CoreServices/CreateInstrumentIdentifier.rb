@@ -21,7 +21,7 @@ class CreateInstrumentIdentifier
 
     
 
-    instrument_processing_information_merchant_initiator = CyberSource::Ptsv2paymentsProcessingInformationAuthorizationOptionsInitiatorMerchantInitiatedTransaction.new
+    instrument_processing_information_merchant_initiator = CyberSource::Tmsv1instrumentidentifiersProcessingInformationAuthorizationOptionsInitiatorMerchantInitiatedTransaction.new
     instrument_processing_information_merchant_initiator.previous_transaction_id = "123456789012345"
 
     

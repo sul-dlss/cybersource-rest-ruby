@@ -21,7 +21,7 @@ class UpdateInstrumentIdentifier
     resp = JSON.parse(response)
     id = resp['id']
 
-    merchant_initiated_transaction = CyberSource::Ptsv2paymentsProcessingInformationAuthorizationOptionsInitiatorMerchantInitiatedTransaction.new
+    merchant_initiated_transaction = CyberSource::Tmsv1instrumentidentifiersProcessingInformationAuthorizationOptionsInitiatorMerchantInitiatedTransaction.new
     previous_transaction_id = "123456789012345"
     merchant_initiated_transaction.previous_transaction_id = previous_transaction_id
 
