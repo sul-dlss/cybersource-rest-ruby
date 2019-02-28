@@ -1,6 +1,6 @@
 require 'cybersource_rest_client'
 require_relative './RetrievePaymentInstrument.rb'
-require_relative '../../../Data/Configuration.rb'
+require_relative '../../../data/Configuration.rb'
 
 # * This is a sample code to call PaymentInstrumentApi,
 # * Delete an PaymentInstrument
