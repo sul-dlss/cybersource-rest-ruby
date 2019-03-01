@@ -1,6 +1,6 @@
 require 'cybersource_rest_client'
 require_relative './ProcessPayment.rb'
-require_relative '../../../Data/Configuration.rb'
+require_relative '../../../data/Configuration.rb'
  
 # * This is a sample code to call CaptureApi,
 # * capture a Payment
@@ -30,7 +30,6 @@ class CapturePayment
     amount_details.currency ="USD"
     order_information.amount_details = amount_details
     request.order_information = order_information
-    resp = JSON.parse(response)
     data, status_code, headers = api_instance.capture_payment(request, id)
     puts data, status_code, headers
     data

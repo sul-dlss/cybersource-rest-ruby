@@ -1,10 +1,10 @@
 require 'cybersource_rest_client'
-require_relative '../../../Data/Configuration.rb'
+require_relative '../../../data/Configuration.rb'
 
 public
 class GetSearchResults
   def main()
-	  id = "b922f51a-8f5c-491f-bf99-2470490ec887"
+	  id = "ee523a24-dec0-4db6-9efa-375f05b5e161"
     config = MerchantConfiguration.new.merchantConfigProp()
     api_client = CyberSource::ApiClient.new
 

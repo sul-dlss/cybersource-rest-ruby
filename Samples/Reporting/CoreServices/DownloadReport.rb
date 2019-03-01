@@ -1,5 +1,5 @@
 require 'cybersource_rest_client'
-require_relative '../../../Data/Configuration.rb'
+require_relative '../../../data/Configuration.rb'
 require 'csv'
 
 public
@@ -8,7 +8,7 @@ class DownloadReport
     file_path = "..\\cybersource-rest-samples-ruby\\resource\\DownloadReport.xml"
     config = MerchantConfiguration.new.merchantConfigProp()
     reportDate = "2018-09-02"
-    reportName = "test adhoc v2 report"
+    reportName = "adhoc_report_2020"
     api_client = CyberSource::ApiClient.new
     api_instance = CyberSource::ReportDownloadsApi.new(api_client, config)
     opts = {}

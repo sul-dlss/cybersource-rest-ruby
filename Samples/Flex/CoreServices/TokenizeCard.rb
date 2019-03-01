@@ -1,7 +1,7 @@
 require 'cybersource_rest_client'
 require_relative '../VerifyToken.rb'
 require_relative '../KeyGenerationNoEnc.rb'
-require_relative '../../../Data/Configuration.rb'
+require_relative '../../../data/Configuration.rb'
 
 # * This is a sample code to call KeyGenerationApi which will return key and
 # * TokenizationApi Returns a token representing the supplied card details.

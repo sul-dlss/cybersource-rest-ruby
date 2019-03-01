@@ -1,6 +1,6 @@
 require 'cybersource_rest_client'
 require_relative './CreateInstrumentIdentifier.rb'
-require_relative '../../../Data/Configuration.rb'
+require_relative '../../../data/Configuration.rb'
 
 # * This is a sample code to call Retrieve All Payment Identifier From Instrument,
 # * Retrieve an Instrument Identifier
