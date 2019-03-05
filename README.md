@@ -2,8 +2,6 @@
 This repository contains working code samples which demonstrate Ruby integration with the CyberSource REST APIs through the [CyberSource Ruby SDK] (https://github.com/CyberSource/cybersource-rest-client-ruby).
 
 
-
-
 ## Using the Sample Code
 
 The samples are all completely independent and self-contained. You can analyze them to get an understanding of how a particular method works, or you can use the snippets as a starting point for your own project.  The samples are organized into categories and common usage examples, similar to the [CyberSource API Reference](http://developer.cybersource.com/api/reference).
@@ -20,9 +18,9 @@ You can run each sample directly from the command line.
 ```
     $ git clone https://github.com/CyberSource/cybersource-rest-samples-ruby
 ```
-* Install the cybersource-rest-client-ruby (via bundler)
+* Install the cybersource-rest-client-ruby (from RubyGems.org)
 ```
-    $ bundle install
+    $ gem install cybersource_rest_client
 ```
 * Run the individual samples by name. For example: 
 ```
