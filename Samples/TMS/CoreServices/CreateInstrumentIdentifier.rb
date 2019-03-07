@@ -1,5 +1,5 @@
 require 'cybersource_rest_client'
-require_relative '../../../Data/Configuration.rb'
+require_relative '../../../data/Configuration.rb'
 
 # * This is a sample code to call InstrumentIdentifierApi,
 # * Process an Instrument Identifier
@@ -21,7 +21,7 @@ class CreateInstrumentIdentifier
 
     
 
-    instrument_processing_information_merchant_initiator = CyberSource::Tmsv1instrumentidentifiersAuthorizationOptionsMerchantInitiatedTransaction.new
+    instrument_processing_information_merchant_initiator = CyberSource::Tmsv1instrumentidentifiersProcessingInformationAuthorizationOptionsInitiatorMerchantInitiatedTransaction.new
     instrument_processing_information_merchant_initiator.previous_transaction_id = "123456789012345"
 
     

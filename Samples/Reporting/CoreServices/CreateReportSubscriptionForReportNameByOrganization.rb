@@ -1,11 +1,11 @@
 require 'cybersource_rest_client'
-require_relative '../../../Data/Configuration.rb'
+require_relative '../../../data/Configuration.rb'
 
 public
 class CreateReportSubscriptionForReportNameByOrganization
   def main()
     config = MerchantConfiguration.new.merchantConfigProp()
-    request= CyberSource::RequestBody.new
+    request= CyberSource::RequestBody1.new
     api_client = CyberSource::ApiClient.new
     api_instance = CyberSource::ReportSubscriptionsApi.new(api_client, config)
     request.report_definition_name="TransactionRequestClass"
@@ -14,9 +14,9 @@ class CreateReportSubscriptionForReportNameByOrganization
             "Request.TransactionDate",
             "Request.MerchantID"
     ]
-    request.report_mime_type="application/xml"
-    request.report_name = "createsubscription_report"
-    request.report_frequency="WEEKLY"
+    request.report_mime_type="text/csv"
+    request.report_name = "2019test"
+    request.report_frequency="MONTHLY"
     request.timezone="America/Chicago"
     request.start_time="0406"
     request.start_day=1

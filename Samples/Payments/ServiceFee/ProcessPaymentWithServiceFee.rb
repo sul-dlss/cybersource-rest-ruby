@@ -1,12 +1,12 @@
 require 'cybersource_rest_client'
-require_relative '../../../data/Configuration.rb'
+require_relative '../../../Data/Configuration.rb'
 
 # * This is a sample code to call PaymentApi,
 # * for Core Services - Process Payment
 # * createPayment method will create a new payment
 
 public
-class CreatePayment
+class CreatePaymentWithServiceFee
   def main(capture_flag)
     config = MerchantConfiguration.new.merchantConfigProp()
     request = CyberSource::CreatePaymentRequest.new
@@ -57,8 +57,9 @@ class CreatePayment
     request.order_information = order_information
 
     amount_information = CyberSource::Ptsv2paymentsOrderInformationAmountDetails.new
-    amount_information.total_amount = "102.21"
+    amount_information.total_amount = "2325.00"
     amount_information.currency = "USD"
+	amount_information.service_fee_amount = "30"
     order_information.amount_details = amount_information
     request.order_information = order_information
 
@@ -78,6 +79,6 @@ class CreatePayment
     puts err.message
   end
   if __FILE__ == $0
-    CreatePayment.new.main(false)
+    CreatePaymentWithServiceFee.new.main(false)
   end
 end

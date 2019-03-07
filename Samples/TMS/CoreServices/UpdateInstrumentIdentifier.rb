@@ -1,6 +1,6 @@
 require 'cybersource_rest_client'
 require_relative './RetrieveInstrumentIdentifier.rb'
-require_relative '../../../Data/Configuration.rb'
+require_relative '../../../data/Configuration.rb'
 
 # * This is a sample code to call InstrumentIdentifierApi,
 # * Update an Instrument Identifier
@@ -21,7 +21,7 @@ class UpdateInstrumentIdentifier
     resp = JSON.parse(response)
     id = resp['id']
 
-    merchant_initiated_transaction = CyberSource::Tmsv1instrumentidentifiersAuthorizationOptionsMerchantInitiatedTransaction.new
+    merchant_initiated_transaction = CyberSource::Tmsv1instrumentidentifiersProcessingInformationAuthorizationOptionsInitiatorMerchantInitiatedTransaction.new
     previous_transaction_id = "123456789012345"
     merchant_initiated_transaction.previous_transaction_id = previous_transaction_id
 

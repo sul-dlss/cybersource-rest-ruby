@@ -1,12 +1,12 @@
 require 'cybersource_rest_client'
-require_relative '../../../data/Configuration.rb'
+require_relative '../../../Data/Configuration.rb'
 
 # * This is a sample code to call CreditApi,
 # * Create an Credit
 # * CreateCredit method will create a new Credit.
 
 public
-class CreateCredit
+class CreateEcheckCredit
   def main
     config = MerchantConfiguration.new.merchantConfigProp()
     request = CyberSource::CreateCreditRequest.new
@@ -37,14 +37,20 @@ class CreateCredit
     order_information.amount_details = amount_information
     request.order_information = order_information
 
-    payment_information = CyberSource::Ptsv2paymentsPaymentInformation.new
-    card_information =CyberSource::Ptsv2paymentsPaymentInformationCard.new
-    card_information.expiration_year = "2031"
-    card_information.number = "5555555555554444"
-    card_information.expiration_month = "12"
-    card_information.type = "002"
-    payment_information.card = card_information
+    bank_account = CyberSource::Ptsv2paymentsPaymentInformationBankAccount.new
+	bank_account.number = "4100"
+	bank_account.type = "C"
+	bank_account.check_number = "123456"
+	
+	bank = CyberSource::Ptsv2paymentsPaymentInformationBank.new
+	bank.account = bank_account
+	bank.routing_number = "071923284"
+	
+	payment_information = CyberSource::Ptsv2paymentsPaymentInformation.new
+    payment_information.bank = bank
+	
     request.payment_information = payment_information
+	
     data, status_code, headers = api_instance.create_credit(request)
     puts data, status_code, headers
     data
@@ -52,6 +58,6 @@ class CreateCredit
     puts err.message
   end
   if __FILE__ == $0
-    CreateCredit.new.main
+    CreateEcheckCredit.new.main
   end
 end
