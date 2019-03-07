@@ -2,11 +2,7 @@ require 'cybersource_rest_client'
 require_relative 'ProcessEcheckPayment.rb'
 require_relative '../../../Data/Configuration.rb'
 
-# * This is a sample code to call RefundApi,
-# * Refund a Payment
-# * Include the payment ID in the POST request to refund the payment.
-
-public
+public 
 class RefundEcheckPayment
   def main
     config = MerchantConfiguration.new.merchantConfigProp()
@@ -14,7 +10,6 @@ class RefundEcheckPayment
     api_client = CyberSource::ApiClient.new
     api_instance = CyberSource::RefundApi.new(api_client, config)
 
-    # Calling CreatePayment Sample code 
     capture_flag = true
     response = CreateEcheckPayment.new.main(capture_flag)
     resp = JSON.parse(response)
@@ -22,9 +17,8 @@ class RefundEcheckPayment
 
     client_reference_information = CyberSource::Ptsv2paymentsClientReferenceInformation.new
     client_reference_information.code = "test_refund_payment"
+	
     request.client_reference_information = client_reference_information
-
-	order_information = CyberSource::Ptsv2paymentsOrderInformation.new
     bill_to_information = CyberSource::Ptsv2paymentsOrderInformationBillTo.new
     bill_to_information.country = "US"
     bill_to_information.last_name = "Deo"
@@ -37,15 +31,17 @@ class RefundEcheckPayment
     bill_to_information.phone_number = "4158880000"
     bill_to_information.district = "MI"
     bill_to_information.building_number = "123"
-    bill_to_information.company = "Visa"
+    bill_to_information.company = "ABC Company"
     bill_to_information.email = "test@cybs.com"
-    order_information.bill_to = bill_to_information
 
     amount_details = CyberSource::Ptsv2paymentsOrderInformationAmountDetails.new
     amount_details.total_amount = "102.21"
     amount_details.currency ="USD"
 
+	order_information = CyberSource::Ptsv2paymentsOrderInformation.new
+    order_information.bill_to = bill_to_information
     order_information.amount_details = amount_details
+	
     request.order_information = order_information
 
     bank_account = CyberSource::Ptsv2paymentsPaymentInformationBankAccount.new
@@ -63,10 +59,12 @@ class RefundEcheckPayment
     request.payment_information = payment_information
 	
     data, status_code, headers = api_instance.refund_payment(request, id)
-    puts data, status_code, headers
+	
+    puts data, status_code, headers	
   rescue StandardError => err
     puts err.message
   end
+  
   if __FILE__ == $0
     RefundEcheckPayment.new.main
   end
