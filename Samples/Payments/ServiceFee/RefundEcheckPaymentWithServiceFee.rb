@@ -1,6 +1,6 @@
 require 'cybersource_rest_client'
 require_relative 'ProcessEcheckPaymentWithServiceFee.rb'
-require_relative '../../../Data/Configuration.rb'
+require_relative '../../../data/Configuration.rb'
 
 public
 class RefundEcheckPaymentWithServiceFee
@@ -19,6 +19,11 @@ class RefundEcheckPaymentWithServiceFee
     client_reference_information.code = "test_refund_payment"
 	
     request.client_reference_information = client_reference_information
+
+    processing_info = CyberSource::Ptsv2paymentsidrefundsProcessingInformation.new
+    processing_info.payment_solution = "Internet"
+
+    request.processing_information = processing_info
 
     bill_to_information = CyberSource::Ptsv2paymentsOrderInformationBillTo.new
     bill_to_information.country = "US"

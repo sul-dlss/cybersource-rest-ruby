@@ -1,5 +1,5 @@
 require 'cybersource_rest_client'
-require_relative '../../../data/Configuration.rb'
+require_relative '../../data/Configuration.rb'
 
 # * This is a sample code to call KeyGenerationApi,
 # * Generate Key - with Encryption Type as none

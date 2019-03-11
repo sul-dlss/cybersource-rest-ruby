@@ -1,6 +1,6 @@
 require 'cybersource_rest_client'
 require_relative './ProcessPaymentWithServiceFee.rb'
-require_relative '../../../Data/Configuration.rb'
+require_relative '../../../data/Configuration.rb'
  
 public
 class CapturePaymentWithServiceFee
