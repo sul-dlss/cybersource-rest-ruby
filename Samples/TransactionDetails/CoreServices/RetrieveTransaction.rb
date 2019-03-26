@@ -4,7 +4,7 @@ require_relative '../../../data/Configuration.rb'
 public
 class RetrieveTransaction
   def main()
-    id = "5408386919326811103004" 
+    id = "5536112634596387303002" 
     config = MerchantConfiguration.new.merchantConfigProp()
     api_client = CyberSource::ApiClient.new
     api_instance = CyberSource::TransactionDetailsApi.new(api_client, config)

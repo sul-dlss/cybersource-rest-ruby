@@ -38,7 +38,7 @@ class JwtConnection
     # Establish the connection with server and receives the response message and code
     http_proxy.start(uri.host, uri.port,use_ssl: true, verify_mode:
         OpenSSL::SSL::VERIFY_NONE) do |http| #new
-        http.read_timeout = 1000
+        http.read_timeout = 5000
         response = http.request (req)
         if merchantconfig_obj.requestType == Constants::DELETE_REQUEST_TYPE
             response_body = response.body

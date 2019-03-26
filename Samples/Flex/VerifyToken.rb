@@ -23,7 +23,7 @@ class VerifyToken
     else
       signature = post_param['signature']
     end
-    string_to_pem = "-----BEGIN PUBLIC KEY-----\n#{public_key}\n-----END PUBLIC KEY-----\n"
+    string_to_pem = Base64.decode64(public_key)
     public_key_to_pem = OpenSSL::PKey::RSA.new(string_to_pem)
     verify = public_key_to_pem.verify(OpenSSL::Digest::SHA512.new, Base64.decode64(signature), signed_values)
   rescue StandardError => err 
