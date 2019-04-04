@@ -1,0 +1,76 @@
+require 'net/http'
+require 'date'
+require 'cybersource_rest_client'
+# This is sample code for AuthenticationSDK - GET method 
+public 
+class DeleteGenerateHeaders
+  # REQUEST TARGET
+	# [Editable]
+	@@request_target = '/reporting/v2/reportSubscriptions/TRRReport?organizationId=testrest'
+	# Request Type. [Non-Editable]
+  @@request_type = 'DELETE'
+
+  public 
+  def main()
+    begin
+      #creating propetiesutil Object
+      cybsPropertyobj = PropertiesUtil.new.getCybsProp('resource/cybs.yml')
+
+      # creating MerchantConfig Object
+      merchantConfigObj = Merchantconfig.new cybsPropertyobj
+
+      # creating Logger Object
+      logObj = Log.new merchantConfigObj.logDirectory,merchantConfigObj.logFilename,merchantConfigObj.logSize,merchantConfigObj.enableLog
+
+      #setting requestType,requestTarget,requestUrl
+      merchantConfigObj.requestType = @@request_type
+      # Give the url path to where the data needs to be authenticated.
+      requestUrl =  Constants::HTTPS_URI_PREFIX + merchantConfigObj.requestHost + @@request_target
+      gmtDateTime = DateTime.now.httpdate
+      authenticationType = merchantConfigObj.authenticationType
+
+      logObj.logger.info("\n")
+      logObj.logger.info("Using Request Target: " + @@request_target)
+      logObj.logger.info("Authentication Type -> " + merchantConfigObj.authenticationType)
+      logObj.logger.info("Url >" + requestUrl)
+      puts "URL   : " + requestUrl
+      
+      logObj.logger.info(Constants::CONTENT_TYPE + " : " + Constants::MEDIA_TYPE_JSON)
+      puts Constants::CONTENT_TYPE + " : " + Constants::MEDIA_TYPE_JSON
+
+      # checking the Authenticationtype is HTTP_Signature/JWT
+      if (authenticationType.upcase == Constants::AUTH_TYPE_HTTP) then
+        #Http Signature
+        logObj.logger.info(Constants::USER_AGENT + "   : " + Constants::USER_AGENT_VALUE)
+        puts Constants::USER_AGENT + "   : " + Constants::USER_AGENT_VALUE
+
+        logObj.logger.info("Merchant ID   : " + merchantConfigObj.merchantId)
+        puts "Merchant ID   : " + merchantConfigObj.merchantId
+
+        logObj.logger.info("Date  : " + gmtDateTime)
+        puts "Date  : " + gmtDateTime
+
+        tempSig = Authorization.new.getToken(merchantConfigObj,gmtDateTime,logObj)
+        logObj.logger.info("Host  : " + merchantConfigObj.requestHost)
+        puts "Host  : " + merchantConfigObj.requestHost
+
+        logObj.logger.info("Signature Header  : " + tempSig)
+        puts "Signature Header  : " + tempSig
+      else
+        #JWT Token
+        tempSig = Authorization.new.getToken(merchantConfigObj,gmtDateTime,logObj)
+        puts "Authorization,Bearer  : " + tempSig
+        logObj.logger.info("Authorization,Bearer  : " + tempSig)
+      end
+
+      logObj.logger.info("END> =======================================")
+
+    rescue StandardError => err
+      puts err.message
+      puts err.backtrace
+      puts "Check log for more details"
+    end
+  end
+  # Reading getId from command line argument
+  DeleteGenerateHeaders.new.main()
+end

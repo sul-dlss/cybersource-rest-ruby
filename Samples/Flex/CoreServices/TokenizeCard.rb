@@ -30,7 +30,7 @@ class TokenizeCard
     data, status_code, headers = api_instance.tokenize(options)
     puts data, status_code, headers
     verify = VerifyToken.new.verify(public_key, data)
-    puts verify
+    print "Token verification sucess : ", verify, "\n"
   rescue StandardError => err
     puts err.message
   end
