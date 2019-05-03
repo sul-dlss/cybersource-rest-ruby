@@ -18,3 +18,4 @@ install:
 
 script: 
   - bash sample_code_runner.sh
+  - cat output.log
