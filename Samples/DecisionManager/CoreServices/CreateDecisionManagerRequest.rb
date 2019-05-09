@@ -1,16 +1,16 @@
 require 'cybersource_rest_client'
 require_relative '../../../data/Configuration.rb'
 
-# * This is a sample code to call BasicDMTransaction
+# * This is a sample code to call CreateDecisionManagerRequest
 
 public
-class BasicDMTransaction
+class CreateDecisionManagerRequest
   def main
     config = MerchantConfiguration.new.merchantConfigProp()
     api_client = CyberSource::ApiClient.new
     api_instance = CyberSource::DecisionManagerApi.new(api_client, config)
 
-    # Calling BasicDMTransaction Sample code
+    # Calling CreateDecisionManagerRequest Sample code
     client_reference_information = CyberSource::Riskv1decisionsClientReferenceInformation.new
     client_reference_information.code = "54323007"
 
@@ -52,6 +52,6 @@ class BasicDMTransaction
     puts err.message
   end
   if __FILE__ == $0
-    BasicDMTransaction.new.main
+    CreateDecisionManagerRequest.new.main
   end
 end
