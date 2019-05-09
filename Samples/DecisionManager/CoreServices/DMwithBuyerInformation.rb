@@ -49,7 +49,7 @@ class DMwithBuyerInformation
 
     buyer_information = CyberSource::Riskv1decisionsBuyerInformation.new
     buyer_information.hashed_password = ""
-    buyer_information.date_of_birth = "1998-05-05"
+    buyer_information.date_of_birth = "19980505"
     buyer_information.personal_identification = personal_identification
 
     request = CyberSource::CreateDecisionManagerCaseRequest.new

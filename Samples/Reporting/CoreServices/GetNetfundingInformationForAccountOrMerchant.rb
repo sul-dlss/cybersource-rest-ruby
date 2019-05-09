@@ -14,7 +14,7 @@ class GetNetfundingInformationForAccountOrMerchant
     opts[:'organization_id'] = "testrest"
     opts[:'group_name'] = "groupName"
 
-    data, status_code, headers = api_instance.get_net_funding_info(start_time,end_time)
+    data, status_code, headers = api_instance.get_net_funding_details(start_time,end_time)
     puts data, status_code, headers
   rescue StandardError => err
     puts err.message

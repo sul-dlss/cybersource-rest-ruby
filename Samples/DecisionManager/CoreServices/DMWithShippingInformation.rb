@@ -41,7 +41,7 @@ class DMWithShippingInformation
     ship_to.address1 = "96, powers street"
     ship_to.address2 = ""
     ship_to.administrative_area = "KA"
-    ship_to.country = "INDIA"
+    ship_to.country = "IN"
     ship_to.locality = "Clearwater milford"
     ship_to.first_name = "James"
     ship_to.last_name = "Smith"

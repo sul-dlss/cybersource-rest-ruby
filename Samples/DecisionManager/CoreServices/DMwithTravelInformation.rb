@@ -48,8 +48,8 @@ class DMwithTravelInformation
     legs2 = CyberSource::Riskv1decisionsTravelInformationLegs.new
     legs2.origination = "JFK"
     legs2.destination = "BLR"
-    merchant_defined_information << legs1
-    merchant_defined_information << legs2
+    legs << legs1
+    legs << legs2
 
     travel_information = CyberSource::Riskv1decisionsTravelInformation.new
     travel_information.complete_route = "SFO-JFK:JFK-BLR"

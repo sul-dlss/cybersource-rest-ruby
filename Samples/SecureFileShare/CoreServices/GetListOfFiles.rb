@@ -11,7 +11,7 @@ class GetListOfFiles
     api_instance = CyberSource::SecureFileShareApi.new(api_client, config)
     opts = {}
     opts[:'organization_id'] = "testrest"
-    data, status_code, headers = api_instance.get_file_details(start_date, end_date, opts)
+    data, status_code, headers = api_instance.get_file_detail(start_date, end_date, opts)
     puts data, status_code, headers
   rescue StandardError => err
     puts err.message

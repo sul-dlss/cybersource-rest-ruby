@@ -13,7 +13,7 @@ class TokenizeCard
     config = MerchantConfiguration.new.merchantConfigProp()
     request = CyberSource::TokenizeRequest.new
     api_client = CyberSource::ApiClient.new
-    api_instance = CyberSource::FlexTokenApi.new(api_client, config)
+    api_instance = CyberSource::TokenizationApi.new(api_client, config)
     key_generation_response = NoEncGeneratekey.new.main
     resp = JSON.parse(key_generation_response)
     request.key_id = resp['keyId']
@@ -25,9 +25,7 @@ class TokenizeCard
     card_info.card_expiration_year = "2031"
     card_info.card_type = "002"
     request.card_info =  card_info
-    options = {}
-    options[:'tokenize_request'] = request
-    data, status_code, headers = api_instance.tokenize(options)
+    data, status_code, headers = api_instance.tokenize(request)
     puts data, status_code, headers
     verify = VerifyToken.new.verify(public_key, data)
     print "Token verification sucess : ", verify, "\n"
