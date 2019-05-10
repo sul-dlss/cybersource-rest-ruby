@@ -12,14 +12,14 @@ class RetrieveAllPaymentIdentifierFromInstrument
     config = MerchantConfiguration.new.merchantConfigProp()
     profile_id = '93B32398-AD51-4CC2-A682-EA3E93614EB1'
     api_client = CyberSource::ApiClient.new
-    api_instance = CyberSource::PaymentInstrumentsApi.new(api_client, config)
+    api_instance = CyberSource::InstrumentIdentifierApi.new(api_client, config)
 
     # Calling CreatePaymentInstrument sample code
     response = CreateInstrumentIdentifier.new.main
     resp = JSON.parse(response)
     id = resp['id']
 
-    data, status_code, headers = api_instance.tms_v1_instrumentidentifiers_token_id_paymentinstruments_get(profile_id, id)
+    data, status_code, headers = api_instance.get_all_payment_instruments(profile_id, id)
     puts data, status_code, headers
   rescue StandardError => err
     puts err.message

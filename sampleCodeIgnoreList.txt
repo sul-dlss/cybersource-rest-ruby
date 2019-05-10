@@ -1,2 +1,16 @@
 .*/data/.*
 .*VerifyToken.*
+Samples/Reporting/CoreServices/CreateAdhocReport.rb
+Samples/Reporting/CoreServices/DeleteSubscriptionOfReportNameByOrganization.rb
+Samples/Reporting/CoreServices/GetNotificationOfChanges.rb
+Samples/TransactionSearch/CoreServices/GetSearchResults.rb
+Samples/TransactionBatches/CoreServices/GetListOfBatchFiles.rb
+Samples/TransactionBatches/CoreServices/GetIndividualBatchFile.rb
+Samples/Payments/ElectronicCheck/VoidEcheckRefund.rb
+Samples/Payments/ElectronicCheck/VoidEcheckCredit.rb
+Samples/Payments/ServiceFee/VoidEcheckCreditWithServiceFee.rb
+Samples/Reporting/CoreServices/CreateReportSubscriptionForReportNameByOrganization.rb
+Samples/Payments/ServiceFee/ProcessAuthorizationReversalWithServiceFee.rb
+Samples/Payouts/CoreServices/ProcessPayout.rb
+Samples/Reporting/CoreServices/GetPurchaseAndRefundDetails.rb
+Samples/TransactionSearch/CoreServices/CreateSearchRequest.rb

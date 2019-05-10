@@ -19,7 +19,7 @@ class RemoveInstrumentIdentifier
     resp = JSON.parse(response)
     id = resp['id']
 
-    data, status_code, headers = api_instance.tms_v1_instrumentidentifiers_token_id_delete(profile_id, id)
+    data, status_code, headers = api_instance.delete_instrument_identifier(profile_id, id)
     puts data, status_code, headers
   rescue StandardError => err
     puts err.message
