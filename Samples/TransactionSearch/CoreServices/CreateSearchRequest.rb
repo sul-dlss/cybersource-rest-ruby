@@ -2,7 +2,7 @@ require 'cybersource_rest_client'
 require_relative '../../../data/Configuration.rb'
 
 public
-class CreateSearchRequests
+class CreateSearchRequest
   def main()
     config = MerchantConfiguration.new.merchantConfigProp()
     request = CyberSource::CreateSearchRequest.new
@@ -13,13 +13,13 @@ class CreateSearchRequests
     request.timezone = "America/Chicago"
     request.query = "clientReferenceInformation.code:TC50171_3"
     request.offset = 0
-    request.limit = 100
+    request.limit = 10
     request.sort = "id:asc,submitTimeUtc:asc"
     data, status_code, headers = api_instance.create_search(request)
     puts data, status_code, headers
   rescue StandardError => err
     puts err.message
   end
-  CreateSearchRequests.new.main
+  CreateSearchRequest.new.main
 end
 
