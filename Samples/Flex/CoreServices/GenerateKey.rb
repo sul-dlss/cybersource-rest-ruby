@@ -12,7 +12,7 @@ class Generatekey
     request = CyberSource::GeneratePublicKeyRequest.new
     api_client = CyberSource::ApiClient.new
     api_instance = CyberSource::KeyGenerationApi.new(api_client, config)
-    request.encryption_type = "RsaOaep256"
+    request.encryption_type = "None"
     data, status_code, headers = api_instance.generate_public_key(request)
     puts data, status_code, headers
   rescue StandardError => err
