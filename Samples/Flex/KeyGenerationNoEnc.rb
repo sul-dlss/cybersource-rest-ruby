@@ -9,13 +9,11 @@ public
 class NoEncGeneratekey
   def main
     config = MerchantConfiguration.new.merchantConfigProp()
-    request = CyberSource::KeyParameters.new
+    request = CyberSource::GeneratePublicKeyRequest.new
     api_client = CyberSource::ApiClient.new
     api_instance = CyberSource::KeyGenerationApi.new(api_client, config)
     request.encryption_type = "None"
-    options = {}
-    options[:'generate_public_key_request'] = request
-    data, status_code, headers = api_instance.generate_public_key(options)
+    data, status_code, headers = api_instance.generate_public_key(request)
     puts data, status_code, headers
     data
   rescue StandardError => err

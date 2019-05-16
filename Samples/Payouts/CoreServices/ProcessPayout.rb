@@ -9,9 +9,9 @@ public
 class ProcessAPayout
   def main
     config = MerchantConfiguration.new.merchantConfigProp()
-    request = CyberSource::PtsV2PayoutsPostResponse.new
+    request = CyberSource::OctCreatePaymentRequest.new
     api_client = CyberSource::ApiClient.new
-    api_instance = CyberSource::ProcessAPayoutApi.new(api_client, config)
+    api_instance = CyberSource::PayoutsApi.new(api_client, config)
 
     client_reference_information = CyberSource::Ptsv2paymentsClientReferenceInformation.new
     client_reference_information.code = "33557799"

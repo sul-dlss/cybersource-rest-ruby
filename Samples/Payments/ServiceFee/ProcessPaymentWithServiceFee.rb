@@ -57,7 +57,7 @@ class CreatePaymentWithServiceFee
     bill_to_information.email = "test@cybs.com"
 
     amount_information = CyberSource::Ptsv2paymentsOrderInformationAmountDetails.new
-    amount_information.total_amount = "225.00"
+    amount_information.total_amount = "2325.00"
     amount_information.currency = "USD"
 	amount_information.service_fee_amount = "30"
     

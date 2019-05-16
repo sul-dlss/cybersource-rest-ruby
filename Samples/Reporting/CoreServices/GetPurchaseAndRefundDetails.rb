@@ -6,8 +6,8 @@ public
 class GetPurchaseAndRefundDetails
   def main()
     config = MerchantConfiguration.new.merchantConfigProp()
-    start_time = "2018-05-01T12:00:00-05:00"
-    end_time = "2018-05-30T12:00:00-05:00"
+    start_time = "2019-04-01T12:00:00-05:00"
+    end_time = "2019-04-30T12:00:00-05:00"
     api_client = CyberSource::ApiClient.new
     api_instance = CyberSource::PurchaseAndRefundDetailsApi.new(api_client, config)
     opts = {}

@@ -19,7 +19,7 @@ class RetrieveInstrumentIdentifier
     resp = JSON.parse(response)
     id = resp['id']
 
-    data, status_code, headers = api_instance.tms_v1_instrumentidentifiers_token_id_get(profile_id, id)
+    data, status_code, headers = api_instance.get_instrument_identifier(profile_id, id)
     puts data, status_code, headers
     data
   rescue StandardError => err
