@@ -17,6 +17,7 @@ AssertionData = Struct.new :expected, :actual
 
 TEST_DATA = []	
 
+# Build the test data
 for road in hash_roads["roads"]
 	# get the fully qualified file name
 	class_qualified_name = road["sampleClassName"]["node"].gsub('.','/')
@@ -37,8 +38,8 @@ for road in hash_roads["roads"]
 	# Convert the Json response to hash
 	hash_response = JSON.parse(response)
 	
-	data = []	
-	
+	#populate test data
+	data = []		
 	data.push(AssertionData.new(road["assertions"]["httpStatus"], http_status.to_s))
 	for required_field in road["assertions"]["requiredFields"]
 		data.push(AssertionData.new(hash_response.has_key?(required_field),true))
@@ -47,11 +48,12 @@ for road in hash_roads["roads"]
 		actual_value = find(hash_response,expected_value["field"])
 		data.push(AssertionData.new(expected_value["value"], actual_value))
 	end
-	TEST_DATA.push(TestData.new('test_' + class_name.downcase, data))	
+	TEST_DATA.push(TestData.new('test_' + class_name.downcase, data))
+
 	print("\n")	
 end
 
-# Start Validations			
+# Start Validations after building the test data		
 Class.new Test::Unit::TestCase do
 	TEST_DATA.each do |test|
 		define_method(test.name) do
