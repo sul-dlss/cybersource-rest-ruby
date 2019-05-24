@@ -13,7 +13,7 @@ def find(hash_response,key)
 end
 
 TestData = Struct.new :name , :data
-AssertionData = Struct.new :expected, :actual
+AssertionData = Struct.new :fieldname, :expected, :actual
 
 TEST_DATA = []	
 
@@ -40,16 +40,16 @@ for road in hash_roads["roads"]
 	
 	#populate test data
 	data = []		
-	data.push(AssertionData.new(road["assertions"]["httpStatus"], http_status.to_s))
+	data.push(AssertionData.new("httpStatus",road["assertions"]["httpStatus"], http_status.to_s))
 	for required_field in road["assertions"]["requiredFields"]
-		data.push(AssertionData.new(hash_response.has_key?(required_field),true))
+		data.push(AssertionData.new(required_field,hash_response.has_key?(required_field),true))
 	end
 	for expected_value in road["assertions"]["expectedValues"]
 		actual_value = find(hash_response,expected_value["field"])
-		data.push(AssertionData.new(expected_value["value"], actual_value))
+		data.push(AssertionData.new(expected_value["field"],expected_value["value"], actual_value))
 	end
-	TEST_DATA.push(TestData.new('test_' + class_name.downcase, data))
-
+	# Ruby test cases work only if the dynamic test case name starts with 'test'
+	TEST_DATA.push(TestData.new("test_" + class_name.downcase, data))
 	print("\n")	
 end
 
@@ -58,7 +58,12 @@ Class.new Test::Unit::TestCase do
 	TEST_DATA.each do |test|
 		define_method(test.name) do
 			test.data.each do |i|
-				assert_equal(i.expected,i.actual)
+				# check if value is boolean, done to give different assertion messages
+				if !!i.actual == i.actual
+					assert_equal(i.expected,i.actual,i.fieldname + " is a required field, but not present in the response.")
+				else
+					assert_equal(i.expected,i.actual,i.fieldname + " doesn't match expected value in the response.")
+				end
 			end
 		end
 	end
