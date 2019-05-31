@@ -4,7 +4,7 @@ require_relative '../../../data/Configuration.rb'
 public
 class DownloadFileWithFileIdentifier
   def main()
-    file_path = "..\\cybersource-rest-samples-ruby\\resource\\DownloadFileWithFileIdentifier.csv"
+    file_path = "resource//DownloadFileWithFileIdentifier.csv"
     config = MerchantConfiguration.new.merchantConfigProp()
     file_id = "VFJSUmVwb3J0LTc4NTVkMTNmLTkzOTgtNTExMy1lMDUzLWEyNTg4ZTBhNzE5Mi5jc3YtMjAxOC0xMC0yMA=="
     api_client = CyberSource::ApiClient.new
