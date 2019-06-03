@@ -48,6 +48,8 @@ class EnrollWithTravelInformation
 	leg0.departure_date = "2019-01-01"
 	leg0.origination = "LAX"
 	leg0.destination = "DEF"
+	
+	travel_information = CyberSource::Riskv1authenticationsTravelInformation.new
 
 	leg1 = CyberSource::Riskv1authenticationsTravelInformationLegs.new
 	leg1.carrier_code = "AS"
