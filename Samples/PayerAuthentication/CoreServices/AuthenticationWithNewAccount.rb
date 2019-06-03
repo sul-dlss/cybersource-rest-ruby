@@ -44,6 +44,7 @@ class AuthenticationWithNewAccount
     order_information.bill_to = bill_to
 
     customer_account = CyberSource::Riskv1authenticationsRiskInformationBuyerHistoryCustomerAccount.new
+	customer_account.ship_address_usage_date = "2017-05-06"
     customer_account.creation_history = "NEW_ACCOUNT"
 
     account_history = CyberSource::Riskv1authenticationsRiskInformationBuyerHistoryAccountHistory.new

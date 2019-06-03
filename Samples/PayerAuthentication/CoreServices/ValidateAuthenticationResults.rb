@@ -38,7 +38,7 @@ class ValidateAuthenticationResults
 
     consumer_authentication_information = CyberSource::Riskv1authenticationresultsConsumerAuthenticationInformation.new
     consumer_authentication_information.authentication_transaction_id = 'PYffv9G3sa1e0CQr5fV0'
-    consumer_authentication_information.signed_pares = 'J4D90zD4yMz45PEFVhHzgA2zwjXnzhQ984Nvw61dAV1'
+    consumer_authentication_information.signed_pares = 'eNqdmFmT4jgSgN+J4D90zD4yMz45PEFVhHzgA2zwjXnzhQ984Nvw61dAV1'
 
     request = CyberSource::Request.new
     request.order_information = order_information
