@@ -1,16 +1,16 @@
 require 'cybersource_rest_client'
 require_relative '../../../data/Configuration.rb'
 
-# * This is a sample code to call CreateDecisionManagerRequest
+# * This is a sample code to call CreateDecisionManagerCase
 
 public
-class CreateDecisionManagerRequest
+class CreateDecisionManagerCase
   def main
     config = MerchantConfiguration.new.merchantConfigProp()
     api_client = CyberSource::ApiClient.new
     api_instance = CyberSource::DecisionManagerApi.new(api_client, config)
 
-    # Calling CreateDecisionManagerRequest Sample code
+    # Calling CreateDecisionManagerCase Sample code
     client_reference_information = CyberSource::Riskv1decisionsClientReferenceInformation.new
     client_reference_information.code = "54323007"
 
@@ -52,6 +52,6 @@ class CreateDecisionManagerRequest
     puts err.message
   end
   if __FILE__ == $0
-    CreateDecisionManagerRequest.new.main
+    CreateDecisionManagerCase.new.main
   end
 end
