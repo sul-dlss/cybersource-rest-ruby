@@ -4,7 +4,7 @@ require_relative '../../../data/Configuration.rb'
 # * This is a sample code to call CreateDecisionManagerRequest
 
 public
-class CreateDecisionManagerRequest
+class CreateDecisionManagerCase
   def main
     config = MerchantConfiguration.new.merchantConfigProp()
     api_client = CyberSource::ApiClient.new
@@ -52,6 +52,6 @@ class CreateDecisionManagerRequest
     puts err.message
   end
   if __FILE__ == $0
-    CreateDecisionManagerRequest.new.main
+    CreateDecisionManagerCase.new.main
   end
 end
