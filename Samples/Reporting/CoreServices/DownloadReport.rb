@@ -5,7 +5,7 @@ require 'csv'
 public
 class DownloadReport
   def main()
-    file_path = "..\\cybersource-rest-samples-ruby\\resource\\DownloadReport.xml"
+    file_path = "resource//DownloadReport.xml"
     config = MerchantConfiguration.new.merchantConfigProp()
     reportDate = "2018-09-02"
     reportName = "adhoc_report_2020"
