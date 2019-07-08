@@ -52,8 +52,6 @@ class StandAloneJWT
 	jwtBody = ''
 	filePath = File.join(File.dirname(__FILE__), "../resource/" + @@filename + ".p12")
 	
-	puts "FilePath : " + filePath
-	
 	p12File = File.binread(filePath)
 	
 	if http_method == "post"
@@ -74,7 +72,7 @@ class StandAloneJWT
 	x5clist = [cert]
 	
 	customHeaders = {}
-	customHeaders['v-c-merchant-id'] = merchantconfig_obj.keyAlias
+	customHeaders['v-c-merchant-id'] = @@merchant_id
 	customHeaders['x5c'] = x5clist
 	
 	token = JWT.encode(claimSet, privateKey, 'RS256', customHeaders)
