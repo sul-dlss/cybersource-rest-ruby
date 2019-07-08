@@ -135,7 +135,7 @@ class StandAloneHttpSignature
 	end
     
     puts "\n -- Response Message -- \n"
-    puts "\tResponse Code : " + response.code + "\n"
+    puts "\tResponse Code : " + response.code.to_s + "\n"
     puts "\tv-c-correlation-id : " + response.headers["v-c-merchant-id"] + "\n"
     puts "\tResponse Data :\n"
 	puts response.body + "\n"
@@ -193,7 +193,7 @@ class StandAloneHttpSignature
 	end
     
     puts "\n -- Response Message -- \n"
-    puts "\tResponse Code : " + response.code + "\n"
+    puts "\tResponse Code : " + response.code.to_s + "\n"
     puts "\tv-c-correlation-id : " + response.headers["v-c-merchant-id"] + "\n"
     puts "\tResponse Data :\n"
 	puts response.body + "\n"
