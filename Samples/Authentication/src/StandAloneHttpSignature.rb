@@ -4,6 +4,8 @@ require 'date'
 require 'typhoeus'
 require 'uri'
 require 'base64'
+require 'json'
+require 'net/http'
 
 public 
 class StandAloneHttpSignature
@@ -11,64 +13,74 @@ class StandAloneHttpSignature
   @@merchant_id = "testrest"
   @@merchant_key_id = "08c94330-f618-42a3-b09d-e1e43be5efda"
   @@merchant_secret_key = "yBJxy6LjM2TmcPGu+GaJrHtkke25fPpUX+UY6/L/1tE="
-  @@payload = "{\n" +
-        "  \"clientReferenceInformation\": {\n" +
-        "    \"code\": \"TC50171_3\"\n" +
-        "  },\n" +
-        "  \"processingInformation\": {\n" +
-        "    \"commerceIndicator\": \"internet\"\n" +
-        "  },\n" +
-        "  \"orderInformation\": {\n" +
-        "    \"billTo\": {\n" +
-        "      \"firstName\": \"john\",\n" +
-        "      \"lastName\": \"doe\",\n" +
-        "      \"address1\": \"201 S. Division St.\",\n" +
-        "      \"postalCode\": \"48104-2201\",\n" +
-        "      \"locality\": \"Ann Arbor\",\n" +
-        "      \"administrativeArea\": \"MI\",\n" +
-        "      \"country\": \"US\",\n" +
-        "      \"phoneNumber\": \"999999999\",\n" +
-        "      \"email\": \"test@cybs.com\"\n" +
-        "    },\n" +
-        "    \"amountDetails\": {\n" +
-        "      \"totalAmount\": \"10\",\n" +
-        "      \"currency\": \"USD\"\n" +
-        "    }\n" +
-        "  },\n" +
-        "  \"paymentInformation\": {\n" +
-        "    \"card\": {\n" +
-        "      \"expirationYear\": \"2031\",\n" +
-        "      \"number\": \"5555555555554444\",\n" +
-        "      \"securityCode\": \"123\",\n" +
-        "      \"expirationMonth\": \"12\",\n" +
-        "      \"type\": \"002\"\n" +
-        "    }\n" +
-        "  }\n" +
+  @@payload = "{" +
+        "  \"clientReferenceInformation\": {" +
+        "    \"code\": \"TC50171_3\"" +
+        "  }," +
+        "  \"processingInformation\": {" +
+        "    \"commerceIndicator\": \"internet\"" +
+        "  }," +
+        "  \"orderInformation\": {" +
+        "    \"billTo\": {" +
+        "      \"firstName\": \"john\"," +
+        "      \"lastName\": \"doe\"," +
+        "      \"address1\": \"201 S. Division St.\"," +
+        "      \"postalCode\": \"48104-2201\"," +
+        "      \"locality\": \"Ann Arbor\"," +
+        "      \"administrativeArea\": \"MI\"," +
+        "      \"country\": \"US\"," +
+        "      \"phoneNumber\": \"999999999\"," +
+        "      \"email\": \"test@cybs.com\"" +
+        "    }," +
+        "    \"amountDetails\": {" +
+        "      \"totalAmount\": \"10\"," +
+        "      \"currency\": \"USD\"" +
+        "    }" +
+        "  }," +
+        "  \"paymentInformation\": {" +
+        "    \"card\": {" +
+        "      \"expirationYear\": \"2031\"," +
+        "      \"number\": \"5555555555554444\"," +
+        "      \"securityCode\": \"123\"," +
+        "      \"expirationMonth\": \"12\"," +
+        "      \"type\": \"002\"" +
+        "    }" +
+        "  }" +
         "}"
+
+  @@default_headers = {}
 		
   def getHttpSignature(resource, http_method, gmtdatetime)
 	signatureHeaderValue = ''
+	signatureHeader = ''
     signatureHeaderValue << "keyid=\"" + @@merchant_key_id + "\""
-	signatureHeaderValue << ', ' + "algorithm=\"HmacSHA256\""
-	signatureHeader = 'host date (request-target) digest v-c-merchant-id'
-	signatureHeaderValue << ', ' + "headers=\"" + signatureheader + "\""
+	signatureHeaderValue << ", algorithm=\"HmacSHA256\""
+	
+	if http_method == "post"
+		signatureHeader = 'host date (request-target) digest v-c-merchant-id'
+	elsif http_method == "get"
+		signatureHeader = 'host date (request-target) v-c-merchant-id'
+	end
+	
+	signatureHeaderValue << ", headers=\"" + signatureHeader + "\""
 	
 	signatureString = 'host: ' + @@request_host
 	signatureString << "\ndate: " + gmtdatetime
 	signatureString << "\n(request-target): "
 	
-	targetUrl = http_method = ' ' + resource
+	targetUrl = http_method + ' ' + resource
 	
-	signatureString << targetUrl + "\n"
-	
+	signatureString << targetUrl
+
 	if http_method == "post"
 		payload = @@payload
 		digest = Digest::SHA256.base64digest(payload)
 		digest_payload = 'SHA-256=' + digest
-		signatureString << 'digest: ' + digest_payload + "\n"
+		signatureString << "\ndigest: " + digest_payload
 	end
 	
-	signatureString << 'v-c-merchant-id: ' + @@merchant_id
+	signatureString << "\nv-c-merchant-id: " + @@merchant_id
+	
 	encodedSignatureString = signatureString.force_encoding(Encoding::UTF_8)
 	decodedKey = Base64.decode64(@@merchant_secret_key)
 	base64EncodedSignature = Base64.strict_encode64(OpenSSL::HMAC.digest('sha256', decodedKey, encodedSignatureString))
@@ -84,7 +96,7 @@ class StandAloneHttpSignature
 	resource = "/pts/v2/payments/"
     method = "post"
     statusCode = -1
-    url = "https://" + @@request_host + resource
+    url = URI.encode("https://" + @@request_host + resource)
 	
 	header_params = {}
 	header_params['Accept'] = 'application/hal+json;charset=utf-8'
@@ -104,9 +116,9 @@ class StandAloneHttpSignature
 	digest = Digest::SHA256.base64digest(payload)
 	digest_payload = 'SHA-256=' + digest
 	header_params['Digest'] = digest_payload
-	
-	_verify_ssl_host = 0
-	
+
+	headers = @@default_headers.merge(header_params || {})
+
 	puts "\n -- RequestURL -- \n"
     puts "\tURL : " + url + "\n"
     puts "\n -- HTTP Headers -- \n"
@@ -115,32 +127,28 @@ class StandAloneHttpSignature
     puts "\tDate : " + gmtDateTime + "\n"
     puts "\tHost : " + @@request_host + "\n"
 	
-	req_opts = {
-		:method => method,
-		:headers => header_params,
-		:timeout => 0,
-		:ssl_verifypeer => false,
-		:ssl_verifyhost => _verify_ssl_host,
-		:sslcert => nil,
-		:sslkey => nil,
-		:verbose => false,
-		:body => @@payload
-	}
-	
-	request = Typhoeus::Request.new(url, req_opts)
-	response = request.run
-	
-	if response.code >= 200 && response.code <= 299
+	uri = URI(url)
+
+	http = Net::HTTP.new(uri.host, uri.port)
+	http.use_ssl = true
+	req = Net::HTTP::Post.new(uri.path)
+	req.body = @@payload
+	header_params.each do |custom_header, custom_header_value|
+		req[custom_header] = custom_header_value
+	end
+
+	response = http.request(req)
+
+	if response.code.to_i >= 200 && response.code.to_i <= 299
         statusCode = 0
 	end
     
     puts "\n -- Response Message -- \n"
-    puts "\tResponse Code : " + response.code.to_s + "\n"
-    # puts "\tv-c-correlation-id : " + response.headers["v-c-merchant-id"] + "\n"
-	p response.headers
+    puts "\tResponse Code : " + response.code + "\n"
+    puts "\tv-c-correlation-id : " + response['v-c-correlation-id'] + "\n"
 	puts "\n"
     puts "\tResponse Data :\n"
-	puts response.body + "\n"
+	puts response.body + "\n\n"
     
     return statusCode;
   end
@@ -217,14 +225,14 @@ class StandAloneHttpSignature
 	end
         
     # HTTP GET REQUEST
-    puts "\n\nSample 2: GET call - CyberSource Reporting API - HTTP GET Reporting request"
-    @statusCode = processGet()
+    # puts "\n\nSample 2: GET call - CyberSource Reporting API - HTTP GET Reporting request"
+    # @statusCode = processGet()
     
-    if @statusCode == 0
-        puts "STATUS : SUCCESS (HTTP Status = #@statusCode)"
-    else
-        puts "STATUS : ERROR (HTTP Status = #@statusCode)"
-	end
+    # if @statusCode == 0
+    #     puts "STATUS : SUCCESS (HTTP Status = #@statusCode)"
+    # else
+    #     puts "STATUS : ERROR (HTTP Status = #@statusCode)"
+	# end
 	
   end
   

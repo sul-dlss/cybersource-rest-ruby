@@ -93,7 +93,9 @@ class StandAloneJWT
 	auth_names = []
 	gmtDateTime = DateTime.now.httpdate
 	
-	token = getJsonWebToken(resource, method, gmtDateTime)
+	token = "Bearer " + getJsonWebToken(resource, method, gmtDateTime)
+
+	header_params['Authorization'] = token
 	
 	header_params['v-c-merchant-id'] = @@merchant_id
 	header_params['Date'] = gmtDateTime
