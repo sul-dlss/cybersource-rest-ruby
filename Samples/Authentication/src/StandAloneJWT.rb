@@ -3,8 +3,9 @@ require 'openssl'
 require 'jwt'
 require 'json'
 require 'date'
-require 'typhoeus'
+require 'net/http'
 require 'uri'
+require 'active_support'
 
 public 
 class StandAloneJWT
@@ -13,40 +14,42 @@ class StandAloneJWT
   @@merchant_key_id = "08c94330-f618-42a3-b09d-e1e43be5efda"
   @@merchant_secret_key = "yBJxy6LjM2TmcPGu+GaJrHtkke25fPpUX+UY6/L/1tE="
   @@filename = "testrest"
-  @@payload = "{\n" +
-        "  \"clientReferenceInformation\": {\n" +
-        "    \"code\": \"TC50171_3\"\n" +
-        "  },\n" +
-        "  \"processingInformation\": {\n" +
-        "    \"commerceIndicator\": \"internet\"\n" +
-        "  },\n" +
-        "  \"orderInformation\": {\n" +
-        "    \"billTo\": {\n" +
-        "      \"firstName\": \"john\",\n" +
-        "      \"lastName\": \"doe\",\n" +
-        "      \"address1\": \"201 S. Division St.\",\n" +
-        "      \"postalCode\": \"48104-2201\",\n" +
-        "      \"locality\": \"Ann Arbor\",\n" +
-        "      \"administrativeArea\": \"MI\",\n" +
-        "      \"country\": \"US\",\n" +
-        "      \"phoneNumber\": \"999999999\",\n" +
-        "      \"email\": \"test@cybs.com\"\n" +
-        "    },\n" +
-        "    \"amountDetails\": {\n" +
-        "      \"totalAmount\": \"10\",\n" +
-        "      \"currency\": \"USD\"\n" +
-        "    }\n" +
-        "  },\n" +
-        "  \"paymentInformation\": {\n" +
-        "    \"card\": {\n" +
-        "      \"expirationYear\": \"2031\",\n" +
-        "      \"number\": \"5555555555554444\",\n" +
-        "      \"securityCode\": \"123\",\n" +
-        "      \"expirationMonth\": \"12\",\n" +
-        "      \"type\": \"002\"\n" +
-        "    }\n" +
-        "  }\n" +
+  @@payload = "{" +
+        "  \"clientReferenceInformation\": {" +
+        "    \"code\": \"TC50171_3\"" +
+        "  }," +
+        "  \"processingInformation\": {" +
+        "    \"commerceIndicator\": \"internet\"" +
+        "  }," +
+        "  \"orderInformation\": {" +
+        "    \"billTo\": {" +
+        "      \"firstName\": \"john\"," +
+        "      \"lastName\": \"doe\"," +
+        "      \"address1\": \"201 S. Division St.\"," +
+        "      \"postalCode\": \"48104-2201\"," +
+        "      \"locality\": \"Ann Arbor\"," +
+        "      \"administrativeArea\": \"MI\"," +
+        "      \"country\": \"US\"," +
+        "      \"phoneNumber\": \"999999999\"," +
+        "      \"email\": \"test@cybs.com\"" +
+        "    }," +
+        "    \"amountDetails\": {" +
+        "      \"totalAmount\": \"10\"," +
+        "      \"currency\": \"USD\"" +
+        "    }" +
+        "  }," +
+        "  \"paymentInformation\": {" +
+        "    \"card\": {" +
+        "      \"expirationYear\": \"2031\"," +
+        "      \"number\": \"5555555555554444\"," +
+        "      \"securityCode\": \"123\"," +
+        "      \"expirationMonth\": \"12\"," +
+        "      \"type\": \"002\"" +
+        "    }" +
+        "  }" +
         "}"
+
+  @@default_headers = {}
 		
   def getJsonWebToken(resource, http_method, gmtdatetime)
 	jwtBody = ''
@@ -67,15 +70,20 @@ class StandAloneJWT
 	
 	publicKey = OpenSSL::PKey::RSA.new(p12FilePath.key.public_key)
 	privateKey = OpenSSL::PKey::RSA.new(p12FilePath.key)
-	cert = OpenSSL::X509::Certificate.new(p12FilePath.certificate.to_pem)
+	# x5Cert = OpenSSL::X509::Certificate.new(p12FilePath.certificate.to_pem)
+	cacheObj = ActiveSupport::Cache::MemoryStore.new
+    x5Cert = Cache.new.fetchCachedCertificate(filePath, p12File, merchantconfig_obj.keyPass, cacheObj)
 	
-	x5clist = [cert]
+	x5clist = [x5Cert]
 	
 	customHeaders = {}
 	customHeaders['v-c-merchant-id'] = @@merchant_id
 	customHeaders['x5c'] = x5clist
 	
 	token = JWT.encode(claimSet, privateKey, 'RS256', customHeaders)
+	
+	puts "\n -- TOKEN --\n"
+	puts token;
     
 	return token
   end
@@ -84,14 +92,22 @@ class StandAloneJWT
 	resource = "/pts/v2/payments/"
     method = "post"
     statusCode = -1
-    url = "https://" + @@request_host + resource
+    url = URI.encode("https://" + @@request_host + resource)
 	
 	header_params = {}
 	header_params['Accept'] = 'application/hal+json;charset=utf-8'
 	header_params['Content-Type'] = 'application/json;charset=utf-8'
 	
 	auth_names = []
-	gmtDateTime = DateTime.now.httpdate
+	gmtDateTime = DateTime.now.httpdate	
+	
+	puts "\n -- RequestURL -- \n"
+    puts "\tURL : " + url + "\n"
+    puts "\n -- HTTP Headers -- \n"
+    puts "\tContent-Type : application/json;charset=utf-8" + "\n"
+    puts "\tv-c-merchant-id : " + @@merchant_id + "\n"
+    puts "\tDate : " + gmtDateTime + "\n"
+    puts "\tHost : " + @@request_host + "\n"
 	
 	token = "Bearer " + getJsonWebToken(resource, method, gmtDateTime)
 
@@ -107,42 +123,30 @@ class StandAloneJWT
 	digest_payload = 'SHA-256=' + digest
 	header_params['Digest'] = digest_payload
 	
-	_verify_ssl_host = 0
+	headers = @@default_headers.merge(header_params || {})
 	
-	puts "\n -- RequestURL -- \n"
-    puts "\tURL : " + url + "\n"
-    puts "\n -- HTTP Headers -- \n"
-    puts "\tContent-Type : application/json;charset=utf-8" + "\n"
-    puts "\tv-c-merchant-id : " + @@merchant_id + "\n"
-    puts "\tDate : " + gmtDateTime + "\n"
-    puts "\tHost : " + @@request_host + "\n"
+	uri = URI(url)
+
+	http = Net::HTTP.new(uri.host, uri.port)
+	http.use_ssl = true
+	req = Net::HTTP::Post.new(uri.path)
+	req.body = @@payload
+	header_params.each do |custom_header, custom_header_value|
+		req[custom_header] = custom_header_value
+	end
+
+	response = http.request(req)
 	
-	req_opts = {
-		:method => method,
-		:headers => header_params,
-		:timeout => 0,
-		:ssl_verifypeer => false,
-		:ssl_verifyhost => _verify_ssl_host,
-		:sslcert => nil,
-		:sslkey => nil,
-		:verbose => false,
-		:body => @@payload
-	}
-	
-	request = Typhoeus::Request.new(url, req_opts)
-	response = request.run
-	
-	if response.code >= 200 && response.code <= 299
+	if response.code.to_i >= 200 && response.code.to_i <= 299
         statusCode = 0
 	end
     
     puts "\n -- Response Message -- \n"
-    puts "\tResponse Code : " + response.code.to_s + "\n"
-    # puts "\tv-c-correlation-id : " + response.headers["v-c-merchant-id"] + "\n"
-	p response.headers
+    puts "\tResponse Code : " + response.code + "\n"
+    puts "\tv-c-correlation-id : " + response['v-c-correlation-id'] + "\n"
 	puts "\n"
     puts "\tResponse Data :\n"
-	puts response.body + "\n"
+	puts response.body + "\n\n"
     
     return statusCode;
   end
@@ -151,7 +155,7 @@ class StandAloneJWT
 	resource = "/reporting/v3/reports?startTime=2018-10-01T00:00:00.0Z&endTime=2018-10-30T23:59:59.0Z&timeQueryType=executedTime&reportMimeType=application/xml"
     method = "get"
     statusCode = -1
-    url = "https://" + @@request_host + resource
+    url = URI.encode("https://" + @@request_host + resource)
 	
 	header_params = {}
 	header_params['Accept'] = 'application/hal+json;charset=utf-8'
@@ -159,15 +163,6 @@ class StandAloneJWT
 	
 	auth_names = []
 	gmtDateTime = DateTime.now.httpdate
-	
-	token = getJsonWebToken(resource, method, gmtDateTime)
-	
-	header_params['v-c-merchant-id'] = @@merchant_id
-	header_params['Date'] = gmtDateTime
-	header_params['Host'] = @@request_host
-	header_params['Signature'] = token
-	
-	_verify_ssl_host = 0
 	
 	puts "\n -- RequestURL -- \n"
     puts "\tURL : " + url + "\n"
@@ -177,32 +172,40 @@ class StandAloneJWT
     puts "\tDate : " + gmtDateTime + "\n"
     puts "\tHost : " + @@request_host + "\n"
 	
-	req_opts = {
-		:method => method,
-		:headers => header_params,
-		:timeout => 0,
-		:ssl_verifypeer => false,
-		:ssl_verifyhost => _verify_ssl_host,
-		:sslcert => nil,
-		:sslkey => nil,
-		:verbose => false,
-		:body => @@payload
-	}
+	token = getJsonWebToken(resource, method, gmtDateTime)
 	
-	request = Typhoeus::Request.new(url, req_opts)
-	response = request.run
+	header_params['v-c-merchant-id'] = @@merchant_id
+	header_params['Accept-Encoding'] = '*'
+	header_params['Date'] = gmtDateTime
+	header_params['Host'] = @@request_host
+	header_params['User-Agent'] = "Mozilla/5.0"
+	header_params['Signature'] = token
 	
-	if response.code >= 200 && response.code <= 299
+	headers = @@default_headers.merge(header_params || {})
+	
+	uri = URI(url)
+
+	http = Net::HTTP.new(uri.host, uri.port)
+	http.use_ssl = true
+	req = Net::HTTP::Get.new(uri)
+	
+	header_params.each do |custom_header, custom_header_value|
+		req[custom_header] = custom_header_value
+	end
+
+	response = http.request(req)
+
+	if response.code.to_i >= 200 && response.code.to_i <= 299
         statusCode = 0
 	end
     
     puts "\n -- Response Message -- \n"
-    puts "\tResponse Code : " + response.code.to_s + "\n"
-    # puts "\tv-c-correlation-id : " + response.headers["v-c-merchant-id"] + "\n"
-	p response.headers
+    puts "\tResponse Code : " + response.code + "\n"
+    puts "\tv-c-correlation-id : " + response['v-c-correlation-id'] + "\n"
+
 	puts "\n"
     puts "\tResponse Data :\n"
-	puts response.body + "\n"
+	puts response.body + "\n\n"
     
     return statusCode;
   end

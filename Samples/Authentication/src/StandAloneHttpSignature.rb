@@ -1,7 +1,6 @@
 require 'digest'
 require 'openssl'
 require 'date'
-require 'typhoeus'
 require 'uri'
 require 'base64'
 require 'json'
@@ -138,7 +137,7 @@ class StandAloneHttpSignature
 	end
 
 	response = http.request(req)
-
+	
 	if response.code.to_i >= 200 && response.code.to_i <= 299
         statusCode = 0
 	end
@@ -157,7 +156,7 @@ class StandAloneHttpSignature
 	resource = "/reporting/v3/reports?startTime=2018-10-01T00:00:00.0Z&endTime=2018-10-30T23:59:59.0Z&timeQueryType=executedTime&reportMimeType=application/xml"
     method = "get"
     statusCode = -1
-    url = "https://" + @@request_host + resource
+    url = URI.encode("https://" + @@request_host + resource)
 	
 	header_params = {}
 	header_params['Accept'] = 'application/hal+json;charset=utf-8'
@@ -169,11 +168,13 @@ class StandAloneHttpSignature
 	token = getHttpSignature(resource, method, gmtDateTime)
 	
 	header_params['v-c-merchant-id'] = @@merchant_id
+	header_params['Accept-Encoding'] = '*'
 	header_params['Date'] = gmtDateTime
 	header_params['Host'] = @@request_host
+	header_params['User-Agent'] = "Mozilla/5.0"
 	header_params['Signature'] = token
 	
-	_verify_ssl_host = 0
+	headers = @@default_headers.merge(header_params || {})
 	
 	puts "\n -- RequestURL -- \n"
     puts "\tURL : " + url + "\n"
@@ -183,32 +184,29 @@ class StandAloneHttpSignature
     puts "\tDate : " + gmtDateTime + "\n"
     puts "\tHost : " + @@request_host + "\n"
 	
-	req_opts = {
-		:method => method,
-		:headers => header_params,
-		:timeout => 0,
-		:ssl_verifypeer => false,
-		:ssl_verifyhost => _verify_ssl_host,
-		:sslcert => nil,
-		:sslkey => nil,
-		:verbose => false,
-		:body => @@payload
-	}
+	uri = URI(url)
+
+	http = Net::HTTP.new(uri.host, uri.port)
+	http.use_ssl = true
+	req = Net::HTTP::Get.new(uri)
 	
-	request = Typhoeus::Request.new(url, req_opts)
-	response = request.run
-	
-	if response.code >= 200 && response.code <= 299
+	header_params.each do |custom_header, custom_header_value|
+		req[custom_header] = custom_header_value
+	end
+
+	response = http.request(req)
+
+	if response.code.to_i >= 200 && response.code.to_i <= 299
         statusCode = 0
 	end
     
     puts "\n -- Response Message -- \n"
-    puts "\tResponse Code : " + response.code.to_s + "\n"
-    # puts "\tv-c-correlation-id : " + response.headers["v-c-merchant-id"] + "\n"
-	p response.headers
+    puts "\tResponse Code : " + response.code + "\n"
+    puts "\tv-c-correlation-id : " + response['v-c-correlation-id'] + "\n"
+
 	puts "\n"
     puts "\tResponse Data :\n"
-	puts response.body + "\n"
+	puts response.body + "\n\n"
     
     return statusCode;
   end
@@ -225,14 +223,14 @@ class StandAloneHttpSignature
 	end
         
     # HTTP GET REQUEST
-    # puts "\n\nSample 2: GET call - CyberSource Reporting API - HTTP GET Reporting request"
-    # @statusCode = processGet()
+    puts "\n\nSample 2: GET call - CyberSource Reporting API - HTTP GET Reporting request"
+    @statusCode = processGet()
     
-    # if @statusCode == 0
-    #     puts "STATUS : SUCCESS (HTTP Status = #@statusCode)"
-    # else
-    #     puts "STATUS : ERROR (HTTP Status = #@statusCode)"
-	# end
+    if @statusCode == 0
+        puts "STATUS : SUCCESS (HTTP Status = #@statusCode)"
+    else
+        puts "STATUS : ERROR (HTTP Status = #@statusCode)"
+	end
 	
   end
   
