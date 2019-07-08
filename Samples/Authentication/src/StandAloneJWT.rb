@@ -50,7 +50,9 @@ class StandAloneJWT
 		
   def getJsonWebToken(resource, http_method, gmtdatetime)
 	jwtBody = ''
-	filePath = "../resource/" + @@filename + ".p12"
+	filePath = File.join(File.dirname(__FILE__), "../resource/" + @@filename + ".p12")
+	
+	puts "FilePath : " + filePath
 	
 	p12File = File.binread(filePath)
 	
