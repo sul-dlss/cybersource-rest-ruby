@@ -3,6 +3,7 @@ require 'openssl'
 require 'date'
 require 'typhoeus'
 require 'uri'
+require 'base64'
 
 public 
 class StandAloneHttpSignature
@@ -99,12 +100,10 @@ class StandAloneHttpSignature
 	header_params['Host'] = @@request_host
 	header_params['Signature'] = token
 	
-	if http_method == "post"
-		payload = @@payload
-		digest = Digest::SHA256.base64digest(payload)
-		digest_payload = 'SHA-256=' + digest
-		header_params['Digest'] = digest_payload
-	end
+	payload = @@payload
+	digest = Digest::SHA256.base64digest(payload)
+	digest_payload = 'SHA-256=' + digest
+	header_params['Digest'] = digest_payload
 	
 	_verify_ssl_host = 0
 	
@@ -145,14 +144,67 @@ class StandAloneHttpSignature
   end
   
   def processGet()
-  
+	resource = "/reporting/v3/reports?startTime=2018-10-01T00:00:00.0Z&endTime=2018-10-30T23:59:59.0Z&timeQueryType=executedTime&reportMimeType=application/xml"
+    method = "get"
+    statusCode = -1
+    url = "https://" + @@request_host + resource
+	
+	header_params = {}
+	header_params['Accept'] = 'application/hal+json;charset=utf-8'
+	header_params['Content-Type'] = 'application/json;charset=utf-8'
+	
+	auth_names = []
+	gmtDateTime = DateTime.now.httpdate
+	
+	token = getHttpSignature(resource, method, gmtDateTime)
+	
+	header_params['v-c-merchant-id'] = @@merchant_id
+	header_params['Date'] = gmtDateTime
+	header_params['Host'] = @@request_host
+	header_params['Signature'] = token
+	
+	_verify_ssl_host = 0
+	
+	puts "\n -- RequestURL -- \n"
+    puts "\tURL : " + url + "\n"
+    puts "\n -- HTTP Headers -- \n"
+    puts "\tContent-Type : application/json;charset=utf-8" + "\n"
+    puts "\tv-c-merchant-id : " + @@merchant_id + "\n"
+    puts "\tDate : " + gmtDateTime + "\n"
+    puts "\tHost : " + @@request_host + "\n"
+	
+	req_opts = {
+		:method => method,
+		:headers => header_params,
+		:timeout => 0,
+		:ssl_verifypeer => false,
+		:ssl_verifyhost => _verify_ssl_host,
+		:sslcert => nil,
+		:sslkey => nil,
+		:verbose => false,
+		:body => @@payload
+	}
+	
+	request = Typhoeus::Request.new(url, req_opts)
+	response = request.run
+	
+	if response.code >= 200 && response.code <= 299
+        statusCode = 0
+	end
+    
+    puts "\n -- Response Message -- \n"
+    puts "\tResponse Code : " + response.code + "\n"
+    puts "\tv-c-correlation-id : " + response.headers["v-c-merchant-id"] + "\n"
+    puts "\tResponse Data :\n"
+	puts response.body + "\n"
+    
+    return statusCode;
   end
   
   def main
     # HTTP POST REQUEST
     puts "\n\nSample 1: POST call - CyberSource Payments API - HTTP POST Payment request"
     @statusCode = processPost()
-	# @statusCode = 0
 	
     if @statusCode == 0
         puts "STATUS : SUCCESS (HTTP Status = #@statusCode)"
@@ -162,19 +214,13 @@ class StandAloneHttpSignature
         
     # HTTP GET REQUEST
     puts "\n\nSample 2: GET call - CyberSource Reporting API - HTTP GET Reporting request"
-    # statusCode = processGet()
+    @statusCode = processGet()
     
     if @statusCode == 0
         puts "STATUS : SUCCESS (HTTP Status = #@statusCode)"
     else
         puts "STATUS : ERROR (HTTP Status = #@statusCode)"
 	end
-	
-	# puts "Request Host : #@@request_host\n"
-	# puts "Merchant ID : #@@merchant_id\n"
-	# puts "Merchant Key ID : #@@merchant_key_id\n"
-	# puts "Merchant Secret Key ID : #@@merchant_secret_key\n"
-	# puts "Payload :\n #@@payload\n"
 	
   end
   
