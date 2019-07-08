@@ -2,6 +2,9 @@ require 'base64'
 require 'openssl'
 require 'jwt'
 require 'json'
+require 'date'
+require 'typhoeus'
+require 'uri'
 
 public 
 class StandAloneJWT
