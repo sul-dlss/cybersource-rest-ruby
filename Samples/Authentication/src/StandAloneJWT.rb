@@ -69,7 +69,7 @@ class StandAloneJWT
 	
 	publicKey = OpenSSL::PKey::RSA.new(p12FilePath.key.public_key)
 	privateKey = OpenSSL::PKey::RSA.new(p12FilePath.key)
-	cert = OpenSSL::X509::Certificate.new(pkcs.certificate.to_pem)
+	cert = OpenSSL::X509::Certificate.new(p12FilePath.certificate.to_pem)
 	
 	x5clist = [cert]
 	
