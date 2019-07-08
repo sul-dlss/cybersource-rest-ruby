@@ -136,7 +136,9 @@ class StandAloneJWT
     
     puts "\n -- Response Message -- \n"
     puts "\tResponse Code : " + response.code.to_s + "\n"
-    puts "\tv-c-correlation-id : " + response.headers["v-c-merchant-id"] + "\n"
+    # puts "\tv-c-correlation-id : " + response.headers["v-c-merchant-id"] + "\n"
+	p response.headers
+	puts "\n"
     puts "\tResponse Data :\n"
 	puts response.body + "\n"
     
@@ -194,7 +196,9 @@ class StandAloneJWT
     
     puts "\n -- Response Message -- \n"
     puts "\tResponse Code : " + response.code.to_s + "\n"
-    puts "\tv-c-correlation-id : " + response.headers["v-c-merchant-id"] + "\n"
+    # puts "\tv-c-correlation-id : " + response.headers["v-c-merchant-id"] + "\n"
+	p response.headers
+	puts "\n"
     puts "\tResponse Data :\n"
 	puts response.body + "\n"
     
