@@ -70,11 +70,10 @@ class StandAloneJWT
 	
 	publicKey = OpenSSL::PKey::RSA.new(p12FilePath.key.public_key)
 	privateKey = OpenSSL::PKey::RSA.new(p12FilePath.key)
-	# x5Cert = OpenSSL::X509::Certificate.new(p12FilePath.certificate.to_pem)
-	cacheObj = ActiveSupport::Cache::MemoryStore.new
-    x5Cert = Cache.new.fetchCachedCertificate(filePath, p12File, merchantconfig_obj.keyPass, cacheObj)
+	x5CertPem = OpenSSL::X509::Certificate.new(p12FilePath.certificate)
+	x5CertDer = Base64.strict_encode64(x5CertPem.to_der)
 	
-	x5clist = [x5Cert]
+	x5clist = [x5CertDer]
 	
 	customHeaders = {}
 	customHeaders['v-c-merchant-id'] = @@merchant_id
@@ -153,7 +152,7 @@ class StandAloneJWT
   
   def processGet()
 	resource = "/reporting/v3/reports?startTime=2018-10-01T00:00:00.0Z&endTime=2018-10-30T23:59:59.0Z&timeQueryType=executedTime&reportMimeType=application/xml"
-    method = "get"
+	method = "get"
     statusCode = -1
     url = URI.encode("https://" + @@request_host + resource)
 	
@@ -172,7 +171,9 @@ class StandAloneJWT
     puts "\tDate : " + gmtDateTime + "\n"
     puts "\tHost : " + @@request_host + "\n"
 	
-	token = getJsonWebToken(resource, method, gmtDateTime)
+	token = "Bearer " + getJsonWebToken(resource, method, gmtDateTime)
+	
+	header_params['Authorization'] = token
 	
 	header_params['v-c-merchant-id'] = @@merchant_id
 	header_params['Accept-Encoding'] = '*'
