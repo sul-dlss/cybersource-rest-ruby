@@ -132,6 +132,8 @@ class StandAloneHttpSignature
     puts "\tv-c-merchant-id : " + @@merchant_id + "\n"
     puts "\tDate : " + gmtDateTime + "\n"
     puts "\tHost : " + @@request_host + "\n"
+	puts "\tSignature : " + token + "\n"
+	puts "\tDigest : " + digest + "\n"
     
     uri = URI(url)
 
@@ -190,6 +192,7 @@ class StandAloneHttpSignature
     puts "\tv-c-merchant-id : " + @@merchant_id + "\n"
     puts "\tDate : " + gmtDateTime + "\n"
     puts "\tHost : " + @@request_host + "\n"
+	puts "\tSignature : " + token + "\n"
     
     uri = URI(url)
 

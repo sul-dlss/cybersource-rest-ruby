@@ -122,7 +122,6 @@ class StandAloneJWT
     header_params['v-c-merchant-id'] = @@merchant_id
     header_params['Date'] = gmtDateTime
     header_params['Host'] = @@request_host
-    header_params['Signature'] = token
     
     payload = @@payload
     digest = Digest::SHA256.base64digest(payload)
@@ -187,7 +186,6 @@ class StandAloneJWT
     header_params['Date'] = gmtDateTime
     header_params['Host'] = @@request_host
     header_params['User-Agent'] = "Mozilla/5.0"
-    header_params['Signature'] = token
     
     headers = @@default_headers.merge(header_params || {})
     
