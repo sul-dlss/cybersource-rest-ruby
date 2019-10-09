@@ -5,7 +5,7 @@ public
 class CreateAdhocReport
   def main()
    config = MerchantConfiguration.new.merchantConfigProp()
-   request= CyberSource::RequestBody.new
+   request= CyberSource::CreateAdhocReportRequest.new
    api_client = CyberSource::ApiClient.new
    api_instance = CyberSource::ReportsApi.new(api_client, config)
    request.report_definition_name = "TransactionRequestClass"

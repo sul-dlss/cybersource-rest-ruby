@@ -5,7 +5,7 @@ public
 class CreateReportSubscriptionForReportNameByOrganization
   def main()
     config = MerchantConfiguration.new.merchantConfigProp()
-    request= CyberSource::RequestBody1.new
+    request= CyberSource::CreateReportSubscriptionRequest.new
     api_client = CyberSource::ApiClient.new
     api_instance = CyberSource::ReportSubscriptionsApi.new(api_client, config)
     request.report_definition_name="TransactionRequestClass"

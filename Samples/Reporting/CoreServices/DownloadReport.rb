@@ -7,8 +7,8 @@ class DownloadReport
   def main()
     file_path = "resource//DownloadReport.xml"
     config = MerchantConfiguration.new.merchantConfigProp()
-    reportDate = "2018-09-02"
-    reportName = "adhoc_report_2020"
+    reportDate = "2019-09-05"
+    reportName = "testrest_subcription_v2989"
     api_client = CyberSource::ApiClient.new
     api_instance = CyberSource::ReportDownloadsApi.new(api_client, config)
     opts = {}

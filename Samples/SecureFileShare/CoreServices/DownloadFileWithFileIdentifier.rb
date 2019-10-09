@@ -6,7 +6,7 @@ class DownloadFileWithFileIdentifier
   def main()
     file_path = "resource//DownloadFileWithFileIdentifier.csv"
     config = MerchantConfiguration.new.merchantConfigProp()
-    file_id = "VFJSUmVwb3J0LTc4NTVkMTNmLTkzOTgtNTExMy1lMDUzLWEyNTg4ZTBhNzE5Mi5jc3YtMjAxOC0xMC0yMA=="
+    file_id = "QmF0Y2hGaWxlc0RldGFpbFJlcG9ydC5jc3YtMjAxOS0wOS0zMA=="
     api_client = CyberSource::ApiClient.new
     api_instance = CyberSource::SecureFileShareApi.new(api_client, config)
     opts = {}

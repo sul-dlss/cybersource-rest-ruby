@@ -4,7 +4,7 @@ require_relative '../../../data/Configuration.rb'
 public
 class GetIndividualBatchFile
   def main()
-    id = "Owcyk6pl"
+    id = "20190110"
     config = MerchantConfiguration.new.merchantConfigProp()
     api_client = CyberSource::ApiClient.new
     api_instance = CyberSource::TransactionBatchesApi.new(api_client, config)
