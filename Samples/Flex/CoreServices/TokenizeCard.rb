@@ -1,5 +1,4 @@
 require 'cybersource_rest_client'
-require_relative '../VerifyToken.rb'
 require_relative '../KeyGenerationNoEnc.rb'
 require_relative '../../../data/Configuration.rb'
 
@@ -27,8 +26,9 @@ class TokenizeCard
     request.card_info =  card_info
     data, status_code, headers = api_instance.tokenize(request)
     puts data, status_code, headers
-    verify = VerifyToken.new.verify(public_key, data)
-    print "Token verification sucess : ", verify, "\n"
+	token_verifier = CyberSource::TokenVerification.new
+    is_token_verified = token_verifier.verifyToken(public_key, data)
+    print "Token verification sucess : ", is_token_verified, "\n"
   rescue StandardError => err
     puts err.message
   end
