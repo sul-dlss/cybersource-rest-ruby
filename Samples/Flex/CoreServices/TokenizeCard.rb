@@ -28,7 +28,7 @@ class TokenizeCard
     puts data, status_code, headers
 	token_verifier = CyberSource::TokenVerification.new
     is_token_verified = token_verifier.verifyToken(public_key, data)
-    print "Token verification sucess : ", is_token_verified, "\n"
+    print "Token verification : ", is_token_verified, "\n"
   rescue StandardError => err
     puts err.message
   end
