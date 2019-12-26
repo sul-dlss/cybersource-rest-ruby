@@ -43,7 +43,7 @@ class UpdatePaymentIdentifier
 
     instrument_identifier_card = CyberSource::TmsV1InstrumentIdentifiersPost200ResponseCard.new
     instrument_identifier_card.number = "4111111111111111"
-    instrument_identifier = CyberSource::TmsV1InstrumentIdentifiersPaymentInstrumentsGet200ResponseEmbeddedInstrumentIdentifier.new
+    instrument_identifier = CyberSource::Tmsv1paymentinstrumentsInstrumentIdentifier.new
     instrument_identifier.card = instrument_identifier_card
     body.instrument_identifier = instrument_identifier
     
