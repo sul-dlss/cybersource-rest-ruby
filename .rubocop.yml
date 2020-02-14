@@ -1,0 +1,32 @@
+AllCops:
+  Exclude:
+    - 'Gemfile'
+    - 'config/**/*'
+
+Layout/LineLength:
+  Max: 120
+
+Metrics/BlockLength:
+  Max: 101
+
+Metrics/ClassLength:
+  Max: 120
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/PerceivedComplexity:
+  Max: 10
+
+Metrics/MethodLength:
+  Max: 20
+
+Metrics/AbcSize:
+  Max: 27
+
+Metrics/ParameterLists:
+  Max: 6
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: single_quotes
