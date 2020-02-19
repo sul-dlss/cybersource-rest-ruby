@@ -10,8 +10,8 @@ Config.load_and_set_settings(Config.setting_files('config', ENV['STAGE']))
 class DownloadPaymentBatchDetailReport
   def main
     d = Date.today
-    first_day = Date.new(d.year, d.month, 1)
-    last_day = Date.new(d.year, d.month, -1)
+    first_day = Date.new(d.year, d.month - 1, 1)
+    last_day = Date.new(d.year, d.month - 1, -1)
 
     api_instance = CyberSource::ReportDownloadsApi.new(CyberSource::ApiClient.new,
                                                        Settings.configurationDictionary.to_h.transform_keys(&:to_s))

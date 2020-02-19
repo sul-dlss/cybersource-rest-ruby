@@ -10,7 +10,7 @@ module WriteToCsv
     return unless data
 
     d = Date.today
-    date_stamp = Date.new(d.year, d.month, 1).strftime('%Y%m')
+    date_stamp = Date.new(d.year, d.month - 1, 1).strftime('%Y%m')
     f = File.new("#{Settings.output_file_path}.#{date_stamp}", 'a')
     data.each_line.with_index do |line, index|
       f.write(line) if index > 1
