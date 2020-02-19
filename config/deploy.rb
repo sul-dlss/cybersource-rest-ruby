@@ -14,7 +14,7 @@ set :log_level, :info
 set :deploy_to, "/s/SUL/Bin/CyberSource/#{fetch(:application)}"
 
 # Default value for linked_dirs is []
-set :linked_dirs, ['config/settings']
+set :linked_dirs, %w[config/settings cybs_log]
 
 # Default value for keep_releases is 5
 set :keep_releases, 3
