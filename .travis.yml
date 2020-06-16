@@ -1,0 +1,13 @@
+language: ruby
+sudo: false
+rvm:
+  - 2.6.3
+cache:
+  - bundler
+  - directories
+    - '/home/travis/.rvm/'
+bundler_args: --without production
+script:
+  - bundle exec rspec
+  - ls -l /home/travis/build/sul-dlss/cybersource-rest-ruby/spec/fixtures/
+

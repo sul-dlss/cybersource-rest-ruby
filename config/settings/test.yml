@@ -1,0 +1,11 @@
+configurationDictionary:
+  merchantID: ''
+  runEnvironment: ''
+  timeout: 0 # In Milliseconds
+  authenticationType: ''
+  enableLog: false
+  merchantsecretKey: ''
+  merchantKeyId: ''
+  logDirectory: ''
+
+output_file_path: 'spec/fixtures/report_cyberfile'
