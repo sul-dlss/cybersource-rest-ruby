@@ -3,7 +3,13 @@ ruby '2.6.3'
 
 gem 'config'
 gem 'cybersource_rest_client'
-gem 'rubocop'
+
+group :development, :test do
+  gem 'rspec'
+  gem 'rubocop'
+  gem 'rubocop-performance'
+  gem 'rubocop-rspec'
+end
 
 group :deployment do
   gem 'capistrano'

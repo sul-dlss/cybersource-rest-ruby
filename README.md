@@ -19,7 +19,7 @@ integration with the CyberSource REST APIs through the [CyberSource Ruby SDK](ht
 ```
 * Run the report: 
 ```
-    $ STAGE=dev ruby CyberSource/Reporting/CoreServices/DownloadReport.rb
+    $ STAGE=dev ruby CyberSource/download_payment_batch_detail_report.rb
 ```
 
 ## Setting the API credentials for an API request

@@ -13,20 +13,17 @@ class DownloadPaymentBatchDetailReport
     first_day = Date.new(d.year, d.month - 1, 1)
     last_day = Date.new(d.year, d.month - 1, -1)
 
-    api_instance = CyberSource::ReportDownloadsApi.new(CyberSource::ApiClient.new,
-                                                       Settings.configurationDictionary.to_h.transform_keys(&:to_s))
-
     (first_day..last_day).each do |date|
       report_date = date.strftime('%Y-%m-%d')
       begin
-      data, status_code, headers = api_instance.download_report(report_date, 'PaymentBatchDetailReport_Daily_Classic',
-                                                                organization_id: 'wfgsulair')
-      puts report_date, status_code, headers
+        data, status_code, headers = download_report(report_date)
+        puts report_date, status_code, headers
       rescue StandardError => e
         puts report_date
         puts e.message
         next
       end
+
       WriteToCsv.file(data)
     end
 
@@ -34,5 +31,12 @@ class DownloadPaymentBatchDetailReport
     puts e.message
   end
 
-  DownloadPaymentBatchDetailReport.new.main
+  def download_report(report_date)
+    CyberSource::ReportDownloadsApi.new(
+      CyberSource::ApiClient.new, Settings.configurationDictionary.to_h.transform_keys(&:to_s)
+    ).download_report(
+      report_date,
+      'PaymentBatchDetailReport_Daily_Classic', organization_id: 'wfgsulair'
+    )
+  end
 end
