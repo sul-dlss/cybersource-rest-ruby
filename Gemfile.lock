@@ -30,7 +30,7 @@ GEM
     config (2.2.1)
       deep_merge (~> 1.2, >= 1.2.1)
       dry-validation (~> 1.0, >= 1.0.0)
-    cybersource_rest_client (0.0.24)
+    cybersource_rest_client (0.0.22)
       activesupport (~> 5.2, >= 5.2.0)
       interface (~> 1.0, >= 1.0.4)
       json (~> 2.1, >= 2.1.0)
@@ -148,7 +148,7 @@ DEPENDENCIES
   capistrano-bundler
   capistrano-shared_configs
   config
-  cybersource_rest_client
+  cybersource_rest_client (= 0.0.22)
   dlss-capistrano
   rspec
   rubocop
