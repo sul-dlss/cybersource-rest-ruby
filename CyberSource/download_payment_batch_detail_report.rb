@@ -3,15 +3,15 @@
 require 'cybersource_rest_client'
 require 'csv'
 require_relative '../helpers/write_to_csv'
+require_relative '../helpers/year_or_prev_year'
 require 'config'
 Config.load_and_set_settings(Config.setting_files('config', ENV['STAGE']))
 
 # class to download the PaymentbatchDetailReport from CyberSource
 class DownloadPaymentBatchDetailReport
   def main
-    d = Date.today
-    first_day = Date.new(d.year, d.month - 1, 1)
-    last_day = Date.new(d.year, d.month - 1, -1)
+    first_day = Date.new(YearOrPrev.year, Date.today.prev_month.month, 1)
+    last_day = Date.new(YearOrPrev.year, Date.today.prev_month.month, -1)
 
     (first_day..last_day).each do |date|
       report_date = date.strftime('%Y-%m-%d')

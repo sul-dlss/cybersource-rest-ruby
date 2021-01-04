@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+require_relative '../helpers/year_or_prev_year'
 require_relative '../CyberSource/download_payment_batch_detail_report'
 
 RSpec.describe DownloadPaymentBatchDetailReport do
   let(:result) { described_class }
   let(:download_report) { File.open(File.join(Dir.pwd, 'spec', 'fixtures', 'report_file.csv')).read }
   let(:d) { Date.today }
-  let(:date_stamp) { Date.new(d.year, d.month - 1, 1).strftime('%Y%m') }
+  let(:date_stamp) { Date.new(YearOrPrev.year, d.prev_month.month, 1).strftime('%Y%m') }
   let(:file) { File.join(Dir.pwd, 'spec', 'fixtures', "report_cyberfile.#{date_stamp}") }
 
   before do
