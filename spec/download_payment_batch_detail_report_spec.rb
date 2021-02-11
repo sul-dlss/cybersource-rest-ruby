@@ -7,14 +7,15 @@ require_relative '../CyberSource/download_payment_batch_detail_report'
 RSpec.describe DownloadPaymentBatchDetailReport do
   let(:result) { described_class }
   let(:download_report) { File.open(File.join(Dir.pwd, 'spec', 'fixtures', 'report_file.csv')).read }
-  let(:d) { Date.today }
+  let(:dstring) { Date.today.to_s }
+  let(:d) { Date.parse(dstring) }
   let(:date_stamp) { Date.new(YearOrPrev.year, d.prev_month.month, 1).strftime('%Y%m') }
   let(:file) { File.join(Dir.pwd, 'spec', 'fixtures', "report_cyberfile.#{date_stamp}") }
 
   before do
     File.open(file, 'a+')
     allow_any_instance_of(result).to receive(:download_report).and_return(download_report)
-    result.new.main
+    result.new(dstring).main
   end
 
   after do

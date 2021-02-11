@@ -9,12 +9,20 @@ Config.load_and_set_settings(Config.setting_files('config', ENV['STAGE']))
 
 # class to download the PaymentbatchDetailReport from CyberSource
 class DownloadPaymentBatchDetailReport
+  attr_accessor :date
+
+  def initialize(date)
+    # Date format: e.g. '2001-02-03'
+    @date = date ? Date.parse(date) : Date.today
+  end
+
   def main
-    first_day = Date.new(YearOrPrev.year, Date.today.prev_month.month, 1)
-    last_day = Date.new(YearOrPrev.year, Date.today.prev_month.month, -1)
+    first_day = Date.new(YearOrPrev.year, @date.prev_month.month, 1)
+    last_day = Date.new(YearOrPrev.year, @date.prev_month.month, -1)
 
     (first_day..last_day).each do |date|
       report_date = date.strftime('%Y-%m-%d')
+      puts report_date
       begin
         data, status_code, headers = download_report(report_date)
         puts report_date, status_code, headers
@@ -26,7 +34,6 @@ class DownloadPaymentBatchDetailReport
 
       WriteToCsv.file(data)
     end
-
   rescue StandardError => e
     puts e.message
   end

@@ -3,5 +3,6 @@
 
 require_relative 'CyberSource/download_payment_batch_detail_report'
 
-result = DownloadPaymentBatchDetailReport.new
+date = ARGV[0]
+result = DownloadPaymentBatchDetailReport.new(date)
 result.main
