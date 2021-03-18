@@ -5,7 +5,7 @@ require 'csv'
 require_relative '../helpers/write_to_csv'
 require_relative '../helpers/year_or_prev_year'
 require 'config'
-Config.load_and_set_settings(Config.setting_files('config', ENV['STAGE']))
+Config.load_and_set_settings(Config.setting_files('../config', ENV['STAGE'] || 'dev'))
 
 # class to download the PaymentbatchDetailReport from CyberSource
 class DownloadPaymentBatchDetailReport
