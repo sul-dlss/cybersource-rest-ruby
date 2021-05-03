@@ -1,7 +1,9 @@
 AllCops:
+  NewCops: enable
   Exclude:
     - 'Gemfile'
     - 'config/**/*'
+
 
 Layout/LineLength:
   Max: 120
