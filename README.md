@@ -1,6 +1,6 @@
 # Download the Payment Batch Detail Report using the CyberSource SDK
 
-This repository is a hard fork and heavily modified and pruned version of the [CyberSource working code sample](https://github.com/CyberSource/cybersource-rest-samples-ruby) which demonstrates Ruby 
+This LibSys repository is a hard fork and heavily modified and pruned version of the [CyberSource working code sample](https://github.com/CyberSource/cybersource-rest-samples-ruby) which demonstrates Ruby 
 integration with the CyberSource REST APIs through the [CyberSource Ruby SDK](https://github.com/CyberSource/cybersource-rest-client-ruby).
 
 ## Requirements
