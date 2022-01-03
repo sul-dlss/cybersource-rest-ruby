@@ -16,10 +16,10 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.6.3
+        ruby-version: 2.7.1
     - name: Install dependencies
       run: bundle install
     - name: Run tests
       run: bundle exec rspec
-    - name: Verify output file 
+    - name: Verify output file
       run: cat spec/fixtures/report_file.csv
