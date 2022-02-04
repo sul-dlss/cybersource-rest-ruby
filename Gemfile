@@ -2,8 +2,8 @@ source 'https://rubygems.org'
 ruby '2.7.1'
 
 gem 'config'
-gem 'cybersource_rest_client'
-# gem 'cybersource_rest_client', '0.0.22'
+# gem 'cybersource_rest_client'
+gem 'cybersource_rest_client', '0.0.24'
 
 group :development, :test do
   gem 'rspec'
