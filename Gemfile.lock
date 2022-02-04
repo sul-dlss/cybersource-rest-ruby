@@ -7,6 +7,8 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
+    addressable (2.8.0)
+      public_suffix (>= 2.0.2, < 5.0)
     airbrussh (1.4.0)
       sshkit (>= 1.6.1, != 1.7.0)
     ast (2.4.1)
@@ -31,8 +33,9 @@ GEM
     config (2.2.1)
       deep_merge (~> 1.2, >= 1.2.1)
       dry-validation (~> 1.0, >= 1.0.0)
-    cybersource_rest_client (0.0.28)
+    cybersource_rest_client (0.0.31)
       activesupport (~> 6.0, >= 6.0.3.2)
+      addressable (~> 2.3, >= 2.3.0)
       interface (~> 1.0, >= 1.0.4)
       json (~> 2.1, >= 2.1.0)
       jwt (~> 2.1.0)
@@ -97,6 +100,7 @@ GEM
     parallel (1.19.2)
     parser (2.7.1.4)
       ast (~> 2.4.1)
+    public_suffix (4.0.6)
     rainbow (3.0.0)
     rake (13.0.1)
     regexp_parser (1.7.1)
@@ -149,7 +153,7 @@ DEPENDENCIES
   capistrano-bundler
   capistrano-shared_configs
   config
-  cybersource_rest_client (= 0.0.28)
+  cybersource_rest_client (= 0.0.31)
   dlss-capistrano
   rspec
   rubocop
