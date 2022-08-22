@@ -1,14 +1,13 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (6.1.4.4)
+    activesupport (7.0.3.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
-      zeitwerk (~> 2.3)
-    addressable (2.8.0)
-      public_suffix (>= 2.0.2, < 5.0)
+    addressable (2.8.1)
+      public_suffix (>= 2.0.2, < 6.0)
     airbrussh (1.4.1)
       sshkit (>= 1.6.1, != 1.7.0)
     ast (2.4.2)
@@ -33,12 +32,12 @@ GEM
     config (4.0.0)
       deep_merge (~> 1.2, >= 1.2.1)
       dry-validation (~> 1.0, >= 1.0.0)
-    cybersource_rest_client (0.0.31)
-      activesupport (~> 6.0, >= 6.0.3.2)
+    cybersource_rest_client (0.0.45)
+      activesupport (>= 6.0.3.2, < 8.0)
       addressable (~> 2.3, >= 2.3.0)
       interface (~> 1.0, >= 1.0.4)
       json (~> 2.1, >= 2.1.0)
-      jwt (~> 2.1.0)
+      jwt (= 2.1)
       typhoeus (~> 1.0, >= 1.0.1)
     deep_merge (1.2.2)
     diff-lcs (1.5.0)
@@ -84,16 +83,16 @@ GEM
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     interface (1.0.5)
-    json (2.6.1)
+    json (2.6.2)
     jwt (2.1.0)
-    minitest (5.15.0)
+    minitest (5.16.3)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (7.0.1)
     parallel (1.22.1)
     parser (3.1.2.1)
       ast (~> 2.4.1)
-    public_suffix (4.0.6)
+    public_suffix (5.0.0)
     rainbow (3.1.1)
     rake (13.0.6)
     regexp_parser (2.5.0)
@@ -135,10 +134,9 @@ GEM
     thor (1.2.1)
     typhoeus (1.4.0)
       ethon (>= 0.9.0)
-    tzinfo (2.0.4)
+    tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.2.0)
-    zeitwerk (2.5.4)
 
 PLATFORMS
   ruby
@@ -148,7 +146,7 @@ DEPENDENCIES
   capistrano-bundler
   capistrano-shared_configs
   config
-  cybersource_rest_client (= 0.0.31)
+  cybersource_rest_client (= 0.0.45)
   dlss-capistrano
   rspec
   rubocop
