@@ -6,7 +6,7 @@ require_relative '../CyberSource/download_payment_batch_detail_report'
 
 RSpec.describe DownloadPaymentBatchDetailReport do
   let(:result) { described_class }
-  let(:download_report) { File.open(File.join(Dir.pwd, 'spec', 'fixtures', 'report_file.csv')).read }
+  let(:download_report) { File.read(File.join(Dir.pwd, 'spec', 'fixtures', 'report_file.csv')) }
   let(:dstring) { Date.today.to_s }
   let(:d) { Date.parse(dstring) }
   let(:date_stamp) { Date.new(YearOrPrev.year, d.prev_month.month, 1).strftime('%Y%m') }
@@ -19,17 +19,17 @@ RSpec.describe DownloadPaymentBatchDetailReport do
   end
 
   after do
-    File.delete(file) if File.exist?(file)
+    FileUtils.rm_f(file)
   end
 
   it 'downloads reports for the entire month' do
     puts "Opening file: #{file}\n"
-    expect(IO.readlines(file).size).to be >= 28
+    expect(File.readlines(file).size).to be >= 28
   end
 
   it 'contains a csv file of details about the transactions' do
     puts "Opening file: #{file}\n"
-    IO.foreach(file) do |row|
+    File.foreach(file) do |row|
       expect(row.split(',').size).to eq 13
     end
   end

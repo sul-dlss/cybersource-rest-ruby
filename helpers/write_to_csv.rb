@@ -2,7 +2,7 @@
 
 require_relative '../helpers/year_or_prev_year'
 require 'config'
-Config.load_and_set_settings(Config.setting_files('config', ENV['STAGE']))
+Config.load_and_set_settings(Config.setting_files('config', ENV.fetch('STAGE', nil)))
 
 # module to write a csv file to a directory
 module WriteToCsv
