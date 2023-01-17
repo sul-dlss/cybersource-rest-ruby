@@ -9,7 +9,7 @@ RSpec.describe DownloadPaymentBatchDetailReport do
   let(:download_report) { File.read(File.join(Dir.pwd, 'spec', 'fixtures', 'report_file.csv')) }
   let(:dstring) { Date.today.to_s }
   let(:d) { Date.parse(dstring) }
-  let(:date_stamp) { Date.new(YearOrPrev.year, d.prev_month.month, 1).strftime('%Y%m') }
+  let(:date_stamp) { Date.new(YearOrPrev.year(d), d.prev_month.month, 1).strftime('%Y%m') }
   let(:file) { File.join(Dir.pwd, 'spec', 'fixtures', "report_cyberfile.#{date_stamp}") }
 
   before do
