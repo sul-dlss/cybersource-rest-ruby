@@ -17,8 +17,8 @@ class DownloadPaymentBatchDetailReport
   end
 
   def main
-    first_day = Date.new(YearOrPrev.year, @date.prev_month.month, 1)
-    last_day = Date.new(YearOrPrev.year, @date.prev_month.month, -1)
+    first_day = Date.new(YearOrPrev.year(@date), @date.prev_month.month, 1)
+    last_day = Date.new(YearOrPrev.year(@date), @date.prev_month.month, -1)
 
     (first_day..last_day).each do |date|
       report_date = date.strftime('%Y-%m-%d')
@@ -32,7 +32,7 @@ class DownloadPaymentBatchDetailReport
         next
       end
 
-      WriteToCsv.file(data)
+      WriteToCsv.file(data, date)
     end
   rescue StandardError => e
     puts e.message
