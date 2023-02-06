@@ -5,6 +5,7 @@ gem 'config'
 gem 'cybersource_rest_client', '0.0.31'
 
 group :development, :test do
+  gem 'byebug'
   gem 'rspec'
   gem 'rubocop'
   gem 'rubocop-performance'
