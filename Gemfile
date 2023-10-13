@@ -1,8 +1,13 @@
 source 'https://rubygems.org'
 ruby '2.7.1'
 
-gem 'config'
 gem 'cybersource_rest_client', '0.0.31'
+
+gem "folio_client", "~> 0.13.0"
+
+gem "mail", "~> 2.8"
+
+gem 'rake'
 
 group :development, :test do
   gem 'byebug'
@@ -10,11 +15,6 @@ group :development, :test do
   gem 'rubocop'
   gem 'rubocop-performance'
   gem 'rubocop-rspec'
+  gem 'webmock'
 end
 
-group :deployment do
-  gem 'capistrano'
-  gem 'capistrano-bundler'
-  gem 'capistrano-shared_configs'
-  gem 'dlss-capistrano'
-end
