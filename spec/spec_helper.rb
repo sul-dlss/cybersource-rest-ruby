@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'webmock/rspec'
+
 ENV['STAGE'] = 'test'
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate

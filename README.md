@@ -1,6 +1,6 @@
 # Download the Payment Batch Detail Report using the CyberSource SDK
 
-This LibSys repository is a hard fork and heavily modified and pruned version of the [CyberSource working code sample](https://github.com/CyberSource/cybersource-rest-samples-ruby) which demonstrates Ruby 
+This LibSys repository is a hard fork and heavily modified and pruned version of the [CyberSource working code sample](https://github.com/CyberSource/cybersource-rest-samples-ruby) which demonstrates Ruby
 integration with the CyberSource REST APIs through the [CyberSource Ruby SDK](https://github.com/CyberSource/cybersource-rest-client-ruby).
 
 ## Requirements
@@ -13,55 +13,69 @@ integration with the CyberSource REST APIs through the [CyberSource Ruby SDK](ht
 ```
     $ git clone https://github.com/sul-dlss/cybersource-rest-ruby
 ```
-* Install the cybersource-rest-client-ruby (from RubyGems.org)
+* Install the gems
 ```
-    $ gem install cybersource_rest_client
+    $ bundle
 ```
-* Run the report: 
+* Run the test report:
 ```
-    $ STAGE=dev ruby CyberSource/download_payment_batch_detail_report.rb
+    $ SLEEP=0 rspec
+```
+
+## Create Persistent Volume
+```
+kubectl -n ${namespace} apply -f pv-volume.yaml
 ```
 
 ## Setting the API credentials for an API request
 
-Configure the following information in the settings file:
-  
-  * Http Signature 
-```yml
-configurationDictionary:
-  merchantID: 'wfgsulair'
-  runEnvironment: 'cybersource.environment.production'
-  timeout: 1000 # In Milliseconds
-  authenticationType: 'http_signature'
-  enableLog: false
-  merchantsecretKey: 'your_key_serial_number'
-  merchantKeyId: 'your_key_shared_secret'
-```
+Configure the `MERCHANT_KEY_ID` and `MERCHANT_SECRET_KEY` variables in the environment The variables for `STAGE`, `APP_PASSWORD` (for folio) and `APP_USERNAME` are configured using the `db-connect-modules` folio secret.
 
-Obtain the merchantsecretKey and merchantKeyId from the CyberSource Business Center.
+Obtain the `merchantsecretKey` and `merchantKeyId` from the CyberSource Business Center.
 You will need permissions from merchants@stanford.edu to access the CyberSource Business Center
 with the option to generate security keys.
 
-## Switching between the sandbox environment and the production environment
-CyberSource maintains a complete sandbox environment for testing and development purposes. This sandbox environment is an exact 
-duplicate of our production environment with the transaction authorization and settlement process simulated. By default, this sample code is 
-configured to communicate with the sandbox environment. To switch to the production environment, set the appropriate environment 
-constant in config/settings/#{stage} file.  For example:
+### Create secret with the Cybersource credentials
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cybersource
+type: Opaque
+data:
+  MERCHANT_KEY_ID: base64 encoded accessKey
+  MERCHANT_SECRET_KEY: base64 encoded secretKey
+  EMAIL_REPORT_TO: base64 encoded comma-seperatred list of email addresses
+```
+Then:
+```
+kubectl -n ${namespace} apply -f secret.yaml
+```
 
-#### For PRODUCTION use
-```yml
-configurationDictionary:
-  merchantID: 'wfgsulair'
-  runEnvironment: 'cybersource.environment.production'
-  ...
+### Create secret with sendmail config
+Edit the sendmail.yaml, sendmail.mc: `SMART_HOST` entry to be the cluster mail host.
 ```
-#### For TESTING use
-```yml
-configurationDictionary:
-  merchantID: 'wfgsulair'
-  runEnvironment: 'cybersource.environment.sandbox'
-  ...
+kubectl -n ${namespace} apply -f sendmail.yaml
 ```
+
+## Run the ChronJob
+```
+kubectl -n ${namespace} apply -f cronjob.yaml
+```
+
+## Run the Debug pod
+```
+kubectl -n ${namespace} apply -f debug.yaml
+```
+
+Give sendmail a couple of minutes to restart before checking the /home/harvester/harvestlog directory.
+
+
+## Switching between the sandbox environment and the production environment
+CyberSource maintains a complete sandbox environment for testing and development purposes. This sandbox environment is an exact
+duplicate of our production environment with the transaction authorization and settlement process simulated. By default, this sample code is
+configured to communicate with the sandbox environment.
+To switch to the sandbox environment, set the `CYBS_ENV=sandbox` environment variable.
 
 ## CyberSource API Reference
 

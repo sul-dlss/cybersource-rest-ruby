@@ -1,0 +1,55 @@
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cybersource
+spec:
+  containers:
+  - image: ghcr.io/sul-dlss/cybersource-rest-ruby:main
+    name: cybersource
+    envFrom:
+      - secretRef:
+          name: db-connect-modules
+    imagePullPolicy: Always
+    # Just spin & wait forever
+    command: [ "/bin/bash", "-c", "--" ]
+    args: [ "cd /etc/mail && make && service sendmail restart; while true; do sleep 30; done;" ]
+    env:
+    - name: EMAIL_REPORT_TO
+      valueFrom:
+        secretKeyRef:
+          name: cybersource
+          key: EMAIL_REPORT_TO
+    - name: MERCHANT_KEY_ID
+      valueFrom:
+        secretKeyRef:
+          name: cybersource
+          key: MERCHANT_KEY_ID
+    - name: MERCHANT_SECRET_KEY
+      valueFrom:
+        secretKeyRef:
+          name: cybersource
+          key: MERCHANT_SECRET_KEY
+    volumeMounts:
+      - mountPath: /home/cyberlog
+        name: cyberlog
+      - mountPath: /etc/mail/sendmail.mc
+        name: sendmail
+        subPath: sendmail.mc
+    resources:
+      limits:
+        cpu: 128m
+        memory: 512Mi
+      requests:
+        cpu: 50m
+        memory: 400Mi
+  restartPolicy: Never
+  volumes:
+  - name: sendmail
+    secret:
+      secretName: sendmail
+  - name: cyberlog
+    persistentVolumeClaim:
+      claimName: cybersource
+  imagePullSecrets:
+      - name: ghcr

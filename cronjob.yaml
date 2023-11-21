@@ -1,0 +1,61 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cybersource
+spec:
+  schedule: "30 16 3 * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          imagePullSecrets:
+          - name: ghcr
+          containers:
+          - image: ghcr.io/sul-dlss/cybersource-rest-ruby:main
+            name: cybersource
+            envFrom:
+              - secretRef:
+                  name: db-connect-modules
+            imagePullPolicy: Always
+            command: [ "/bin/bash", "-c", "--" ]
+            args: [ "cd /etc/mail && make && service sendmail restart; cd /home/cybersource && rake report_and_mail >> files/reports.log 2>&1;" ]
+            env:
+            - name: EMAIL_REPORT_TO
+              valueFrom:
+                secretKeyRef:
+                  name: cybersource
+                  key: EMAIL_REPORT_TO
+            - name: MERCHANT_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: cybersource
+                  key: MERCHANT_KEY_ID
+            - name: MERCHANT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cybersource
+                  key: MERCHANT_SECRET_KEY
+            volumeMounts:
+              - mountPath: home/files
+                name: cybersource-files
+              - mountPath: /etc/mail/sendmail.mc
+                name: sendmail
+                subPath: sendmail.mc
+            resources:
+              limits:
+                cpu: 128m
+                memory: 512Mi
+              requests:
+                cpu: 50m
+                memory: 400Mi
+          restartPolicy: Never
+          volumes:
+          - name: cybersource-files
+            persistentVolumeClaim:
+              claimName: cybersource-files
+          - name: sendmail
+            secret:
+              secretName: sendmail
