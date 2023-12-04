@@ -50,6 +50,6 @@ spec:
       secretName: sendmail
   - name: cyberlog
     persistentVolumeClaim:
-      claimName: cybersource
+      claimName: cybersource-files
   imagePullSecrets:
       - name: ghcr

@@ -76,7 +76,7 @@ class DownloadPaymentBatchDetailReport
                 paydate: paydate,
                 user_id: user_id,
                 folio_payment_id: account['id'],
-                fee_fine_owner: account['feeFineOwner'],
+                library: account['feeFineOwner'],
                 reason: account['feeFineType'],
                 paid: paid
               }

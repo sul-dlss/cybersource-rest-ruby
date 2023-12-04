@@ -7,8 +7,8 @@ task :download_report, [:date] do |_, args|
   puts result.main
 end
 
-desc 'test mail'
-task :mail do
+desc 'mail report, date format [9999-99-99]'
+task :mail, [:date] do |_, args|
   require 'date'
   require 'mail'
 
@@ -24,10 +24,11 @@ task :mail do
   end
 
   begin
+    date = Date.parse(args[:date]).strftime('%m-%Y')
     mail = Mail.new do
       from     'cardPaymentReporter@stanford.edu'
       to       ENV.fetch('EMAIL_REPORT_TO', 'sul-unicorn-devs@lists.stanford.edu')
-      subject  "Card Payment Report #{Date.today.strftime('%m-%Y')}"
+      subject  "Card Payment Report #{date || Date.today.strftime('%m-%Y')}"
       body     File.read('files/credits.csv')
       add_file 'files/credits.csv'
     end
