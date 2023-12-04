@@ -25,6 +25,7 @@ RSpec.describe DownloadPaymentBatchDetailReport do
                 "name": "Paid fully"
               },
               "feeFineType": "Lost item fee",
+              "feeFineOwner": "SUL",
               "metadata": {
                 "createdDate": "2023-10-10T09:33:55.532+00:00"
               },
