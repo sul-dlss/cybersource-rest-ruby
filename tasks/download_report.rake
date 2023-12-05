@@ -24,11 +24,11 @@ task :mail, [:date] do |_, args|
   end
 
   begin
-    date = Date.parse(args[:date]).strftime('%m-%Y')
+    date = args[:date] ? Date.parse(args[:date]).strftime('%m-%Y') : Date.today.strftime('%m-%Y')
     mail = Mail.new do
       from     'cardPaymentReporter@stanford.edu'
       to       ENV.fetch('EMAIL_REPORT_TO', 'sul-unicorn-devs@lists.stanford.edu')
-      subject  "Card Payment Report #{date || Date.today.strftime('%m-%Y')}"
+      subject  "Card Payment Report #{date}"
       body     File.read('files/credits.csv')
       add_file 'files/credits.csv'
     end
