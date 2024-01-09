@@ -3,7 +3,7 @@ name: PushImage
 on:
   push:
     branches:
-    - '!dependabot/bundler*'
+    - '!dependabot*'
 
 permissions:
   contents: read
