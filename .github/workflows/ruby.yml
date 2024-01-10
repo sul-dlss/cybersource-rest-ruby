@@ -2,8 +2,8 @@ name: PushImage
 
 on:
   push:
-    branches:
-    - '!dependabot*'
+    branches-ignore:
+    - 'dependabot/*'
 
 permissions:
   contents: read
