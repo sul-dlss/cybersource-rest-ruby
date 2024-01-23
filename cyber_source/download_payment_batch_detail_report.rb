@@ -18,7 +18,7 @@ class DownloadPaymentBatchDetailReport
     enableLog: true,
     merchantKeyId: ENV.fetch('MERCHANT_KEY_ID', nil),
     merchantsecretKey: ENV.fetch('MERCHANT_SECRET_KEY', nil),
-    logDirectory: 'harvestlog',
+    logDirectory: 'log',
     logFilename: 'cybs'
   }.freeze
 
