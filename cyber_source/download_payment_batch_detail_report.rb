@@ -64,30 +64,40 @@ class DownloadPaymentBatchDetailReport
           end
 
           if accounts && (accounts['totalRecords']).positive?
+            payments = []
+
+            accounts['accounts'].each do |a|
+              next unless is_a_payment?(a, paydate)
+
+              payments << a['amount'].to_f
+            end
+
             accounts['accounts'].each do |account|
-              account_date = Date.parse(account['metadata']['createdDate'])
-              payment_date = Date.parse(paydate)
+              next unless is_a_payment?(account, paydate)
 
-              unless (account_date == payment_date) && (account['amount'].to_f == paid.to_f) && (account['paymentStatus']['name'] == 'Paid fully')
-                next
+              puts user_id
+              puts "TOTAL PAYMENTS: #{payments.sum}"
+              puts "PAID in CYB:#{paid.to_f}"
+
+              if (payments.sum == paid.to_f)
+
+                payload = {
+                  paydate: Date.parse(paydate),
+                  user_id: user_id,
+                  folio_payment_id: account['id'],
+                  library: account['feeFineOwner'],
+                  reason: account['feeFineType'],
+                  paid: account['amount'].to_f
+                }
+
+                credits.push(payload)
               end
-
-              payload = {
-                paydate: paydate,
-                user_id: user_id,
-                folio_payment_id: account['id'],
-                library: account['feeFineOwner'],
-                reason: account['feeFineType'],
-                paid: paid
-              }
-
-              credits.push(payload)
             end
           end
         end
       end
       puts credits
-      sleep(ENV.fetch('SLEEP', 2)&.to_i)
+      sleep(ENV.  fetch('SLEEP', 2)&.to_i)
     end
     credits.any? && CSV.open('files/credits.csv', 'w+') do |csv|
       csv << credits.first.keys
@@ -99,6 +109,22 @@ class DownloadPaymentBatchDetailReport
     puts e.message
     puts e.backtrace
   end
+
+  def is_a_payment?(account, paydate)
+    payment_date = Date.parse(paydate)
+
+    (created_date(account) == payment_date || updated_date(account) == payment_date) &&
+    (account['paymentStatus']['name'] == 'Paid fully')
+  end
+
+  def created_date(account)
+    Date.parse(account['metadata']['createdDate'])
+  end
+
+  def updated_date(account)
+    Date.parse(account['metadata']['updatedDate'])
+  end
+
 
   def download_report(report_date)
     CyberSource::ReportDownloadsApi.new(
