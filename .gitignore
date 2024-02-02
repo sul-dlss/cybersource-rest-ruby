@@ -1,5 +1,2 @@
-/config/settings/dev.yml
-/config/settings/prod.yml
-/log/*
 *.csv
 secret.yaml
