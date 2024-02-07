@@ -116,8 +116,8 @@ class DownloadPaymentBatchDetailReport
     bx_date = Date.parse(batch_date)
     dates = [tx_date - 1, tx_date, tx_date + 1, bx_date - 1, bx_date, bx_date + 1]
 
-    dates.include?(created_date(account)) || dates.include?(updated_date(account)) &&
-      (account['status']['name'] == 'Closed' || account['paymentStatus']['name'] == 'Paid fully')
+    (dates.include?(created_date(account)) || dates.include?(updated_date(account))) &&
+      (account['paymentStatus']['name'] == 'Paid fully')
   end
 
   def created_date(account)
