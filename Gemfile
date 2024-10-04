@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
-ruby '2.7.1'
+ruby '3.2.2'
 
-gem 'cybersource_rest_client', '0.0.31'
+gem 'cybersource_rest_client', '0.0.57'
 
 gem "folio_client", "~> 0.15.0"
 

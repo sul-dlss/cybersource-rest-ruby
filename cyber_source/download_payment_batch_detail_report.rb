@@ -12,12 +12,14 @@ class DownloadPaymentBatchDetailReport
 
   CONFIGURATION_DICTIONARY = {
     merchantID: 'wfgsulair',
-    runEnvironment: "cybersource.environment.#{ENV.fetch('CYBS_ENV', 'production')}",
+    runEnvironment: "api.cybersource.com",
     timeout: 3000,
     authenticationType: 'http_signature',
     enableLog: true,
     merchantKeyId: ENV.fetch('MERCHANT_KEY_ID', nil),
     merchantsecretKey: ENV.fetch('MERCHANT_SECRET_KEY', nil),
+    loggingLevel: 'DEBUG',
+    logConfiguration: {},
     logDirectory: 'log',
     logFilename: 'cybs'
   }.freeze
@@ -44,7 +46,7 @@ class DownloadPaymentBatchDetailReport
         puts report_date, status_code, headers, data
       rescue StandardError => e
         puts report_date
-        puts e.message
+        puts e.backtrace
         next
       end
       next unless data
@@ -112,8 +114,14 @@ class DownloadPaymentBatchDetailReport
   end
 
   def is_a_payment?(account, batch_date, transaction_date)
-    tx_date = Date.parse(transaction_date)
-    bx_date = Date.parse(batch_date)
+    begin
+      tx_date = Date.parse(transaction_date)
+      bx_date = Date.parse(batch_date)
+    rescue Date::Error => e
+      puts e.message
+      return false
+    end
+    
     dates = [tx_date - 1, tx_date, tx_date + 1, bx_date - 1, bx_date, bx_date + 1]
 
     (dates.include?(created_date(account)) || dates.include?(updated_date(account))) &&
