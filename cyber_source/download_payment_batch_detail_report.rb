@@ -122,7 +122,8 @@ class DownloadPaymentBatchDetailReport
       return false
     end
     
-    dates = [tx_date - 1, tx_date, tx_date + 1, bx_date - 1, bx_date, bx_date + 1]
+    # dates = [tx_date - 1, tx_date, tx_date + 1, bx_date - 1, bx_date, bx_date + 1]
+    dates = [tx_date, bx_date - 1]
 
     (dates.include?(created_date(account)) || dates.include?(updated_date(account))) &&
       (account['paymentStatus']['name'] == 'Paid fully')
