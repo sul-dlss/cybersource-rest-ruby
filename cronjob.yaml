@@ -18,7 +18,7 @@ spec:
             name: cybersource
             envFrom:
               - secretRef:
-                  name: db-connect-modules
+                  name: folio-k8s
             imagePullPolicy: Always
             command: [ "/bin/bash", "-c", "--" ]
             args: [ "cd /etc/mail && make && service sendmail restart; cd /home/cybersource && rake report_and_mail >> files/reports.log 2>&1;" ]

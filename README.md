@@ -29,7 +29,9 @@ kubectl -n ${namespace} apply -f pv-volume.yaml
 
 ## Setting the API credentials for an API request
 
-Configure the `MERCHANT_KEY_ID` and `MERCHANT_SECRET_KEY` variables in the environment The variables for `STAGE`, `APP_PASSWORD` (for folio) and `APP_USERNAME` are configured using the `db-connect-modules` folio secret.
+`vault kv get puppet/application/cybersource` contains the secrets needed to connect to Cybersource and fetch the reports.
+
+Configure the `MERCHANT_KEY_ID` and `MERCHANT_SECRET_KEY` variables in the environment The variables for `STAGE`, `APP_PASSWORD` (for folio) and `APP_USERNAME` are configured using the `folio-k8s` folio secret.
 
 Obtain the `merchantsecretKey` and `merchantKeyId` from the CyberSource Business Center.
 You will need permissions from merchants@stanford.edu to access the CyberSource Business Center
