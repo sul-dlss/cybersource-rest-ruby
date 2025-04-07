@@ -84,16 +84,17 @@ class DownloadPaymentBatchDetailReport
 
               if (payments.sum == paid.to_f)
 
-                payload = {
+                temp_payload = {
                   transaction_date: Date.parse(transaction_date),
                   user_id: user_id,
                   folio_payment_id: account['id'],
                   library: account['feeFineOwner'],
+                  location: account['location'],
                   reason: account['feeFineType'],
                   paid: account['amount'].to_f
                 }
 
-                credits.push(payload)
+                credits.push(credit_owner(temp_payload))
               end
             end
           end
@@ -113,6 +114,31 @@ class DownloadPaymentBatchDetailReport
     puts e.backtrace
   end
 
+  def credit_owner(payload)
+    location = payload[:location]
+    new_payload = {}
+    fine_owner = ''
+
+    if location.nil?
+      fine_owner = payload[:library]
+    elsif location =~ /^Lane/
+      fine_owner = 'Lane'
+    elsif location =~ /^Business/
+      fine_owner = 'Business'
+    else
+      fine_owner = payload[:library]
+    end
+    
+    new_payload['transaction_date'] = payload[:transaction_date]
+    new_payload['user_ID'] = payload[:user_id]
+    new_payload['folio_payment_id'] = payload[:folio_payment_id]
+    new_payload['library']  = fine_owner
+    new_payload['reason'] = payload[:reason]
+    new_payload['paid'] = payload[:paid]
+    
+    return new_payload
+  end
+  
   def is_a_payment?(account, batch_date, transaction_date)
     begin
       tx_date = Date.parse(transaction_date)
