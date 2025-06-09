@@ -30,6 +30,7 @@ RSpec.describe DownloadPaymentBatchDetailReport do
                 "createdDate": "2023-10-10T09:33:55.532+00:00"
               },
               "userId": "f1cf56ef-5071-477f-b3ee-8779721a7f44",
+              "feeFineId": "119611e6-2d66-4a83-b31f-f4026d9516ce",
               "id": "cf238f9f-7018-47b7-b815-bb2db798e19f"
             }
           ],
@@ -37,6 +38,7 @@ RSpec.describe DownloadPaymentBatchDetailReport do
         }')
 
     allow(report).to receive(:download_report).and_return(download_report)
+    
     report.main
   end
 
@@ -46,5 +48,21 @@ RSpec.describe DownloadPaymentBatchDetailReport do
 
   it 'creates a file of credits' do
     expect(File.readlines(file).size).to be >= 28
+  end
+
+  it 'finds the fee fine id stub' do
+    account = {
+              "amount"=>35.0,
+              "paymentStatus"=>{
+                "name"=>"Paid fully"
+              },
+              "feeFineType"=>"Lost item fee",
+              "feeFineOwner"=>"SUL",
+              "userId"=>"f1cf56ef-5071-477f-b3ee-8779721a7f44",
+              "feeFineId"=>"119611e6-2d66-4a83-b31f-f4026d9516ce",
+              "id"=>"cf238f9f-7018-47b7-b815-bb2db798e19f"
+            }
+    fine_ids = '7ff7f3c7:119611e6:66a1dfd0'
+    expect(report.is_a_payment?(account, fine_ids)).to be true
   end
 end

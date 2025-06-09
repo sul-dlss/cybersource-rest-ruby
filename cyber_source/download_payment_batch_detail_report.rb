@@ -57,6 +57,7 @@ class DownloadPaymentBatchDetailReport
           paid = batch_detail.split(',')[8]
           batch_date = batch_detail.split(',')[2]
           transaction_date = batch_detail.split(',')[12]&.chomp
+          fine_ids = batch_detail.split(',')[13]
 
           begin
             accounts = folio_client.get('/accounts', { query: "userId==#{user_id}" })
@@ -70,13 +71,13 @@ class DownloadPaymentBatchDetailReport
             payments = []
 
             accounts['accounts'].each do |a|
-              next unless is_a_payment?(a, batch_date, transaction_date)
+              next unless is_a_payment?(a, fine_ids)
 
               payments << a['amount'].to_f
             end
 
             accounts['accounts'].each do |account|
-              next unless is_a_payment?(account, batch_date, transaction_date)
+              next unless is_a_payment?(account, fine_ids)
 
               puts user_id
               puts "TOTAL PAYMENTS: #{payments.sum}"
@@ -139,20 +140,16 @@ class DownloadPaymentBatchDetailReport
     return new_payload
   end
   
-  def is_a_payment?(account, batch_date, transaction_date)
-    begin
-      tx_date = Date.parse(transaction_date)
-      bx_date = Date.parse(batch_date)
-    rescue Date::Error => e
-      puts e.message
-      return false
-    end
-    
-    # dates = [tx_date - 1, tx_date, tx_date + 1, bx_date - 1, bx_date, bx_date + 1]
-    dates = [tx_date, bx_date - 1]
+  def is_a_payment?(account, fine_ids)
+    fine_id_stubs = fine_ids.split(':')
+    fee_fine_id = account['feeFineId']
 
-    (dates.include?(created_date(account)) || dates.include?(updated_date(account))) &&
-      (account['paymentStatus']['name'] == 'Paid fully')
+    if fee_fine_id != nil
+      ffid_stub = fee_fine_id.split('-')[0]
+    end
+
+    fine_id_stubs.include?(ffid_stub) &&
+      account['paymentStatus']['name'] == 'Paid fully'
   end
 
   def created_date(account)
@@ -169,7 +166,7 @@ class DownloadPaymentBatchDetailReport
       CyberSource::ApiClient.new, CONFIGURATION_DICTIONARY.transform_keys(&:to_s)
     ).download_report(
       report_date,
-      'PaymentBatchDetailReport_Daily_Classic', organization_id: 'wfgsulair'
+      'CustomBatchDetailReport', organization_id: 'wfgsulair'
     )
   end
 
