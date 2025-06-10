@@ -102,7 +102,7 @@ class DownloadPaymentBatchDetailReport
         end
       end
       puts credits
-      sleep(ENV.  fetch('SLEEP', 2)&.to_i)
+      sleep(ENV.fetch('SLEEP', 2)&.to_i)
     end
     credits.any? && CSV.open('files/credits.csv', 'a') do |csv|
       csv << credits.first.keys
@@ -140,15 +140,15 @@ class DownloadPaymentBatchDetailReport
     return new_payload
   end
   
-  def is_a_payment?(account, fine_ids)
-    fine_id_stubs = fine_ids.split(':')
-    fee_fine_id = account['feeFineId']
+  def is_a_payment?(account, account_ids)
+    account_id_stubs = account_ids.split(':')
+    account_id = account['id']
 
-    if fee_fine_id != nil
-      ffid_stub = fee_fine_id.split('-')[0]
+    if account_id != nil
+      id_stub = account_id.split('-')[0]
     end
 
-    fine_id_stubs.include?(ffid_stub) &&
+    account_id_stubs.include?(id_stub) &&
       account['paymentStatus']['name'] == 'Paid fully'
   end
 

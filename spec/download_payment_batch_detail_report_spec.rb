@@ -17,7 +17,7 @@ RSpec.describe DownloadPaymentBatchDetailReport do
 
     stub_request(:get, "#{ENV['OKAPI_URL']}/accounts")
       .with(query: hash_including)
-      .to_return(body: '{
+      .to_return(status: 200, body: '{
           "accounts": [
             {
               "amount": 35.0,
@@ -62,7 +62,7 @@ RSpec.describe DownloadPaymentBatchDetailReport do
               "feeFineId"=>"119611e6-2d66-4a83-b31f-f4026d9516ce",
               "id"=>"cf238f9f-7018-47b7-b815-bb2db798e19f"
             }
-    fine_ids = '7ff7f3c7:119611e6:66a1dfd0'
+    fine_ids = '7ff7f3c7:cf238f9f:66a1dfd0'
     expect(report.is_a_payment?(account, fine_ids)).to be true
   end
 end
