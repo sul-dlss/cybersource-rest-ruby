@@ -57,7 +57,7 @@ class DownloadPaymentBatchDetailReport
           paid = batch_detail.split(',')[8]
           batch_date = batch_detail.split(',')[2]
           transaction_date = batch_detail.split(',')[12]&.chomp
-          fine_ids = batch_detail.split(',')[13]
+          account_ids = batch_detail.split(',')[13]
 
           begin
             accounts = folio_client.get('/accounts', { query: "userId==#{user_id}" })
@@ -71,13 +71,13 @@ class DownloadPaymentBatchDetailReport
             payments = []
 
             accounts['accounts'].each do |a|
-              next unless is_a_payment?(a, fine_ids)
+              next unless is_a_payment?(a, account_ids)
 
               payments << a['amount'].to_f
             end
 
             accounts['accounts'].each do |account|
-              next unless is_a_payment?(account, fine_ids)
+              next unless is_a_payment?(account, account_ids)
 
               puts user_id
               puts "TOTAL PAYMENTS: #{payments.sum}"
