@@ -3,7 +3,7 @@ ruby '3.2.2'
 
 gem 'cybersource_rest_client', '0.0.57'
 
-gem "folio_client", "~> 0.15.0"
+gem "folio_client", "~> 0.18.0"
 
 gem "mail", "~> 2.8"
 

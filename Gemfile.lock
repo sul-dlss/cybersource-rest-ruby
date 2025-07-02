@@ -36,12 +36,13 @@ GEM
       typhoeus (~> 1.0, >= 1.0.1)
     date (3.4.1)
     diff-lcs (1.6.2)
+    domain_name (0.6.20240107)
     drb (2.2.3)
     dry-core (1.1.0)
       concurrent-ruby (~> 1.0)
       logger
       zeitwerk (~> 2.6)
-    dry-monads (1.8.3)
+    dry-monads (1.9.0)
       concurrent-ruby (~> 1.0)
       dry-core (~> 1.1)
       zeitwerk (~> 2.6)
@@ -51,16 +52,22 @@ GEM
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
-    faraday-net_http (3.4.0)
+    faraday-cookie_jar (0.0.7)
+      faraday (>= 0.8.0)
+      http-cookie (~> 1.0.0)
+    faraday-net_http (3.4.1)
       net-http (>= 0.5.0)
     ffi (1.17.2)
-    folio_client (0.15.0)
-      activesupport (>= 4.2, < 8)
+    folio_client (0.18.0)
+      activesupport (>= 4.2)
       dry-monads
       faraday
+      faraday-cookie_jar
       marc
       zeitwerk
     hashdiff (1.2.0)
+    http-cookie (1.0.8)
+      domain_name (~> 0.5)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     immutable-ruby (0.2.0)
@@ -175,7 +182,7 @@ PLATFORMS
 DEPENDENCIES
   byebug
   cybersource_rest_client (= 0.0.57)
-  folio_client (~> 0.15.0)
+  folio_client (~> 0.18.0)
   mail (~> 2.8)
   rake
   rspec
