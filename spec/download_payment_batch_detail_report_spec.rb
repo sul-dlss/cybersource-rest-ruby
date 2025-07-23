@@ -29,7 +29,7 @@ RSpec.describe DownloadPaymentBatchDetailReport do
               'feeFineType': 'Lost item fee',
               'feeFineOwner': 'SUL',
               'metadata': {
-                'updatedDate': #{updated_date}
+                'updatedDate': \'#{updated_date}\',
               },
               'userId': 'f1cf56ef-5071-477f-b3ee-8779721a7f44',
               'id': 'cf238f9f-7018-47b7-b815-bb2db798e19f'
