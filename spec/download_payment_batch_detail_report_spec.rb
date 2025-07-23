@@ -7,12 +7,19 @@ RSpec.describe DownloadPaymentBatchDetailReport do
   let(:dstring) { Date.today.to_s }
   let(:report) { described_class.new(dstring) }
   let(:file) { File.join(Dir.pwd, 'files/credits.csv') }
-  let(:download_report) { File.read(File.join(Dir.pwd, 'spec', 'fixtures', 'report_file.csv')) }
+  # let(:download_report) { File.read(File.join(Dir.pwd, 'spec', 'fixtures', 'report_file.csv')) }
 
   before do
     File.open(file, 'a+')
 
-    updated_date = Date.today.strftime('%Y-%m-%dT%H:%M:%SZ')
+    updated_date = Date.today.prev_month.strftime('%Y-%m-%dT%H:%M:%SZ')
+    report_file = File.join(Dir.pwd, 'spec', 'fixtures', 'report_file.csv')
+    temp_file = File.join(Dir.pwd, 'spec', 'fixtures', 'temp_report_file.csv')
+    file_content = File.read(report_file)
+    new_x_date = file_content.gsub("X_DATE", updated_date)
+    File.write(temp_file, new_x_date)
+
+    download_report = File.read(File.join(Dir.pwd, 'spec', 'fixtures', 'temp_report_file.csv'))
 
     stub_request(:post, 'http://example.com/authn/login')
       .with(body: { 'username' => 'username', 'password' => 'password' })
@@ -20,22 +27,22 @@ RSpec.describe DownloadPaymentBatchDetailReport do
     stub_request(:get, "#{ENV['OKAPI_URL']}/accounts")
       .with(query: hash_including)
       .to_return(body: "{
-          'accounts': [
+          \"accounts\": [
             {
-              'amount': 35.0,
-              'status': {
-                'name': 'Closed'
+              \"amount\": 35.0,
+              \"status\": {
+                \"name\": \"Closed\"
               },
-              'feeFineType': 'Lost item fee',
-              'feeFineOwner': 'SUL',
-              'metadata': {
-                'updatedDate': \'#{updated_date}\',
+              \"feeFineType\": \"Lost item fee\",
+              \"feeFineOwner\": \"SUL\",
+              \"metadata\": {
+                \"updatedDate\": \"#{updated_date}\"
               },
-              'userId': 'f1cf56ef-5071-477f-b3ee-8779721a7f44',
-              'id': 'cf238f9f-7018-47b7-b815-bb2db798e19f'
+              \"userId\": \"f1cf56ef-5071-477f-b3ee-8779721a7f44\",
+              \"id\": \"cf238f9f-7018-47b7-b815-bb2db798e19f\"
             }
           ],
-          'totalRecords': 1
+          \"totalRecords\": 1
         }")
 
     allow(report).to receive(:download_report).and_return(download_report)
