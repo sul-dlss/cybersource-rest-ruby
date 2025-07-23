@@ -59,7 +59,7 @@ class DownloadPaymentBatchDetailReport
           transaction_date = batch_detail.split(',')[12]&.chomp
 
           begin
-            accounts = folio_client.get('/accounts', { query: "userId==#{user_id}" })
+            accounts = folio_client.get('/accounts', { limit: 999, query: "userId==#{user_id}" })
             puts accounts
           rescue Exception => e
             puts e.message
@@ -75,12 +75,12 @@ class DownloadPaymentBatchDetailReport
               payments << a['amount'].to_f
             end
 
+            puts user_id
+            puts "TOTAL PAYMENTS: #{payments.sum}"
+            puts "PAID in CYB:#{paid.to_f}"
+            
             accounts['accounts'].each do |account|
               next unless is_a_payment?(account, batch_date, transaction_date)
-
-              puts user_id
-              puts "TOTAL PAYMENTS: #{payments.sum}"
-              puts "PAID in CYB:#{paid.to_f}"
 
               if (payments.sum == paid.to_f)
 
@@ -100,7 +100,7 @@ class DownloadPaymentBatchDetailReport
           end
         end
       end
-      puts credits
+      # puts credits
       sleep(ENV.  fetch('SLEEP', 2)&.to_i)
     end
     credits.any? && CSV.open('files/credits.csv', 'a') do |csv|
@@ -149,10 +149,14 @@ class DownloadPaymentBatchDetailReport
     end
     
     # dates = [tx_date - 1, tx_date, tx_date + 1, bx_date - 1, bx_date, bx_date + 1]
-    dates = [tx_date, bx_date - 1]
+    # dates = [tx_date, bx_date - 1]
 
-    (dates.include?(created_date(account)) || dates.include?(updated_date(account))) &&
-      (account['paymentStatus']['name'] == 'Paid fully')
+    # (dates.include?(created_date(account)) || dates.include?(updated_date(account))) &&
+    #   (account['status']['name'] == 'Closed')
+    
+    (account['status']['name'] == 'Closed') && 
+      (updated_date(account).year == year_or_prev(@date)) && 
+        (updated_date(account).month == @date.prev_month.month)
   end
 
   def created_date(account)
