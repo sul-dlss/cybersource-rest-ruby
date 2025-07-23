@@ -12,29 +12,31 @@ RSpec.describe DownloadPaymentBatchDetailReport do
   before do
     File.open(file, 'a+')
 
+    updated_date = Date.today.strftime('%Y-%m-%dT%H:%M:%SZ')
+
     stub_request(:post, 'http://example.com/authn/login')
       .with(body: { 'username' => 'username', 'password' => 'password' })
 
     stub_request(:get, "#{ENV['OKAPI_URL']}/accounts")
       .with(query: hash_including)
-      .to_return(body: '{
-          "accounts": [
+      .to_return(body: "{
+          'accounts': [
             {
-              "amount": 35.0,
-              "paymentStatus": {
-                "name": "Paid fully"
+              'amount': 35.0,
+              'status': {
+                'name': 'Closed'
               },
-              "feeFineType": "Lost item fee",
-              "feeFineOwner": "SUL",
-              "metadata": {
-                "createdDate": "2023-10-10T09:33:55.532+00:00"
+              'feeFineType': 'Lost item fee',
+              'feeFineOwner': 'SUL',
+              'metadata': {
+                'updatedDate': #{updated_date}
               },
-              "userId": "f1cf56ef-5071-477f-b3ee-8779721a7f44",
-              "id": "cf238f9f-7018-47b7-b815-bb2db798e19f"
+              'userId': 'f1cf56ef-5071-477f-b3ee-8779721a7f44',
+              'id': 'cf238f9f-7018-47b7-b815-bb2db798e19f'
             }
           ],
-          "totalRecords": 1
-        }')
+          'totalRecords': 1
+        }")
 
     allow(report).to receive(:download_report).and_return(download_report)
     report.main
