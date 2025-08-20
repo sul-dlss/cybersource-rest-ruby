@@ -57,7 +57,19 @@ class DownloadPaymentBatchDetailReport
           paid = batch_detail.split(',')[8]
           batch_date = batch_detail.split(',')[2]
           transaction_date = batch_detail.split(',')[12]&.chomp
-          account_ids = batch_detail.split(',')[13]
+          account_ids_1 = batch_detail.split(',')[13]
+          account_ids_2 = batch_detail.split(',')[14]
+          account_ids_3 = batch_detail.split(',')[15]
+          account_ids_4 = batch_detail.split(',')[16]
+          account_ids_5 = batch_detail.split(',')[17]
+
+          account_ids = +''
+          (1..5).each do |n|
+            account_ids.concat(binding.local_variable_get("account_ids_#{n}".to_sym)) 
+            account_ids.concat(":")
+          end
+
+          account_ids.freeze
 
           begin
             accounts = folio_client.get('/accounts', { query: "userId==#{user_id}" })
