@@ -62,7 +62,7 @@ RSpec.describe DownloadPaymentBatchDetailReport do
               "feeFineId"=>"119611e6-2d66-4a83-b31f-f4026d9516ce",
               "id"=>"cf238f9f-7018-47b7-b815-bb2db798e19f"
             }
-    fine_ids = '7ff7f3c7:cf238f9f:66a1dfd0'
+    fine_ids = '7ff7f3c:cf238f9:66a1dfd'
     expect(report.is_a_payment?(account, fine_ids)).to be true
   end
 end

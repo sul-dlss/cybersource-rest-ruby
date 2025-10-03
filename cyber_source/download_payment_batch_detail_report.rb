@@ -157,7 +157,7 @@ class DownloadPaymentBatchDetailReport
     account_id = account['id']
 
     if account_id != nil
-      id_stub = account_id.split('-')[0]
+      id_stub = account_id.split('-')[0].chop!
     end
 
     account_id_stubs.include?(id_stub) &&
