@@ -21,7 +21,7 @@ spec:
                   name: folio-k8s
             imagePullPolicy: Always
             command: [ "/bin/bash", "-c", "--" ]
-            args: [ "cd /etc/mail && make && service sendmail restart; cd /home/cybersource && rake report_and_mail >> files/reports.log 2>&1;" ]
+            args: [ "cd /etc/mail && make && service sendmail restart; cd /home/cybersource && rake report_and_mail;" ]
             env:
             - name: EMAIL_REPORT_TO
               valueFrom:
