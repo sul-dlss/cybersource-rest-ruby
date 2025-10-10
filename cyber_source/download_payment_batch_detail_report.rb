@@ -161,7 +161,7 @@ class DownloadPaymentBatchDetailReport
     end
 
     account_id_stubs.include?(id_stub) &&
-      account['paymentStatus']['name'] == 'Paid fully'
+      account['status']['name'] == 'Closed'
   end
 
   def created_date(account)

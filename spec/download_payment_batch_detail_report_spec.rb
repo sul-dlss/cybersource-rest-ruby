@@ -21,8 +21,8 @@ RSpec.describe DownloadPaymentBatchDetailReport do
           "accounts": [
             {
               "amount": 35.0,
-              "paymentStatus": {
-                "name": "Paid fully"
+              "status": {
+                "name": "Closed"
               },
               "feeFineType": "Lost item fee",
               "feeFineOwner": "SUL",
@@ -53,8 +53,8 @@ RSpec.describe DownloadPaymentBatchDetailReport do
   it 'finds the fee fine id stub' do
     account = {
               "amount"=>35.0,
-              "paymentStatus"=>{
-                "name"=>"Paid fully"
+              "status"=>{
+                "name"=>"Closed"
               },
               "feeFineType"=>"Lost item fee",
               "feeFineOwner"=>"SUL",
