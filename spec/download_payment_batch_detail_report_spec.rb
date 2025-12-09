@@ -12,10 +12,10 @@ RSpec.describe DownloadPaymentBatchDetailReport do
   before do
     File.open(file, 'a+')
 
-    stub_request(:post, 'http://example.com/authn/login')
+    stub_request(:post, 'http://okapi:9130/authn/login')
       .with(body: { 'username' => 'username', 'password' => 'password' })
 
-    stub_request(:get, "#{ENV['OKAPI_URL']}/accounts")
+    stub_request(:get, "http://okapi:9130/accounts")
       .with(query: hash_including)
       .to_return(status: 200, body: '{
           "accounts": [
