@@ -60,7 +60,7 @@ GEM
     faraday-net_http (3.4.2)
       net-http (~> 0.5)
     ffi (1.17.4)
-    folio_client (0.18.0)
+    folio_client (0.19.0)
       activesupport (>= 4.2)
       dry-monads
       faraday
@@ -190,7 +190,7 @@ PLATFORMS
 DEPENDENCIES
   byebug
   cybersource_rest_client (= 0.0.57)
-  folio_client (~> 0.18.0)
+  folio_client (~> 0.19.0)
   http
   mail (~> 2.8)
   rake
