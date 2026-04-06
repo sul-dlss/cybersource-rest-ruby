@@ -4,7 +4,6 @@ require 'cybersource_rest_client'
 require 'folio_client'
 require 'csv'
 require 'date'
-require 'http/cookie_jar'
 require 'json'
 
 # class to download the PaymentbatchDetailReport from CyberSource

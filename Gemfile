@@ -9,7 +9,7 @@ gem "mail", "~> 2.8"
 
 gem 'rake'
 
-gem 'http'
+gem 'http-cookie'
 
 group :development, :test do
   gem 'byebug'
