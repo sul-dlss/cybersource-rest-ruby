@@ -10,7 +10,7 @@ permissions:
   packages: write
 
 env:
-  OKAPI_URL: http://okapi:9130
+  KONG_URL: http://kong:8000
   SLEEP: 0
 
 jobs:
