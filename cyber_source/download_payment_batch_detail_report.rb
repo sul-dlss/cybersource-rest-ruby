@@ -184,7 +184,7 @@ class DownloadPaymentBatchDetailReport
 
   def folio_client
     FolioClient.configure(
-      url: ENV.fetch('OKAPI_URL', 'http://okapi:9130'),
+      url: ENV.fetch('KONG_URL', 'http://kong:8000'),
       login_params: {
         'username' => ENV.fetch('APP_USER', nil),
         'password' => ENV.fetch('APP_PASSWORD', nil)

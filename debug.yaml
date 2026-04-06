@@ -9,7 +9,7 @@ spec:
     name: cybersource
     envFrom:
       - secretRef:
-          name: folio-k8s
+          name: folio-eureka
     imagePullPolicy: Always
     # Just spin & wait forever
     command: [ "/bin/bash", "-c", "--" ]
