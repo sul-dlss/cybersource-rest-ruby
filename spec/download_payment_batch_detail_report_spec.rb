@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+require 'http-cookie'
 require_relative '../cyber_source/download_payment_batch_detail_report'
 
 RSpec.describe DownloadPaymentBatchDetailReport do

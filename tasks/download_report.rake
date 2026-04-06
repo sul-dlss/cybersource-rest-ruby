@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'http-cookie'
 
 desc 'download cybersource monthly report, date format [9999-99-99]'
 task :download_report, [:date] do |_, args|
