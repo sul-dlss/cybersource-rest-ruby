@@ -18,7 +18,7 @@ spec:
             name: cybersource
             envFrom:
               - secretRef:
-                  name: folio-k8s
+                  name: folio-eureka
             imagePullPolicy: Always
             command: [ "/bin/bash", "-c", "--" ]
             args: [ "cd /etc/mail && make && service sendmail restart; cd /home/cybersource && rake report_and_mail;" ]

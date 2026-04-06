@@ -9,6 +9,8 @@ gem "mail", "~> 2.8"
 
 gem 'rake'
 
+gem 'http'
+
 group :development, :test do
   gem 'byebug'
   gem 'rspec'
