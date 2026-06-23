@@ -50,14 +50,14 @@ GEM
     ethon (0.18.0)
       ffi (>= 1.15.0)
       logger
-    faraday (2.14.1)
+    faraday (2.14.3)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
     faraday-cookie_jar (0.0.8)
       faraday (>= 0.8.0)
       http-cookie (>= 1.0.0)
-    faraday-net_http (3.4.2)
+    faraday-net_http (3.4.4)
       net-http (~> 0.5)
     ffi (1.17.4)
     folio_client (0.18.0)
@@ -80,7 +80,7 @@ GEM
     jose (1.2.0)
       base64
       immutable-ruby
-    json (2.19.4)
+    json (2.20.0)
     jwt (2.7.0)
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
