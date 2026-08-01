@@ -5,7 +5,7 @@ gem 'cybersource_rest_client', '0.0.57'
 
 gem "folio_client", "~> 0.18.0"
 
-gem "mail", "~> 2.8"
+gem "mail", "~> 2.9"
 
 gem 'rake'
 
