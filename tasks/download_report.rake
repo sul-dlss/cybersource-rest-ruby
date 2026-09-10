@@ -34,7 +34,6 @@ task :mail, [:date] do |_, args|
       add_file 'files/credits.csv'
     end
 
-    mail.delivery_method :sendmail
     mail.deliver
   rescue Errno::ENOENT => e
     puts e
