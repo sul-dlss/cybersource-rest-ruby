@@ -13,7 +13,7 @@ task :mail, [:date] do |_, args|
   require 'date'
   require 'mail'
 
-  namespace = "folio-#{ENV.fetch('STAGE', nil)}"
+  namespace = "folio-#{ENV.fetch('STAGE')}"
   options = { host: "mail.#{namespace}.svc.cluster.local",
               address: "mail.#{namespace}.svc.cluster.local",
               port: 587,

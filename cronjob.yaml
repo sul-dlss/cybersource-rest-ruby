@@ -23,6 +23,11 @@ spec:
             command: [ "/bin/bash", "-c", "--" ]
             args: [ "cd /home/cybersource && rake report_and_mail;" ]
             env:
+            - name: STAGE
+              valueFrom:
+                secretKeyRef:
+                  name: cybersource
+                  key: STAGE
             - name: EMAIL_REPORT_TO
               valueFrom:
                 secretKeyRef:

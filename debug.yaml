@@ -15,6 +15,11 @@ spec:
     command: [ "/bin/bash", "-c", "--" ]
     args: [ "while true; do sleep 30; done;" ]
     env:
+    - name: STAGE
+      valueFrom:
+        secretKeyRef:
+          name: cybersource
+          key: STAGE
     - name: EMAIL_REPORT_TO
       valueFrom:
         secretKeyRef:
