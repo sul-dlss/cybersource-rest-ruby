@@ -13,7 +13,7 @@ task :mail, [:date] do |_, args|
   require 'date'
   require 'mail'
 
-  namespace = "folio-#{ENV.fetch('STAGE', nil)}"
+  namespace = "folio-#{ENV.fetch('STAGE', 'prod')}"
   options = { host: "mail.#{namespace}.svc.cluster.local",
               address: "mail.#{namespace}.svc.cluster.local",
               port: 587,
@@ -34,7 +34,6 @@ task :mail, [:date] do |_, args|
       add_file 'files/credits.csv'
     end
 
-    mail.delivery_method :sendmail
     mail.deliver
   rescue Errno::ENOENT => e
     puts e
