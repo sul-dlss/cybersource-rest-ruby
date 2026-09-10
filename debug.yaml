@@ -13,7 +13,7 @@ spec:
     imagePullPolicy: Always
     # Just spin & wait forever
     command: [ "/bin/bash", "-c", "--" ]
-    args: [ "cd /etc/mail && make && service sendmail restart; while true; do sleep 30; done;" ]
+    args: [ "while true; do sleep 30; done;" ]
     env:
     - name: EMAIL_REPORT_TO
       valueFrom:
@@ -33,9 +33,6 @@ spec:
     volumeMounts:
       - mountPath: /home/cyberlog
         name: cyberlog
-      - mountPath: /etc/mail/sendmail.mc
-        name: sendmail
-        subPath: sendmail.mc
     resources:
       limits:
         cpu: 128m
@@ -45,9 +42,6 @@ spec:
         memory: 400Mi
   restartPolicy: Never
   volumes:
-  - name: sendmail
-    secret:
-      secretName: sendmail
   - name: cyberlog
     persistentVolumeClaim:
       claimName: cybersource-files

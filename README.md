@@ -54,12 +54,6 @@ Then:
 kubectl -n ${namespace} apply -f secret.yaml
 ```
 
-### Create secret with sendmail config
-Edit the sendmail.yaml, sendmail.mc: `SMART_HOST` entry to be the cluster mail host.
-```
-kubectl -n ${namespace} apply -f sendmail.yaml
-```
-
 ## Run the ChronJob
 ```
 kubectl -n ${namespace} apply -f cronjob.yaml
@@ -69,8 +63,6 @@ kubectl -n ${namespace} apply -f cronjob.yaml
 ```
 kubectl -n ${namespace} apply -f debug.yaml
 ```
-
-Give sendmail a couple of minutes to restart before checking the /home/harvester/harvestlog directory.
 
 
 ## Switching between the sandbox environment and the production environment

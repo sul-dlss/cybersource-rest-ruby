@@ -21,7 +21,7 @@ spec:
                   name: folio-eureka
             imagePullPolicy: Always
             command: [ "/bin/bash", "-c", "--" ]
-            args: [ "cd /etc/mail && make && service sendmail restart; cd /home/cybersource && rake report_and_mail;" ]
+            args: [ "cd /home/cybersource && rake report_and_mail;" ]
             env:
             - name: EMAIL_REPORT_TO
               valueFrom:
@@ -41,9 +41,6 @@ spec:
             volumeMounts:
               - mountPath: home/files
                 name: cybersource-files
-              - mountPath: /etc/mail/sendmail.mc
-                name: sendmail
-                subPath: sendmail.mc
             resources:
               limits:
                 cpu: 128m
@@ -56,6 +53,3 @@ spec:
           - name: cybersource-files
             persistentVolumeClaim:
               claimName: cybersource-files
-          - name: sendmail
-            secret:
-              secretName: sendmail
