@@ -55,21 +55,8 @@ class DownloadPaymentBatchDetailReport
         if index > 1
           user_id = batch_detail.split(',')[4]
           paid = batch_detail.split(',')[8]
-          batch_date = batch_detail.split(',')[2]
           transaction_date = batch_detail.split(',')[12]&.chomp
-          account_ids_1 = batch_detail.split(',')[13]
-          account_ids_2 = batch_detail.split(',')[14]
-          account_ids_3 = batch_detail.split(',')[15]
-          account_ids_4 = batch_detail.split(',')[16]
-          account_ids_5 = batch_detail.split(',')[17]
-
-          account_ids = +''
-          (1..5).each do |n|
-            account_ids.concat(binding.local_variable_get("account_ids_#{n}".to_sym)) 
-            account_ids.concat(":")
-          end
-
-          account_ids.freeze
+          account_ids = merchant_defined_data(batch_detail)
 
           begin
             accounts = folio_client.get('/accounts', { query: "userId==#{user_id}" })
@@ -152,6 +139,21 @@ class DownloadPaymentBatchDetailReport
     return new_payload
   end
   
+  # The five merchant_defined_data columns hold colon-separated 7-character FOLIO
+  # account UUID stubs (see Cybersource::PaymentRequest in sul-requests).
+  #
+  # The report quotes these fields, so the quotes have to come off before the stubs
+  # will compare equal. Trailing empty columns are dropped by String#split, so any
+  # of the five may be nil when the patron paid fewer than 13 fines.
+  def merchant_defined_data(batch_detail)
+    fields = batch_detail.split(',')
+
+    (13..17)
+      .filter_map { |i| fields[i]&.delete('"')&.strip }
+      .reject(&:empty?)
+      .join(':')
+  end
+
   def is_a_payment?(account, account_ids)
     account_id_stubs = account_ids.split(':')
     account_id = account['id']
