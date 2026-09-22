@@ -51,6 +51,31 @@ RSpec.describe DownloadPaymentBatchDetailReport do
     expect(File.readlines(file).size).to be >= 28
   end
 
+  describe '#merchant_defined_data' do
+    let(:rows) { CSV.read(File.join(Dir.pwd, 'spec', 'fixtures', 'report_file.csv')) }
+
+    it 'reads the stub when ics_applications is quoted' do
+      expect(report.merchant_defined_data(rows[2])).to eq('cf238f9')
+    end
+
+    # A transaction with a single ics application has no comma to quote, which used
+    # to shift every later column left by one when the row was split on ','
+    it 'reads the stub when ics_applications is unquoted' do
+      expect(report.merchant_defined_data(rows[3])).to eq('cf238f9')
+    end
+
+    it 'joins the stubs from all five columns' do
+      stubs = report.merchant_defined_data(rows[6]).split(':')
+
+      expect(stubs.size).to eq(17)
+      expect(stubs.last).to eq('cf238f9')
+    end
+
+    it 'ignores columns the payment did not need' do
+      expect(report.merchant_defined_data(rows[4])).to eq('4ff0b51:cf238f9')
+    end
+  end
+
   it 'finds the fee fine id stub' do
     account = {
               "amount"=>35.0,

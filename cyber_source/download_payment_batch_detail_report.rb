@@ -53,10 +53,13 @@ class DownloadPaymentBatchDetailReport
 
       data.each_line.with_index do |batch_detail, index|
         if index > 1
-          user_id = batch_detail.split(',')[4]
-          paid = batch_detail.split(',')[8]
-          transaction_date = batch_detail.split(',')[12]&.chomp
-          account_ids = merchant_defined_data(batch_detail)
+          row = parse_row(batch_detail)
+          next unless row
+
+          user_id = row[4]
+          paid = row[8]
+          transaction_date = row[11]
+          account_ids = merchant_defined_data(row)
 
           begin
             accounts = folio_client.get('/accounts', { query: "userId==#{user_id}" })
@@ -139,19 +142,21 @@ class DownloadPaymentBatchDetailReport
     return new_payload
   end
   
-  # The five merchant_defined_data columns hold colon-separated 7-character FOLIO
-  # account UUID stubs (see Cybersource::PaymentRequest in sul-requests).
-  #
-  # The report quotes these fields, so the quotes have to come off before the stubs
-  # will compare equal. Trailing empty columns are dropped by String#split, so any
-  # of the five may be nil when the patron paid fewer than 13 fines.
-  def merchant_defined_data(batch_detail)
-    fields = batch_detail.split(',')
+  # Parse one report row. ics_applications is a quoted field containing a comma, so
+  # splitting on ',' shifts every later column; CSV handles the quoting for us.
+  # A single malformed row should not abort the whole month's run.
+  def parse_row(batch_detail)
+    CSV.parse_line(batch_detail)
+  rescue CSV::MalformedCSVError => e
+    puts "Skipping malformed row: #{e.message}"
+    nil
+  end
 
-    (13..17)
-      .filter_map { |i| fields[i]&.delete('"')&.strip }
-      .reject(&:empty?)
-      .join(':')
+  # Columns 12-16 hold colon-separated 7-character FOLIO account UUID stubs
+  # (see Cybersource::PaymentRequest in sul-requests). Only as many columns as the
+  # payment needed are populated, so the rest come back empty or absent.
+  def merchant_defined_data(row)
+    Array(row[12..16]).compact.map(&:strip).reject(&:empty?).join(':')
   end
 
   def is_a_payment?(account, account_ids)
