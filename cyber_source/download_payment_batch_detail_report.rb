@@ -53,23 +53,13 @@ class DownloadPaymentBatchDetailReport
 
       data.each_line.with_index do |batch_detail, index|
         if index > 1
-          user_id = batch_detail.split(',')[4]
-          paid = batch_detail.split(',')[8]
-          batch_date = batch_detail.split(',')[2]
-          transaction_date = batch_detail.split(',')[12]&.chomp
-          account_ids_1 = batch_detail.split(',')[13]
-          account_ids_2 = batch_detail.split(',')[14]
-          account_ids_3 = batch_detail.split(',')[15]
-          account_ids_4 = batch_detail.split(',')[16]
-          account_ids_5 = batch_detail.split(',')[17]
+          row = parse_row(batch_detail)
+          next unless row
 
-          account_ids = +''
-          (1..5).each do |n|
-            account_ids.concat(binding.local_variable_get("account_ids_#{n}".to_sym)) 
-            account_ids.concat(":")
-          end
-
-          account_ids.freeze
+          user_id = row[4]
+          paid = row[8]
+          transaction_date = row[11]
+          account_ids = merchant_defined_data(row)
 
           begin
             accounts = folio_client.get('/accounts', { query: "userId==#{user_id}" })
@@ -152,6 +142,23 @@ class DownloadPaymentBatchDetailReport
     return new_payload
   end
   
+  # Parse one report row. ics_applications is a quoted field containing a comma, so
+  # splitting on ',' shifts every later column; CSV handles the quoting for us.
+  # A single malformed row should not abort the whole month's run.
+  def parse_row(batch_detail)
+    CSV.parse_line(batch_detail)
+  rescue CSV::MalformedCSVError => e
+    puts "Skipping malformed row: #{e.message}"
+    nil
+  end
+
+  # Columns 12-16 hold colon-separated 7-character FOLIO account UUID stubs
+  # (see Cybersource::PaymentRequest in sul-requests). Only as many columns as the
+  # payment needed are populated, so the rest come back empty or absent.
+  def merchant_defined_data(row)
+    Array(row[12..16]).compact.map(&:strip).reject(&:empty?).join(':')
+  end
+
   def is_a_payment?(account, account_ids)
     account_id_stubs = account_ids.split(':')
     account_id = account['id']

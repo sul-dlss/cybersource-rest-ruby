@@ -1,3 +1,7 @@
-wfgsulair,PaymentBatchDetailReport_Daily_Classic,PaymentBatchDetail,1.10,2023-10-10T07:00:00Z to 2023-10-11T07:00:00Z,,,,,,,
-batch_id,merchant_id,batch_date,request_id,merchant_ref_number,TransactionReferenceNumber,payment_type,currency,amount,ics_applications,status,transaction_date,merchant_data_1, merchant_data_2, merchant_data_3, merchant_data_4, merchant_data_5 
-21265991580,wfgsulair,2023-10-11T04:15:21Z,6969304358566698703248,f1cf56ef-5071-477f-b3ee-8779721a7f44,93211601,MasterCard,USD,35.00,"ics_bill,ics_auth",BATCHED,2023-10-10T09:33:55Z,"7ff7f3c:cf238f9:66a1dfd","asdfasd:FSASFD:fsasdf","dasdfas:fghdfgh","sdfgsfg:brthbhy:5bbh5b7","5bh5bh8"
+wfgsulair,CustomBatchDetailReport,PaymentBatchDetail,1.10,2026-09-21T07:00:00Z to 2026-09-22T07:00:00Z,,,,,,,,,,,,
+batch_id,merchant_id,batch_date,request_id,merchant_ref_number,TransactionReferenceNumber,payment_type,currency,amount,ics_applications,status,transaction_date,merchant_defined_data1,merchant_defined_data2,merchant_defined_data3,merchant_defined_data4,merchant_defined_data5
+23126037361,wfgsulair,2026-09-22T04:17:44Z,7900133339136219303114,aaaaaaaa-1111-4111-8111-aaaaaaaaaaaa,87493880,Visa,USD,35.00,"ics_auth,ics_bill",BATCHED,2026-09-21T17:55:33Z,cf238f9,,,,
+23126037361,wfgsulair,2026-09-22T04:17:44Z,7900247721776298503110,bbbbbbbb-2222-4222-8222-bbbbbbbbbbbb,87659184,Visa,USD,35.00,ics_bill,BATCHED,2026-09-21T21:06:12Z,cf238f9,,,,
+23126037361,wfgsulair,2026-09-22T04:17:44Z,7900324720426378003104,cccccccc-3333-4333-8333-cccccccccccc,87768240,MasterCard,USD,35.00,"ics_bill,ics_auth",BATCHED,2026-09-21T23:14:32Z,4ff0b51:cf238f9,,,,
+23126037361,wfgsulair,2026-09-22T04:17:44Z,7900328308846562803166,dddddddd-4444-4444-8444-dddddddddddd,87774455,Visa,USD,81.00,"ics_auth,ics_bill",BATCHED,2026-09-21T23:20:30Z,73ea571:133626f:b2c8ddd,,,,
+23126037361,wfgsulair,2026-09-22T04:17:44Z,7900451152176471403134,eeeeeeee-5555-4555-8555-eeeeeeeeeeee,87941706,Visa,USD,35.00,"ics_bill,ics_auth",BATCHED,2026-09-22T02:45:15Z,aaa0001:aaa0002:aaa0003:aaa0004:aaa0005:aaa0006:aaa0007:aaa0008:aaa0009:aaa0010:aaa0011:aaa0012,bbb0001:bbb0002,ccc0001,ddd0001,cf238f9
